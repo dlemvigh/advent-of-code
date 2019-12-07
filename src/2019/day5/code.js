@@ -1,10 +1,14 @@
 const { readInput } = require("../../util");
 
 const input = readInput(__dirname, "input.txt");
-// const input = "1002,4,3,4,33";
+const value = 5;
+// const input = "3,9,8,9,10,9,4,9,99,-1,8";
+// const input = "3,9,7,9,10,9,4,9,99,-1,8";
+// const input = "3,3,1108,-1,8,3,4,3,99";
+// const input = "3,3,1107,-1,8,3,4,3,99";
 const program = input.split(",").map(Number);
 
-runProgram(program, 1);
+runProgram(program, value);
 
 function runProgram(program, input) {
   let p = 0;
@@ -12,14 +16,14 @@ function runProgram(program, input) {
   const readDirect = () => program[p++];
   const readIndirect = () => program[program[p++]];
   const read = direct => {
-    console.log("  read", p, direct);
+    // console.log("  read", p, direct);
     const value = direct ? readDirect() : readIndirect();
-    console.log("  =", value);
+    // console.log("  =", value);
     return value;
   };
 
   const write = value => {
-    console.log("  write", p, value);
+    // console.log("  write", p, value);
     program[program[p++]] = value;
   };
   const parseOp = code => {
@@ -29,22 +33,58 @@ function runProgram(program, input) {
   };
 
   const op_codes = {
-    1: modes => {
-      const a = read(modes[2]);
-      const b = read(modes[1]);
+    1: mode => {
+      // add
+      const a = read(mode[2]);
+      const b = read(mode[1]);
       write(a + b);
     },
-    2: modes => {
-      const a = read(modes[2]);
-      const b = read(modes[1]);
+    2: mode => {
+      // multiply
+      const a = read(mode[2]);
+      const b = read(mode[1]);
       write(a * b);
     },
     3: () => {
+      // write input => program
       write(input);
     },
     4: () => {
+      // read program => output
       output = readIndirect();
       console.log(`=== output: ${output} ===`);
+    },
+    5: mode => {
+      // jump if true
+      const value = read(mode[2]);
+      const jump = read(mode[1]);
+      const cond = value !== 0;
+      if (cond) {
+        p = jump;
+      }
+    },
+    6: mode => {
+      // jump if false
+      const value = read(mode[2]);
+      const jump = read(mode[1]);
+      const cond = value === 0;
+      if (cond) {
+        p = jump;
+      }
+    },
+    7: mode => {
+      // equals
+      const a = read(mode[2]);
+      const b = read(mode[1]);
+      const c = Number(a < b);
+      write(c);
+    },
+    8: mode => {
+      // equals
+      const a = read(mode[2]);
+      const b = read(mode[1]);
+      const c = Number(a === b);
+      write(c);
     }
   };
 
