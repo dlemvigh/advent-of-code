@@ -3,9 +3,7 @@ const input =
 const program = input.split(",").map(Number);
 
 // amp([1, 0, 4, 3, 2], 0);
-const perm = permutations(["0", "1", "2", "3", "4"]).map(perm =>
-  perm.map(Number)
-);
+const perm = permutations([0, 1, 2, 3, 4]).map(perm => perm.map(Number));
 
 (function findBest() {
   let best = -Infinity;
@@ -16,7 +14,6 @@ const perm = permutations(["0", "1", "2", "3", "4"]).map(perm =>
       best = value;
       bestP = p;
     }
-    // console.log("p", p);
   }
   console.log("best", best, bestP);
 })();
@@ -30,7 +27,7 @@ function amp(phases, value) {
 }
 
 function permutations(list) {
-  if (list.length < 2) return list;
+  if (list.length < 2) return [list];
 
   const result = [];
   list.forEach((value, index) => {
