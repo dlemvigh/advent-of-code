@@ -1,6 +1,8 @@
-async function runProgram(program, inQueue, outQueue) {
+function runProgram(program, inputs) {
+  let i = 0;
   let p = 0;
   let output;
+
   const readDirect = () => program[p++];
   const readIndirect = () => program[program[p++]];
   const read = direct => {
@@ -9,11 +11,11 @@ async function runProgram(program, inQueue, outQueue) {
     // console.log("  =", value);
     return value;
   };
-
   const write = value => {
     // console.log("  write", p, value);
     program[program[p++]] = value;
   };
+
   const parseOp = code => {
     const op = code % 100;
     const mode = [4, 2, 1].map(x => Boolean(x & Math.floor(code / 100)));
@@ -35,16 +37,13 @@ async function runProgram(program, inQueue, outQueue) {
     },
     3: async () => {
       // write input => program
-      // const input = inputs[i++];
-      const input = await inQueue.pop();
-      // console.log("input", input);
+      const input = inputs[i++];
       write(input);
     },
     4: () => {
       // read program => output
       output = readIndirect();
-      outQueue.push(output);
-      //   console.log(`=== output: ${output} ===`);
+      // console.log(`=== output: ${output} ===`);
     },
     5: mode => {
       // jump if true
@@ -82,11 +81,10 @@ async function runProgram(program, inQueue, outQueue) {
 
   while (true) {
     const [op, mode] = parseOp(readDirect());
-    // console.log("op", op, mode);
     if (op === 99) {
       return output;
     }
-    await op_codes[op](mode);
+    op_codes[op](mode);
   }
 }
 

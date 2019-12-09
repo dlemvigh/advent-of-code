@@ -20,25 +20,22 @@ function permutations(list) {
 }
 
 class Queue {
-  constructor(init = []) {
-    this.queue = [...init];
-    this.popPromise = null;
+  constructor(...init = []) {
+    this.queue = init;
   }
 
   push(value) {
-    if (this.pending) {
-      this.pending(value);
-    }
+    console.log("push");
     this.queue.push(value);
   }
 
   async pop() {
     if (this.queue.length > 0) {
-      return Promise.resolve(this.queue.shift());
+      const value = this.queue.shift();
+      console.log("pop", value);
+      return Promise.resolve(value);
     } else {
-      return new Promise(resolve => {
-        this.popPromise = resolve;
-      });
+      console.log("defer");
     }
   }
 }

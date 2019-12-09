@@ -2,11 +2,11 @@
   "name": "advent2019",
   "version": "0.0.0",
   "scripts": {
-    "start": "nodemon src/day2/part1.js",
+    "start": "nodemon src/2019/day7/code.js",
     "test": "jest"
   },
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@types/jest": "^24.0.23",
     "jest": "^24.9.0",
     "nodemon": "^2.0.1"
