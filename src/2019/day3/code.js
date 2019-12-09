@@ -96,13 +96,13 @@ function findIntersections() {
       }
     }
   }
-  console.log(intersections);
-  console.log("count", intersections.length);
+  // console.log(intersections);
+  // console.log("count", intersections.length);
   const dists = intersections.map(calcFinalSteps);
   //   const dists = intersections.map(([x, y]) => Math.abs(x) + Math.abs(y));
   //   const dists = intersections.map(([x, y, index]) => index);
   dists.sort((a, b) => a - b);
-  console.log(dists);
+  // console.log(dists);
   console.log("closests", dists[0]);
 }
 

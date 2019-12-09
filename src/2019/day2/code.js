@@ -56,7 +56,7 @@ function bruteForce() {
 }
 
 const times = [];
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 1; i++) {
   const before = new Date();
   const result = bruteForce();
   const after = new Date();
