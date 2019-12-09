@@ -28,4 +28,9 @@ const calcFuelCostRec = mass => {
 const result = input.map(calcFuelCostRec).reduce((sum, val) => sum + val, 0);
 console.log("result", result);
 
-module.exports = { calcFuelCost, getInput };
+module.exports = {
+  calcFuelCost,
+  part1: calcFuelCost,
+  part2: calcFuelCostRec,
+  getInput
+};

@@ -16,13 +16,15 @@ const DIRS = {
   D: [0, -1]
 };
 
-const redWire = red.split(",");
-const blueWire = blue.split(",");
+function day3(red, blue) {
+  const redWire = red.split(",");
+  const blueWire = blue.split(",");
 
-const redLines = wireToLines(redWire);
-const blueLines = wireToLines(blueWire);
+  const redLines = wireToLines(redWire);
+  const blueLines = wireToLines(blueWire);
 
-findIntersections();
+  return findIntersections(redLines, blueLines);
+}
 
 function lineIntersects(a, b) {
   if (a.vertical === b.vertical) {
@@ -81,7 +83,7 @@ function wireToLines(wire) {
   return lines;
 }
 
-function findIntersections() {
+function findIntersections(redLines, blueLines) {
   const intersections = [];
   for (let i = 0; i < redLines.length; i++) {
     for (let j = 0; j < blueLines.length; j++) {
@@ -104,6 +106,7 @@ function findIntersections() {
   dists.sort((a, b) => a - b);
   // console.log(dists);
   console.log("closests", dists[0]);
+  return dists[0];
 }
 
 function calcFinalSteps([x, y, a, b]) {
@@ -135,3 +138,5 @@ function parseSegment(segment) {
   const dist = Number(segment.substr(1));
   return { dir, dist };
 }
+
+module.exports = { day3 };
