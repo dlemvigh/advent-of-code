@@ -1,4 +1,4 @@
-const { findBest } = require("./code");
+const { findBest, findBestFeedback } = require("./code");
 
 describe("day 7", () => {
   describe("part 1", () => {
@@ -45,9 +45,9 @@ describe("day 7", () => {
 
     cases.forEach(([program, expected, perm], index) => {
       it(`Case #${index + 1}`, async () => {
-        // const [best, bestP] = findBest(program);
-        // expect(best).toBe(expected);
-        // expect(bestP).toEqual(perm);
+        const [best, bestP] = findBestFeedback(program);
+        expect(best).toBe(expected);
+        expect(bestP).toEqual(perm);
       });
     });
   });

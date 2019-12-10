@@ -19,25 +19,4 @@ function permutations(list) {
   return result;
 }
 
-class Queue {
-  constructor(...init = []) {
-    this.queue = init;
-  }
-
-  push(value) {
-    console.log("push");
-    this.queue.push(value);
-  }
-
-  async pop() {
-    if (this.queue.length > 0) {
-      const value = this.queue.shift();
-      console.log("pop", value);
-      return Promise.resolve(value);
-    } else {
-      console.log("defer");
-    }
-  }
-}
-
-module.exports = { readInput, permutations, Queue };
+module.exports = { readInput, permutations };

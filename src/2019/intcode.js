@@ -1,4 +1,5 @@
-function runProgram(program, inputs) {
+function* runProgram(program, inputs, id) {
+  program = [...program];
   let i = 0;
   let p = 0;
   let output;
@@ -35,7 +36,7 @@ function runProgram(program, inputs) {
       const b = read(mode[1]);
       write(a * b);
     },
-    3: async () => {
+    3: () => {
       // write input => program
       const input = inputs[i++];
       write(input);
@@ -82,9 +83,21 @@ function runProgram(program, inputs) {
   while (true) {
     const [op, mode] = parseOp(readDirect());
     if (op === 99) {
-      return output;
+      yield output;
+      break;
+    }
+    if (op === 3) {
+      const inp = yield;
+      if (Array.isArray(inp)) {
+        inputs.push(...inp);
+      } else {
+        inputs.push(inp);
+      }
     }
     op_codes[op](mode);
+    if (op === 4) {
+      yield output;
+    }
   }
 }
 
