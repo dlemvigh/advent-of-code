@@ -2,7 +2,7 @@
   "name": "advent2019",
   "version": "0.0.0",
   "scripts": {
-    "start": "nodemon src/2019/day7/code.js",
+    "start": "nodemon src/2019/day10/code.js",
     "test": "jest"
   },
   "license": "ISC",

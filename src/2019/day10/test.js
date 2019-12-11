@@ -1,5 +1,5 @@
 const { readInput } = require("../../util");
-const { gcd, part1 } = require("./code");
+const { gcd, toDegrees, part1, part2 } = require("./code");
 
 describe("day 10", () => {
   describe("gcd", () => {
@@ -27,6 +27,25 @@ describe("day 10", () => {
     });
   });
 
+  describe.only("degrees", () => {
+    const cases = [
+      [0, 1, 0],
+      [1, 1, 45],
+      [1, 0, 90],
+      [1, -1, 135],
+      [0, -1, 180],
+      [-1, -1, 225],
+      [-1, 0, 270],
+      [-1, 1, 315]
+    ];
+
+    cases.forEach(([dx, dy, expected]) => {
+      it(`[${dx},${dy}] = ${expected}`, () => {
+        expect(toDegrees(dx, dy)).toBe(expected);
+      });
+    });
+  });
+
   describe("part 1", () => {
     const cases = [
       [".#..#\r\n.....\r\n#####\r\n....#\r\n...##", [3, 4], 8],
@@ -48,4 +67,6 @@ describe("day 10", () => {
     const best = part1(input);
     console.log("result", best);
   });
+
+  describe.only("part 2", () => {});
 });
