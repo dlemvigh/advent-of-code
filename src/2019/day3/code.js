@@ -105,7 +105,7 @@ function findIntersections(redLines, blueLines) {
   //   const dists = intersections.map(([x, y, index]) => index);
   dists.sort((a, b) => a - b);
   // console.log(dists);
-  console.log("closests", dists[0]);
+  // console.log("closests", dists[0]);
   return dists[0];
 }
 

@@ -44,8 +44,8 @@ describe("day 10", () => {
       });
     });
 
-    const input = readInput(__dirname);
-    const best = part1(input);
-    console.log("result", best);
+    // const input = readInput(__dirname);
+    // const best = part1(input);
+    // console.log("result", best);
   });
 });
