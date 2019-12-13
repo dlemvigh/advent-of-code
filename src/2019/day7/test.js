@@ -1,7 +1,7 @@
 const { findBest, findBestFeedback } = require("./code");
 
 describe("day 7", () => {
-  describe("part 1", () => {
+  describe.only("part 1", () => {
     const cases = [
       [
         "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0",
@@ -20,7 +20,7 @@ describe("day 7", () => {
       ]
     ];
 
-    cases.forEach(([program, expected, perm], index) => {
+    cases.slice(0, 1).forEach(([program, expected, perm], index) => {
       it(`Case #${index + 1}`, async () => {
         const [best, bestP] = findBest(program);
         expect(best).toBe(expected);

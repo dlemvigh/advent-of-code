@@ -20,13 +20,11 @@ const { Program } = require("../intcode2");
 // console.log("best", best, bestP);
 
 function findBest(input) {
-  const program = input.split(",").map(Number);
-
   let best = -Infinity;
   let bestP = null;
   const perm = permutations([0, 1, 2, 3, 4]);
   for (const p of perm) {
-    const value = ampFeedback(program, p, 0);
+    const value = amp(input, p, 0);
     if (value > best) {
       best = value;
       bestP = p;
@@ -51,14 +49,22 @@ function findBestFeedback(input) {
   return [best, bestP];
 }
 
-function amp(program, phases, val) {
-  for (let i = 0; i < phases.length; i++) {
-    result = runProgram(program, [phases[i], val]);
-    // console.log("val", val, "res", result.value, result.done);
-    const { value } = result.next();
-    val = value;
-  }
-  return val;
+function amp(input, phases, val) {
+  let programs = [];
+  phases.forEach((phase, index) => {
+    programs[index] = new Program(input);
+    if (index > 0) {
+      programs[index].inputStream = programs[index - 1].outputStream;
+    }
+    programs[index].inputStream.put(phase);
+    if (index === 0) {
+      programs[index].inputStream.put(val);
+    }
+  });
+
+  programs.forEach(program => program.run());
+
+  return programs[4].outputStream.take();
 }
 
 function ampFeedback(program, phases, val) {
