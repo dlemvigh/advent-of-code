@@ -8,6 +8,8 @@ class Program {
     this.base = 0;
     this.options = options;
     this.done = false;
+    this.inputStream = new Stream();
+    this.outputStream = new Stream();
   }
 
   load(input) {
@@ -68,57 +70,82 @@ class Program {
         this.write(a * b, mode[0]);
         break;
       }
+      case 3: {
+        const a = this.inputStream.take();
+        this.write(a, mode[2]);
+        break;
+      }
+      case 4: {
+        const output = this.read(mode[2]);
+        this.outputStream.put(output);
+        break;
+      }
+      case 5: {
+        // jump if true
+        const value = this.read(mode[2]);
+        const jump = this.read(mode[1]);
+        const cond = value !== 0;
+        if (cond) {
+          this.p = jump;
+        }
+        break;
+      }
+      case 6: {
+        // jump if false
+        const value = this.read(mode[2]);
+        const jump = this.read(mode[1]);
+        const cond = value === 0;
+        if (cond) {
+          this.p = jump;
+        }
+        break;
+      }
+      case 7: {
+        // equals
+        const a = this.read(mode[2]);
+        const b = this.read(mode[1]);
+        const c = Number(a < b);
+        this.write(c, mode[0]);
+        break;
+      }
+      case 8: {
+        // equals
+        const a = this.read(mode[2]);
+        const b = this.read(mode[1]);
+        const c = Number(a === b);
+        this.write(c, mode[0]);
+        break;
+      }
       case 99:
         this.done = true;
         break;
+      default:
+        throw "unknown command";
     }
-    // 3: mode => {
-    // 	// write input => program
-    // 	const input = inputs[i++];
-    // 	write(input, mode[2]);
-    // },
-    // 4: mode => {
-    // 	// read program => output
-    // 	output = read(mode[2]);
-    // 	// console.log(`=== output: ${output} ===`);
-    // },
-    // 5: mode => {
-    // 	// jump if true
-    // 	const value = read(mode[2]);
-    // 	const jump = read(mode[1]);
-    // 	const cond = value !== 0;
-    // 	if (cond) {
-    // 		p = jump;
-    // 	}
-    // },
-    // 6: mode => {
-    // 	// jump if false
-    // 	const value = read(mode[2]);
-    // 	const jump = read(mode[1]);
-    // 	const cond = value === 0;
-    // 	if (cond) {
-    // 		p = jump;
-    // 	}
-    // },
-    // 7: mode => {
-    // 	// equals
-    // 	const a = read(mode[2]);
-    // 	const b = read(mode[1]);
-    // 	const c = Number(a < b);
-    // 	write(c, mode[0]);
-    // },
-    // 8: mode => {
-    // 	// equals
-    // 	const a = read(mode[2]);
-    // 	const b = read(mode[1]);
-    // 	const c = Number(a === b);
-    // 	write(c, mode[0]);
-    // },
     // 9: mode => {
     // 	// set relative base
     // 	const a = read(mode[2]);
     // 	base += a;
     // }
+  }
+}
+
+class Stream {
+  constructor(values = []) {
+    this.values = values;
+    this.index = 0;
+  }
+
+  put(value) {
+    this.values.push(value);
+  }
+
+  take() {
+    return this.values[this.index++];
+  }
+
+  last() {
+    return this.values[this.values.length - 1];
   }
 }
 
@@ -177,4 +204,4 @@ function printDebug(program, p, op, mode, base) {
   }
 }
 
-module.exports = { Program };
+module.exports = { Program, Stream };
