@@ -1,6 +1,6 @@
 const leftPad = require("left-pad");
 
-function* runProgram(program, inputs = [], options) {
+function* runProgram(program, inputs = [], options = {}) {
   const { debug } = options;
   program = [...program];
   let i = 0;
