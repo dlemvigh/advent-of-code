@@ -2,7 +2,7 @@ const { readInput } = require("../../util");
 
 class PetriNet {
   constructor(input) {
-    /** number of resources of each type, initially zero for all resources @type { Object.<string, number> } */
+    /** number of resources of each type, initially zero for all resources */
     this.places = {};
     /** transitions between places, with cost from from each place */
     this.transitions = [];
@@ -38,7 +38,6 @@ class PetriNet {
         break;
       }
       this.relax(next);
-      //   console.log("p", this.places);
     }
 
     const cost = this.places[sink];

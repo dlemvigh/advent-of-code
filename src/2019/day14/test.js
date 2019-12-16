@@ -3,7 +3,7 @@ const { PetriNet, part2 } = require("./code");
 
 describe("day 14", () => {
   describe("examples", () => {
-    it("ORE to FUEL", () => {
+    it("parse petri net", () => {
       const input = readInput(__dirname, "small.txt");
       const net = new PetriNet(input);
       expect(Object.keys(net.places)).toEqual([
@@ -16,10 +16,10 @@ describe("day 14", () => {
         "FUEL"
       ]);
       expect(net.transitions.length).toBe(6);
-      expect(net.getCost()).toBe(31);
     });
 
     const cases = [
+      [readInput(__dirname, "small.txt"), 31],
       [readInput(__dirname, "caseA.txt"), 165],
       [readInput(__dirname, "caseB.txt"), 13312],
       [readInput(__dirname, "caseC.txt"), 180697],

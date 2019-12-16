@@ -137,6 +137,7 @@ class Program {
       }
       case 99:
         this.done = true;
+        this.outputStream.stop();
         break;
       default:
         throw `unknown command (${op})@(index:${this.p - 1})`;
@@ -179,6 +180,15 @@ class Stream {
 
   last() {
     return this.values[this.values.length - 1];
+  }
+
+  stop() {
+    if (this.deferred.promise) {
+      this.deferred.reject();
+      this.deferred.promise = null;
+      this.deferred.resolve = null;
+      this.deferred.reject = null;
+    }
   }
 }
 
