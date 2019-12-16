@@ -27,7 +27,7 @@ class Program {
       const code = this.peek();
       const [op] = parseCode(code);
       await this.step();
-      if (op === 4) {
+      if (op === 4 || op === 99) {
         break;
       }
     }
@@ -43,7 +43,7 @@ class Program {
   }
 
   peek() {
-    return this.program[this.p++];
+    return this.program[this.p];
   }
 
   read(mode = "1") {
