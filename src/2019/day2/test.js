@@ -4,20 +4,20 @@ const { part1, part2 } = require("./code");
 
 describe("day 2", () => {
   describe("examples", () => {
-    it("can be run step by step", () => {
+    it("can be run step by step", async () => {
       const input = "1,9,10,3,2,3,11,0,99,30,40,50";
       const program = new Program(input, { debug: false });
 
       expect(program.program.join(",")).toBe(input);
-      program.step();
+      await program.step();
       expect(program.program.join(",")).toBe("1,9,10,70,2,3,11,0,99,30,40,50");
       expect(program.done).toBe(false);
-      program.step();
+      await program.step();
       expect(program.program.join(",")).toBe(
         "3500,9,10,70,2,3,11,0,99,30,40,50"
       );
       expect(program.done).toBe(false);
-      program.step();
+      await program.step();
       expect(program.done).toBe(true);
     });
 
@@ -29,24 +29,24 @@ describe("day 2", () => {
     ];
 
     cases.forEach(([input, output]) => {
-      it(`${input} => ${output}`, () => {
+      it(`${input} => ${output}`, async () => {
         const program = new Program(input);
-        program.run();
+        await program.run();
         expect(program.program.join(",")).toBe(output);
       });
     });
   });
 
   describe("part 1", () => {
-    it("verify solution", () => {
-      const result = part1();
+    it("verify solution", async () => {
+      const result = await part1();
       expect(result).toBe(3562672);
     });
   });
 
   describe("part 2", () => {
-    it("verify solution", () => {
-      const result = part2();
+    it("verify solution", async () => {
+      const result = await part2();
       expect(result).toBe(8250);
     });
   });

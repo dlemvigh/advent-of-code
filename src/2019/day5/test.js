@@ -4,37 +4,37 @@ const { readInput } = require("../../util");
 
 describe("day 5", () => {
   describe.skip("examples", () => {
-    it("example 1", () => {
+    it("example 1", async () => {
       const input = "1002,4,3,4,33";
       const program = new Program(input, { debug: false });
 
-      program.run();
+      await program.run();
       expect(program.program.join(",")).toBe("1002,4,3,4,99");
     });
 
-    it("example 2", () => {
+    it("example 2", async () => {
       const input = "1101,100,-1,4,0";
       const program = new Program(input, { debug: false });
 
-      program.step();
+      await program.step();
       expect(program.program.join(",")).toBe("1101,100,-1,4,99");
     });
 
-    it("input 1", () => {
+    it("input 1", async () => {
       const program = new Program("3, 3, 99, 0");
       program.inputStream.put(42);
-      program.run();
+      await program.run();
 
       expect(program.program.join(",")).toBe("3,3,99,42");
     });
   });
 
   describe("part 1", () => {
-    it("verify solution", () => {
+    it("verify solution", async () => {
       const input = readInput(__dirname);
       const program = new Program(input, { debug: false });
       program.inputStream.put(1);
-      program.run();
+      await program.run();
       expect(program.outputStream.last()).toBe(13087969);
     });
   });
@@ -89,21 +89,21 @@ describe("day 5", () => {
     ];
 
     cases.forEach(([input, arg, out], index) => {
-      it(`Case #${index + 1}`, () => {
+      it(`Case #${index + 1}`, async () => {
         const program = new Program(input, { debug: false });
         program.inputStream.put(arg);
 
-        program.run();
+        await program.run();
 
-        expect(program.outputStream.take()).toBe(out);
+        expect(program.outputStream.last()).toBe(out);
       });
     });
 
-    it("verify solution", () => {
+    it("verify solution", async () => {
       const input = readInput(__dirname);
       const program = new Program(input, { debug: false });
       program.inputStream.put(5);
-      program.run();
+      await program.run();
       expect(program.outputStream.last()).toBe(14110739);
     });
   });

@@ -18,35 +18,49 @@ class Program {
 
   async run() {
     while (!this.done) {
-      this.step();
+      await this.step();
     }
   }
 
-  step() {
+  async stepNextOutput() {
+    while (!this.done) {
+      const code = this.peek();
+      const [op] = parseCode(code);
+      await this.step();
+      if (op === 4) {
+        break;
+      }
+    }
+  }
+
+  async step() {
     const code = this.read();
     const [op, mode] = parseCode(code);
     if (this.options.debug) {
       printDebug(this.program, this.p - 1, op, mode, this.base);
     }
-    this.exec(op, mode);
+    await this.exec(op, mode);
   }
 
-  read(mode) {
+  peek() {
+    return this.program[this.p++];
+  }
+
+  read(mode = "1") {
     switch (mode) {
       case "2": // relative mode
-        return this.program[this.base + this.program[this.p++]];
-      case "0": // position mode
-        return this.program[this.program[this.p++]];
-      default:
+        return this.program[this.base + this.program[this.p++]] || 0;
       case "1": // immediate mode
-        return this.program[this.p++];
+        return this.program[this.p++] || 0;
+      case "0": // position mode
+        return this.program[this.program[this.p++]] || 0;
     }
   }
 
   write(value, mode) {
     switch (mode) {
       case "2":
-        this.program[this.base + this.program[p++]] = value;
+        this.program[this.base + this.program[this.p++]] = value;
         break;
       default:
         this.program[this.program[this.p++]] = value;
@@ -54,7 +68,7 @@ class Program {
     }
   }
 
-  exec(op, mode) {
+  async exec(op, mode) {
     switch (op) {
       case 1: {
         // add
@@ -71,7 +85,7 @@ class Program {
         break;
       }
       case 3: {
-        const a = this.inputStream.take();
+        const a = await this.inputStream.take();
         this.write(a, mode[2]);
         break;
       }
@@ -116,17 +130,17 @@ class Program {
         this.write(c, mode[0]);
         break;
       }
+      case 9: {
+        const a = this.read(mode[2]);
+        this.base += a;
+        break;
+      }
       case 99:
         this.done = true;
         break;
       default:
         throw "unknown command";
     }
-    // 9: mode => {
-    // 	// set relative base
-    // 	const a = read(mode[2]);
-    // 	base += a;
-    // }
   }
 }
 
@@ -134,13 +148,32 @@ class Stream {
   constructor(values = []) {
     this.values = values;
     this.index = 0;
+    this.deferred = {
+      promise: null,
+      resolve: null,
+      reject: null
+    };
   }
 
   put(value) {
     this.values.push(value);
+    if (this.deferred.promise) {
+      this.deferred.resolve();
+      this.deferred.promise = null;
+      this.deferred.resolve = null;
+      this.deferred.reject = null;
+    }
   }
 
-  take() {
+  async take() {
+    if (this.index >= this.values.length) {
+      const self = this;
+      this.deferred.promise = new Promise((resolve, reject) => {
+        self.deferred.resolve = resolve;
+        self.deferred.reject = reject;
+      });
+      await this.deferred.promise;
+    }
     return this.values[this.index++];
   }
 
@@ -160,7 +193,7 @@ const CODES = {
   1: { name: "Add", len: 4 },
   2: { name: "Mult", len: 4 },
   3: { name: "SetInputAt", len: 2 },
-  4: { name: "Print", len: 2 },
+  4: { name: "Print", len: 2, output: true },
   5: { name: "JumpIfTrue", len: 3 },
   6: { name: "JumpifFalse", len: 3 },
   7: { name: "LessThan", len: 4 },

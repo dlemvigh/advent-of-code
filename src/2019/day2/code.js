@@ -6,16 +6,16 @@ if (require.main === module) {
   console.log("part2", part2());
 }
 
-function part1() {
+async function part1() {
   const input = readInput(__dirname);
   const program = new Program(input);
   program.program[1] = 12;
   program.program[2] = 2;
-  program.run();
+  await program.run();
   return program.program[0];
 }
 
-function part2() {
+async function part2() {
   const input = readInput(__dirname);
   const target = 19690720;
 
@@ -24,7 +24,7 @@ function part2() {
       const program = new Program(input);
       program.program[1] = noun;
       program.program[2] = verb;
-      program.run();
+      await program.run();
       if (program.program[0] === target) {
         return 100 * noun + verb;
       }
