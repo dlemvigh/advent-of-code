@@ -57,11 +57,6 @@ async function ampFeedback(input, phases, val) {
   );
   phases.forEach((phase, index) => programs[index].inputStream.put(phase));
 
-  // phases.forEach((phase, index) => {
-  //   const prev = (index + 1) % phases.length;
-  //   programs[index].inputStream = programs[prev].outputStream;
-  //   programs[index].inputStream.put(phase);
-  // });
   programs[0].inputStream.put(val);
 
   for (let i = 0; true; i++) {
@@ -70,19 +65,10 @@ async function ampFeedback(input, phases, val) {
     await programs[curr].stepNextOutput();
     val = programs[curr].outputStream.last();
     programs[next].inputStream.put(val);
-    // console.log("step-ish", i, val);
     if (programs[next].done) {
       return programs[4].outputStream.last();
     }
   }
-
-  // const output = await programs[0].outputStream.take();
-  // console.log("output", output);
-  // for (let i = 0; i < 3; i++) {
-  //   programs[i].inputStream.put(val);
-  //   val = await programs[i].outputStream.take();
-  //   console.log("step", i, val);
-  // }
 }
 
 if (require.main === module) {
