@@ -139,7 +139,7 @@ class Program {
         this.done = true;
         break;
       default:
-        throw "unknown command";
+        throw `unknown command (${op})@(index:${this.p - 1})`;
     }
   }
 }
