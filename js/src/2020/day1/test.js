@@ -19,7 +19,7 @@ describe("day 1", () => {
 			expect(ab).toBe(956091);
 		})
 
-		it.only("part 2", () => {
+		it("part 2", () => {
 			const filename = path.join(__dirname, "./input.txt");
 			const file = fs.readFileSync(filename);
 			const res = part2(file.toString());
