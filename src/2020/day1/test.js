@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { part1 } = require("./code");
+const { part1, part2 } = require("./code");
 
 describe("day 1", () => {
 
@@ -17,6 +17,13 @@ describe("day 1", () => {
 			const file = fs.readFileSync(filename);
 			const [a, b, ab] = part1(file.toString());
 			expect(ab).toBe(956091);
+		})
+
+		it.only("part 2", () => {
+			const filename = path.join(__dirname, "./input.txt");
+			const file = fs.readFileSync(filename);
+			const res = part2(file.toString());
+			expect(res).toBe(79734368);
 		})
 	})
 })
