@@ -17,7 +17,7 @@ function search(values: number[], target = 2020) {
 	}
 }
 
-function part1(input: string, target = 2020) {
+export function part1(input: string, target = 2020) {
 	const values = input.split("\n").map(Number);
 	values.sort();
 
@@ -43,7 +43,7 @@ function part2old(input: string, target = 2020) {
 	}
 }
 
-function part2(input: string, target = 2020) {
+export function part2(input: string, target = 2020) {
 	const values = input.split("\n").map(Number);
 	values.sort();
 	
@@ -64,20 +64,4 @@ function part2(input: string, target = 2020) {
 	}
 }
 
-function part2new(input: string, target = 2020) {
-	const values = input.split("\n").map(Number);
-	values.sort();
-
-	for (let a = 0; a < input.length - 2; a++) {
-		const valueA = values[a];
-		const rest = target - valueA;
-
-		const res = search(values.slice(a + 1), rest);
-		if (res) {
-			const [valueB, valueC] = res;
-			return valueA * valueB * valueC;
-		}
-	}
-}
-
-module.exports = { part1, part2 };
+export default { part1, part2 };

@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const { part1, part2 } = require("./code");
+import { part1, part2 } from "./code";
 
 describe("day 1", () => {
 
