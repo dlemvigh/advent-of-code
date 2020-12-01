@@ -1,9 +1,5 @@
-function part1(input, target = 2020) {
-	const values = input.split("\n").map(Number);
-	values.sort();
-	// console.log(values);
+function search(values, target = 2020) {
 	let i = 0, j = values.length - 1;
-	// do {
 	while(true) {
 		// loop
 		if (i === j) { 
@@ -21,7 +17,15 @@ function part1(input, target = 2020) {
 	}
 }
 
-function part2(input, target = 2020) {
+function part1(input, target = 2020) {
+	const values = input.split("\n").map(Number);
+	values.sort();
+
+	return search(values, target);
+}
+
+
+function part2old(input, target = 2020) {
 	const values = input.split("\n").map(Number);
 	values.sort();
 	for (let a = 0; a < input.length - 2; a++) {
@@ -35,6 +39,43 @@ function part2(input, target = 2020) {
 					return values[a] * values[b] * values[c];
 				}
 			}
+		}
+	}
+}
+
+function part2(input, target = 2020) {
+	const values = input.split("\n").map(Number);
+	values.sort();
+	
+	for (let a = 0; a < input.length - 2; a++) {
+		let cLimit = input.length - 1;
+		for (let b = a + 1; b < input.length - 1; b++) {
+			for (let c = cLimit; c > b; c--) {
+				const value = values[a] + values[b] + values[c];
+				if (value < target) {
+					cLimit = c;
+					break;
+				}
+				if (value === target) {
+					return values[a] * values[b] * values[c];
+				}
+			}
+		}
+	}
+}
+
+function part2new(input, target = 2020) {
+	const values = input.split("\n").map(Number);
+	values.sort();
+
+	for (let a = 0; a < input.length - 2; a++) {
+		const valueA = values[a];
+		const rest = target - valueA;
+
+		const res = search(values.slice(a + 1), rest);
+		if (res) {
+			const [valueB, valueC] = res;
+			return valueA * valueB * valueC;
 		}
 	}
 }
