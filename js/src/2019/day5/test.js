@@ -3,7 +3,7 @@ const { readInput } = require("../../util");
 // const { part1, part2 } = require("./code");
 
 describe("day 5", () => {
-  describe.skip("examples", () => {
+  describe("examples", () => {
     it("example 1", async () => {
       const input = "1002,4,3,4,33";
       const program = new Program(input, { debug: false });

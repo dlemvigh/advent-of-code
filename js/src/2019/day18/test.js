@@ -91,7 +91,7 @@ describe("day 18", () => {
       });
     });
 
-    it("verify solution", () => {
+    it.skip("verify solution", () => {
       part1();
     });
   });

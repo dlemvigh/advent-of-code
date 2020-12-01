@@ -80,7 +80,7 @@ function part2() {
   for (let i = 0; true; i++) {
     const cost = tryGuess(guess);
     if (cost > max) {
-      console.log(`it took ${i} iterations of guessing`);
+      // console.log(`it took ${i} iterations of guessing`);
       return guess - 1;
     }
     const diff = max - cost;

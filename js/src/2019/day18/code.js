@@ -190,7 +190,7 @@ class Graph {
       if (from.visited.count === target) {
         if (from.dist < best) {
           best = from.dist;
-          console.log("best so far", best);
+          // console.log("best so far", best);
         }
       }
       const near = this.near(from);
@@ -265,7 +265,7 @@ if (require.main === module) {
   const before = new Date();
   part1();
   const after = new Date();
-  console.log(`it took ${after - before}ms`);
+  // console.log(`it took ${after - before}ms`);
 }
 
 module.exports = { MapGraph, Map, part1 };
