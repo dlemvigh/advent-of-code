@@ -10,7 +10,7 @@ const overlaps = findOverlaps(claims);
 console.log(`=== result: ${overlaps} ===`);
 
 function parseInput(input) {
-  const lines = input.split("\r\n");
+  const lines = input.split("\n");
   const regex = /#(\d+) @ (\d+),(\d+): (\d+)x(\d+)$/;
   return lines.map(line => {
     const match = line.match(regex);

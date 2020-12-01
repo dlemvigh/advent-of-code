@@ -1,5 +1,5 @@
 function part1(input) {
-  const map = input.split("\r\n");
+  const map = input.split("\n");
   // get list of asteroids [x, y]
   const asteroids = getAsteroids(map);
 
@@ -59,5 +59,5 @@ function gcd(a, b) {
 
   return gcd(b, a % b);
 }
-// part1(".#..#\r\n.....\r\n#####\r\n....#\r\n...##");
+// part1(".#..#\n.....\n#####\n....#\n...##");
 module.exports = { gcd, part1 };

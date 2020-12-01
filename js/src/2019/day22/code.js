@@ -47,7 +47,7 @@ function parse(line, list) {
 
 function part1(N, input) {
   let list = range(N);
-  input.split("\r\n").forEach(line => {
+  input.split("\n").forEach(line => {
     list = parse(line, list);
   });
   return list;

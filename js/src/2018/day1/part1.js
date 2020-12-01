@@ -4,7 +4,7 @@ const path = require("path");
 const input = fs
   .readFileSync(path.join(__dirname, "./input.txt"))
   .toString()
-  .split("\r\n");
+  .split("\n");
 // const input = "+3, +3, +4, -2, -4".split(", ");
 // const input = "-6, +3, +8, +5, -6".split(", ");
 // const input = "+7, +7, -2, -7, -4".split(", ");

@@ -7,7 +7,7 @@ const file = fs.readFileSync(filename);
 
 const input = file
   .toString()
-  .split("\r\n")
+  .split("\n")
   .map(Number);
 
 const getInput = () => input;

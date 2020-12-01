@@ -75,25 +75,25 @@ describe("day 22", () => {
       [3, "deal into new stack", [2, 1, 0]],
       [3, "cut 1", [1, 2, 0]],
       [3, "deal with increment 2", [0, 2, 1]],
-      [3, "cut 1\r\ndeal into new stack", [0, 2, 1]],
+      [3, "cut 1\ndeal into new stack", [0, 2, 1]],
       [
         10,
-        "deal with increment 7\r\ndeal into new stack\r\ndeal into new stack",
+        "deal with increment 7\ndeal into new stack\ndeal into new stack",
         [0, 3, 6, 9, 2, 5, 8, 1, 4, 7]
       ],
       [
         10,
-        "cut 6\r\ndeal with increment 7\r\ndeal into new stack",
+        "cut 6\ndeal with increment 7\ndeal into new stack",
         [3, 0, 7, 4, 1, 8, 5, 2, 9, 6]
       ],
       [
         10,
-        "deal with increment 7\r\ndeal with increment 9\r\ncut -2",
+        "deal with increment 7\ndeal with increment 9\ncut -2",
         [6, 3, 0, 7, 4, 1, 8, 5, 2, 9]
       ],
       [
         10,
-        "deal into new stack\r\ncut -2\r\ndeal with increment 7\r\ncut 8\r\ncut -4\r\ndeal with increment 7\r\ncut 3\r\ndeal with increment 9\r\ndeal with increment 3\r\ncut -1",
+        "deal into new stack\ncut -2\ndeal with increment 7\ncut 8\ncut -4\ndeal with increment 7\ncut 3\ndeal with increment 9\ndeal with increment 3\ncut -1",
         [9, 2, 5, 8, 1, 4, 7, 0, 3, 6]
       ]
     ];

@@ -5,7 +5,7 @@ const input = fs.readFileSync(path.join(__dirname, "./input.txt")).toString();
 run(input);
 
 function run(input) {
-  const edges = input.split("\r\n").map(line => line.split(")"));
+  const edges = input.split("\n").map(line => line.split(")"));
   const nodes = getNodes(edges);
   // nodes.forEach(x => console.log(x, getNear(x, edges)));
   const depths = getDepth("COM", nodes, edges);

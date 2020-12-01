@@ -11,7 +11,7 @@ class PetriNet {
   }
 
   parse(input) {
-    const lines = input.split("\r\n");
+    const lines = input.split("\n");
     this.transitions = lines.map(line => {
       const [from, to] = line.split(" => ");
       const transition = {

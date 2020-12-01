@@ -44,7 +44,7 @@ class Graph {
 class Map {
   constructor(map) {
     this.map = map;
-    this.rows = map.split("\r\n");
+    this.rows = map.split("\n");
     this.height = this.rows.length;
     this.width = this.rows[0].length;
     this.portals = [];

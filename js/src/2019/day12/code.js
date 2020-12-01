@@ -93,7 +93,7 @@ function simulateStep(moons) {
 }
 
 function parseInput(input) {
-  return input.split("\r\n").map(line => {
+  return input.split("\n").map(line => {
     const match = line.match(/x=(-?\d+), y=(-?\d+), z=(-?\d+)/);
     const pos = match.slice(1).map(Number);
     return new Moon(...pos);

@@ -29,7 +29,7 @@ describe("day 10", () => {
 
   describe("part 1", () => {
     const cases = [
-      [".#..#\r\n.....\r\n#####\r\n....#\r\n...##", [3, 4], 8],
+      [".#..#\n.....\n#####\n....#\n...##", [3, 4], 8],
       [readInput(__dirname, "./cases/caseA.txt"), [5, 8], 33],
       [readInput(__dirname, "./cases/caseB.txt"), [1, 2], 35],
       [readInput(__dirname, "./cases/caseC.txt"), [6, 3], 41],

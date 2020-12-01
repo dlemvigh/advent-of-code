@@ -4,7 +4,7 @@ const path = require("path");
 const input = fs
   .readFileSync(path.join(__dirname, "./input.txt"))
   .toString()
-  .split("\r\n");
+  .split("\n");
 
 console.log(input.length);
 function countOccurences(str) {
