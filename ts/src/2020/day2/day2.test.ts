@@ -27,43 +27,44 @@ describe("day2", () => {
     });
   });
 
-  it("part 1", () => {
-    const filename = path.join(__dirname, "./input.txt");
-    const file = fs.readFileSync(filename);
-    const lines = file.toString().split("\n");
+  describe("solutions", () => {
+    it("part 1", () => {
+      const filename = path.join(__dirname, "./input.txt");
+      const file = fs.readFileSync(filename);
+      const lines = file.toString().split("\n");
 
-    let count = 0;
-    lines.forEach((line) => {
-      const parsed = parseLine(line);
-      const valid = validate(...parsed);
-      if (valid) {
-        count++;
-      }
+      let count = 0;
+      lines.forEach((line) => {
+        const parsed = parseLine(line);
+        const valid = validate(...parsed);
+        if (valid) {
+          count++;
+        }
+      });
+      expect(count).toBe(483);
     });
-    expect(count).toBe(483);
-  });
 
+    it("part 2", () => {
+      const filename = path.join(__dirname, "./input.txt");
+      const file = fs.readFileSync(filename);
+      const lines = file.toString().split("\n");
+
+      let count = 0;
+      lines.forEach((line) => {
+        const parsed = parseLine(line);
+        const valid = validatePosition(...parsed);
+        if (valid) {
+          count++;
+        }
+      });
+      expect(count).toBe(482);
+    });
+  });
   describe("validate position", () => {
     CASES.forEach(([input, [min, max, letter, password, _, valid]]) => {
       it(input, () => {
         expect(validatePosition(min, max, letter, password)).toBe(valid);
       });
     });
-  });
-
-  it("part 1", () => {
-    const filename = path.join(__dirname, "./input.txt");
-    const file = fs.readFileSync(filename);
-    const lines = file.toString().split("\n");
-
-    let count = 0;
-    lines.forEach((line) => {
-      const parsed = parseLine(line);
-      const valid = validatePosition(...parsed);
-      if (valid) {
-        count++;
-      }
-    });
-    expect(count).toBe(482);
   });
 });
