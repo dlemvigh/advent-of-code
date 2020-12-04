@@ -92,13 +92,13 @@ describe("part 2", () => {
 			const invalid: string[] = ["ambb", "bl", "xasdf"];
 
 			valid.forEach(x => {
-				it(x, () => {
+				it(x.trim(), () => {
 					expect(rules[Keys.EyeColor](x)).toBe(true)
 				})
 			});
 
 			invalid.forEach(x => {
-				it(x, () => {
+				it(x.trim(), () => {
 					expect(rules[Keys.EyeColor](x)).toBe(false)
 				})
 			});
@@ -107,10 +107,11 @@ describe("part 2", () => {
 		describe("passport", () => {
 			const valid = ["123456789", "000000000", "000000001"];
 			const invalid = ["1234567890", "0123456789", ""];
-
+			
 			valid.forEach(x => {
 				it(x, () => expect(rules[Keys.PassportID](x)).toBe(true))
 			})
+
 			invalid.forEach(x => {
 				it(x, () => expect(rules[Keys.PassportID](x)).toBe(false))
 			})
