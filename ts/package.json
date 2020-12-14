@@ -8,7 +8,13 @@
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@types/bignum": "0.0.29",
+    "big.js": "^6.0.3",
+    "bignum": "^0.13.1"
+  },
   "devDependencies": {
+    "@types/big.js": "^6.0.0",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.10",
     "jest": "^26.6.3",
