@@ -5,7 +5,7 @@ function parseInput(input: string) {
 }
 
 function isSimpleRule(rule: string) {
-  return rule.indexOf("|") === -1;
+  return rule.indexOf("|") === -1 && rule.indexOf("+") === -1;
 }
 
 function parseLine(line: string): string {
@@ -22,7 +22,7 @@ function compileRule0(input: string[]) {
     inputMap.set(key, value);
   });
 
-  console.log(inputMap);
+  //   console.log(inputMap);
 
   // match simple rules
   input.forEach((line) => {
@@ -79,7 +79,87 @@ export function part1(input: string) {
   const [rules, messages] = parseInput(input);
   //   console.log(rules, messages);
   const rule0 = compileRule0(rules);
-  console.log(rule0);
+  //   console.log(rule0);
+
+  return messages.filter((msg) => rule0.test(msg)).length;
+}
+
+function compileRule0withExceptions(input: string[]) {
+  const rules = new Map<string, string>();
+  const inputMap = new Map<string, string>();
+  input.forEach((line) => {
+    const [key, value] = line.split(": ");
+    inputMap.set(key, value);
+  });
+  inputMap.set("8", "42+");
+  inputMap.set(
+    "11",
+    "42 31 | 42 42 31 31 | 42 42 42 31 31 31 | 42 42 42 42 31 31 31 31 | 42 42 42 42 42 31 31 31 31 31"
+    // "42+ 31+"
+  ); // super hack
+
+  //   console.log(inputMap);
+
+  // match simple rules
+  input.forEach((line) => {
+    const match = line.match(simpleRule);
+    if (match) {
+      const [_, key, value] = match;
+      rules.set(key, value);
+    }
+  });
+
+  // recursive match complex rules
+  function compileRuleRecursive(index: string) {
+    // console.log("compile rule rec", index);
+    if (rules.has(index)) {
+      return rules.get(index);
+    }
+
+    const rule = inputMap.get(index);
+    let compiledRule;
+
+    if (rule.endsWith("+")) {
+      const subrule = compileSubRule(rule.slice(0, rule.length - 1));
+      compiledRule = `(${subrule})+`;
+    } else if (rule.indexOf("|") !== -1) {
+      const subrules = rule.split(" | ").map(compileSubRule);
+      compiledRule = subrules
+        .map((r) => (isSimpleRule(r) ? r : `(${r})`))
+        .join("|");
+    } else {
+      compiledRule = compileSubRule(rule);
+    }
+    rules.set(index, compiledRule);
+
+    // console.log(`${index}:`, compiledRule);
+    return compiledRule;
+  }
+
+  function compileSubRule(rule: string): string {
+    const parts = rule.split(" ").map((term) => {
+      if (rules.has(term)) return rules.get(term);
+      return compileRuleRecursive(term);
+    });
+
+    const compiledRule = parts
+      .map((r) => (isSimpleRule(r) ? r : `(${r})`))
+      .join("");
+    return compiledRule;
+  }
+
+  const regex = compileRuleRecursive("0");
+
+  //   console.log("rules", rules);
+
+  return new RegExp("^" + regex + "$");
+}
+
+export function part2(input: string) {
+  const [rules, messages] = parseInput(input);
+  //   console.log(rules, messages);
+  const rule0 = compileRule0withExceptions(rules);
+  //   console.log(rule0);
 
   return messages.filter((msg) => rule0.test(msg)).length;
 }
