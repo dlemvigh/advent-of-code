@@ -39,7 +39,8 @@ export function playRecursiveWar(
   deck2: number[],
   game: number = 1
 ): [winner: number, deck1: number[], deck2: number[]] {
-  const seen = new Set<string>();
+  const seen1 = new Set<string>();
+  const seen2 = new Set<string>();
   let round = 1;
   //   const maxGame = 10;
   const texts = [];
@@ -52,11 +53,13 @@ export function playRecursiveWar(
     texts.push(`Player 1's deck: ${deck1.join(", ")}`);
     texts.push(`Player 2's deck: ${deck2.join(", ")}`);
 
-    const state = deck1.join(",") + "x" + deck2.join(",");
-    if (seen.has(state)) {
+    const state1 = deck1.join(",");
+    const state2 = deck2.join(",");
+    if (seen1.has(state1) || seen2.has(state2)) {
       return [1, deck1, deck2];
     } else {
-      seen.add(state);
+      seen1.add(state1);
+      seen2.add(state2);
     }
     const card1 = deck1.shift();
     const card2 = deck2.shift();
