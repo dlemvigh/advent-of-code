@@ -5,6 +5,8 @@ import { Intcode } from "../components/Intcode";
 const Content = styled.main`
   max-width: 1600px;
   margin: 0 auto;
+  padding: 4px;
+  box-sizing: border-box;
   min-height: 100vh;
 
   box-shadow: 0 0 400px hsl(220, 15%, 30%);
