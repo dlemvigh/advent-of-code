@@ -1,8 +1,7 @@
-import { useState } from "react";
 import Head from 'next/head'
 import styled from "styled-components";
 import { Intcode } from "../components/Intcode";
-import { useRenderCount } from '../hooks/useRenderCount';
+
 const Content = styled.main`
   max-width: 1600px;
   margin: 0 auto;
@@ -12,9 +11,7 @@ const Content = styled.main`
 `
 
 export default function Home() {
-  const count = useRenderCount();
-  const [username, setUsername] = useState("World");
-  const otherUsername = username === "World" ? "Universe" : "World"; return (
+  return (
     <div>
       <Head>
         <title>Intcode</title>
@@ -22,15 +19,6 @@ export default function Home() {
       </Head>
       <Content>
         <Intcode />
-        <div>
-          <p>Hello, {username}!</p>
-          <p>
-            I have rendered {count} time{count !== 1 ? "s" : undefined}!
-          </p>
-          <button onClick={() => setUsername(otherUsername)}>
-            Change name to "{otherUsername}"
-          </button>
-        </div>
       </Content>
     </div>
   )
