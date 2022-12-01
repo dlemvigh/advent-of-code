@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 
-export function readInput(folder: string, filename = "input.txt"): string {
+export function readInput(folder: string, filename: string): string {
   return readFileSync(join(folder, filename)).toString();
 }
 
@@ -26,6 +26,6 @@ export function splitAndMapIntoGroups<T>(
 ): T[][] {
   return input
     .split(/\n(\r)?\n/)
-    .filter((x) => x)
+    .filter((x) => x?.trim())
     .map((line) => splitAndMapIntoLines(line, fn));
 }
