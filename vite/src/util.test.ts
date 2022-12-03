@@ -4,6 +4,7 @@ import {
   splitAndMapIntoLines,
   splitIntoGroups,
   splitAndMapIntoGroups,
+  chunk,
 } from "./util";
 
 describe("map into lines", () => {
@@ -59,3 +60,21 @@ describe("map into groups", () => {
     ]);
   });
 });
+
+describe("chunk", ()=>{
+  const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  type TestCase = [number, number[][]];
+  const test_cases: TestCase[] = [
+    [1, [[1],[2],[3],[4],[5],[6],[7],[8],[9],[10]]],
+    [2,[[1,2],[3,4],[5,6],[7,8],[9,10]]],
+    [3,[[1,2,3],[4,5,6],[7,8,9],[10]]],
+    [4,[[1,2,3,4],[5,6,7,8],[9,10]]],
+    [5,[[1,2,3,4,5],[6,7,8,9,10]]],
+    [20, [[1,2,3,4,5,6,7,8,9,10]]]
+  ];
+  test_cases.forEach(([chunkSize, expected])=>{
+    it(`chunk size ${chunkSize}`,()=>{
+      expect(chunk(input, chunkSize)).toEqual(expected)
+    })
+  })
+})
