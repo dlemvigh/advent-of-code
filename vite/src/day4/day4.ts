@@ -21,7 +21,17 @@ export function isFullyContained(pair: CleanRangePair): boolean {
     return false;
 }
 
+export function hasOverlap(pair: CleanRangePair): boolean {
+    const [[aFrom, aTo],[bFrom, bTo]] = pair;
+    return aFrom <= bTo && bFrom <= aTo;
+}
+
 export function part1(input: string): number {
     const pairs = splitAndMapIntoLines(input, parseLine)
     return pairs.filter(isFullyContained).length;
+}
+
+export function part2(input: string): number {
+    const pairs = splitAndMapIntoLines(input, parseLine)
+    return pairs.filter(hasOverlap).length;
 }
