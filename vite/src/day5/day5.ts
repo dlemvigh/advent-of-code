@@ -36,7 +36,7 @@ function parseStacks(input: string[]): Stacks {
 
 function parseMoves(input: string[]): Moves {
   return input.map<Move>((line: string) => {
-    const match = line.match(/^move (\d+) from (\d+) to (\d+)$/);
+    const match = line.trim().match(/^move (\d+) from (\d+) to (\d+)$/);
     if (match == null) {
       throw new Error("Unable to parse move");
     }
