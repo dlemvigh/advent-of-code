@@ -13,14 +13,6 @@ export type State = {
     pwd: string[]
 }
 
-export function isFolder(item: File | Folder): item is Folder {
-    return "content" in item;
-} 
-
-export function isFile(item: File | Folder): item is File {
-    return !isFolder(item);
-}
-
 export function folderFactory(name: string): Folder {
     return {
         name: name,

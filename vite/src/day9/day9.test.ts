@@ -125,7 +125,7 @@ describe("Day 9", () => {
     });
     it("input", () => {
       const input = readInput(__dirname, "input.txt");
-      expect(part2(input)).toBe(undefined);
+      expect(part2(input)).toBe(2327);
     });
   });
 });
