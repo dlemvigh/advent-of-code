@@ -1,7 +1,7 @@
 import { splitAndMapIntoLines } from "../util";
 
 export type Position = { x: number; y: number };
-export type Direction = { dx: -1 | 0 | 1; dy: -1 | 0 | 1 };
+export type Direction = { dx: number; dy: number };
 
 export const DirUp: Direction = { dx: 0, dy: 1 };
 export const DirRight: Direction = { dx: 1, dy: 0 };
@@ -36,21 +36,6 @@ export type State = {
   visited: Set<string>;
 };
 
-export function executeMove(move: Move, state: State): State {
-  const [dir, steps] = move;
-  for (let i = 0; i < steps; i++) {
-    executeStep(dir, state);
-  }
-  return state;
-}
-
-export function executeMoves(moves: Move[], state: State): State {
-  for (const move of moves) {
-    executeMove(move, state);
-  }
-  return state;
-}
-
 export function executeStep(direction: Direction, state: State): State {
   // move head
   state.head.x += direction.dx;
@@ -70,8 +55,69 @@ export function executeStep(direction: Direction, state: State): State {
   return state;
 }
 
+export function executeChainStep(direction: Direction, states: State[]): State[] {
+  let dir = direction;
+  for (const state of states) {
+    const x = state.tail.x;
+    const y = state.tail.y;
+
+    executeStep(dir, state);
+
+    const dx = Math.sign(x - state.tail.x);
+    const dy = Math.sign(y - state.tail.y);
+
+    if (dx === 0 && dy === 0) {
+      // tail did not move, rest of tail will not move either
+      break;
+    }
+
+    dir = { dx, dy }
+  }
+
+  return states;
+}
+
+export function executeMove(move: Move, state: State): State {
+  const [dir, steps] = move;
+  for (let i = 0; i < steps; i++) {
+    executeStep(dir, state);
+  }
+  return state;
+}
+
+export function executeChainMove(move: Move, states: State[]): State[] {
+  const [dir, steps] = move;
+  for (let i = 0; i < steps; i++) {
+    executeChainStep(dir, states);
+  }
+  return states;
+}
+
+export function executeMoves(moves: Move[], state: State): State {
+  for (const move of moves) {
+    executeMove(move, state);
+  }
+  return state;
+}
+
+export function executeChainMoves(moves: Move[], states: State[]): State[] {
+  for (const move of moves) {
+    executeChainMove(move, states);
+  }
+
+  return states;
+}
+
 export function toVisited(position: Position): string {
   return `(${position.x},${position.y})`;
+}
+
+export function initialStateFactory() {
+  const head: Position = { x: 0, y: 0 };
+  const tail: Position = { x: 0, y: 0 };
+  const visited = new Set([toVisited(tail)]);
+  const state: State = { head, tail, visited };
+  return state;
 }
 
 export function part1(input: string) {
@@ -79,14 +125,21 @@ export function part1(input: string) {
   const moves = splitAndMapIntoLines(input, parseLine);
 
   // setup initial state
-  const head: Position = { x: 0, y: 0 };
-  const tail: Position = { x: 0, y: 0 };
-  const visited = new Set([toVisited(tail)]);
-  const state: State = { head, tail, visited };
+  const state = initialStateFactory();
 
   executeMoves(moves, state);
 
   return state.visited.size;
 }
 
-export function part2(input: string) {}
+export function part2(input: string) {
+  // parse input
+  const moves = splitAndMapIntoLines(input, parseLine);
+
+  // setup initial state
+  const states = Array.from({ length: 9 }, initialStateFactory);
+
+  executeChainMoves(moves, states);
+
+  return states[states.length - 1].visited.size;
+}
