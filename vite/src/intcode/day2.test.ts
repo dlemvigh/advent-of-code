@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { readInput } from "../util";
+import { readInput, tests } from "../util";
 import { executeInstruction, executeProgram, Mode, Op, parseInput, parseInstruction, Program, State, stateFactory } from "./intcode";
 
 describe("Day 2", () => {
@@ -12,10 +12,10 @@ describe("Day 2", () => {
             [2, Op.Multiply],
             [3, Op.Input],
             [4, Op.Output],
-            [5, Op.JumpZero],
-            [6, Op.JumpNonZero],
-            [7, Op.JumpLess],
-            [8, Op.JumpEqual],
+            [5, Op.JumpNonZero],
+            [6, Op.JumpZero],
+            [7, Op.LessThan],
+            [8, Op.Equal],
             [9, Op.SetRelBase],
             [0x001, Op.Add, [Mode.Position, Mode.Position, Mode.Position]],
             [11101, Op.Add, [Mode.Immediate, Mode.Immediate, Mode.Immediate]],
@@ -65,21 +65,10 @@ describe("Day 2", () => {
     })
 
     describe("multiply", () => {
-        type TestCase = [Program, Program]
-        const testCases: TestCase[] = [
-            [[1102, 111, 222, 0], [24642, 111, 222, 0]],
-            [[1102, 111, 222, 1], [1102, 24642, 222, 1]],
-            [[1102, 111, 222, 2], [1102, 111, 24642, 2]],
-            [[1102, 111, 222, 3], [1102, 111, 222, 24642]],
-            [[2, 4, 5, 6, 111, 222], [2, 4, 5, 6, 111, 222, 24642]],
-            [[102, 111, 4, 5, 222], [102, 111, 4, 5, 222, 24642]],
-            [[1002, 4, 222, 5, 111], [1002, 4, 222, 5, 111, 24642]]
-        ]
-
-        testCases.forEach(([program, expected], index) => {
-            it(`Test case #${index + 1}`, () => {
+        tests<Program, Program>(
+            (input, expected) => {
                 // arrange
-                const state: State = stateFactory(program)
+                const state: State = stateFactory(input)
 
                 // act
                 executeInstruction(state);
@@ -87,8 +76,16 @@ describe("Day 2", () => {
                 // assert
                 expect(state.program).toEqual(expected);
                 expect(state.ip).toBe(4);
-            })
-        })
+            }, [
+                [[1102, 111, 222, 0], [24642, 111, 222, 0]],
+                [[1102, 111, 222, 1], [1102, 24642, 222, 1]],
+                [[1102, 111, 222, 2], [1102, 111, 24642, 2]],
+                [[1102, 111, 222, 3], [1102, 111, 222, 24642]],
+                [[2, 4, 5, 6, 111, 222], [2, 4, 5, 6, 111, 222, 24642]],
+                [[102, 111, 4, 5, 222], [102, 111, 4, 5, 222, 24642]],
+                [[1002, 4, 222, 5, 111], [1002, 4, 222, 5, 111, 24642]]
+            ]
+        )
     })
 
     describe("sample programs", () => {

@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
+import { it } from "vitest";
 
 type Options = { trim: boolean };
 const defaultOptions: Options = { trim: true };
@@ -44,3 +45,23 @@ export function chunk<T>(array: T[], chunkSize: number): T[][] {
 export function reverseString(input: string): string {
   return input.split("").reverse().join("");
 }
+
+export function tests<Input, Expected>(
+  test: (input: Input, expected: Expected) => void,
+  testCases: [Input, Expected][] = [], 
+  focus?: number
+) {
+  if (focus != null) {
+      const [input, expected] = testCases[focus];
+      it(`TestCase #${focus + 1}`, ()=>{
+          test(input, expected)
+      })
+      testCases[focus]
+  } else {
+      testCases.forEach(([input, expected], index) => {
+          it(`TestCase #${index + 1}`, () => {
+              test(input, expected)
+          })
+      })
+  }
+} 

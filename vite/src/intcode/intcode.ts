@@ -3,10 +3,10 @@ export enum Op {
     Multiply = 2,
     Input = 3,
     Output = 4,
-    JumpZero = 5,
-    JumpNonZero = 6,
-    JumpLess = 7,
-    JumpEqual = 8,
+    JumpNonZero = 5,
+    JumpZero = 6,
+    LessThan = 7,
+    Equal = 8,
     SetRelBase = 9,
     Halt = 99
 }
@@ -18,18 +18,25 @@ export enum Mode {
 }
 
 export type Program = number[];
+export type Input = number[];
+export type Output = number[];
 export type State = {
     program: Program,
     ip: number,
     relBase: 0,
-    isHalted?: true
+    isPendingInput?: boolean,
+    isHalted?: true,
+    input: Input,
+    output: Output
 }
 
-export function stateFactory(program: Program): State {
+export function stateFactory(program: Program, input: Input = []): State {
     return {
-        program,
+        program: [...program],
         ip: 0,
         relBase: 0,
+        input,
+        output: []
     }
 }
 
@@ -38,18 +45,62 @@ export function executeInstruction(state: State): State {
     const [op, ...modes] = parseInstruction(instruction);
 
     switch (op) {
-        case Op.Add: {
+        case Op.Add: 
             const a = read(state, modes[0])
             const b = read(state, modes[1])
             const c = a + b;
             write(state, c, modes[2])
             break;
-        }
         case Op.Multiply: {
             const a = read(state, modes[0])
             const b = read(state, modes[1])
             const c = a * b;
             write(state, c, modes[2])
+            break;
+        }
+        case Op.Input: {
+            if (state.input && state.input.length > 0) {
+                const value = state.input.shift();
+                write(state, value!, modes[0]);
+            } else {
+                state.isPendingInput = true;
+                state.ip--;
+            }
+            break;
+        }
+        case Op.Output: {
+            const value = read(state, modes[0]);
+            state.output.push(value);
+            break;
+        }
+        case Op.JumpNonZero: {
+            const value = read(state, modes[0]);
+            const adr = read(state, modes[1]);
+            if (value != 0) {
+                state.ip = adr;
+            }
+            break;
+        }
+        case Op.JumpZero: {
+            const value = read(state, modes[0]);
+            const adr = read(state, modes[1]);
+            if (value == 0) {
+                state.ip = adr;
+            }
+            break;
+        }
+        case Op.LessThan: {
+            const a = read(state, modes[0])
+            const b = read(state, modes[1])
+            const value = +(a < b);
+            write(state, value, modes[2]);
+            break;
+        }
+        case Op.Equal: {
+            const a = read(state, modes[0])
+            const b = read(state, modes[1])
+            const value = +(a == b);
+            write(state, value, modes[2]);
             break;
         }
         case Op.Halt: {
@@ -59,6 +110,7 @@ export function executeInstruction(state: State): State {
     }
     return state;
 }
+
 
 export function executeProgram(state: State): State {
     while(!state.isHalted) {
@@ -70,9 +122,9 @@ export function executeProgram(state: State): State {
 export function read(state: State, mode: Mode): number {
     const adr = state.program[state.ip++];
     switch(mode) {
-        case Mode.Position: return state.program[adr];
+        case Mode.Position: return state.program[adr] ?? 0;
         case Mode.Immediate: return adr
-        case Mode.Relative: return state.program[adr + state.relBase];
+        case Mode.Relative: return state.program[adr + state.relBase] ?? 0;
         default: throw new Error(`Unknown read mode: ${mode}`)
     }
 }
