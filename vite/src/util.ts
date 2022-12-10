@@ -42,6 +42,15 @@ export function chunk<T>(array: T[], chunkSize: number): T[][] {
   return chunks;
 }
 
+export function getPermutations<T>(list: T[]): T[][] {
+  if (list.length === 0) return [];
+  if (list.length === 1) return [list];
+  return list.flatMap((value, index) => {
+    const rest = list.filter((_,i) => i !== index);
+    return getPermutations(rest).map(perm => [value, ...perm])
+  })
+}
+
 export function reverseString(input: string): string {
   return input.split("").reverse().join("");
 }

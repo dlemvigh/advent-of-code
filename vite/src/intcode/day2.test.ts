@@ -133,7 +133,7 @@ describe("Day 2", () => {
                 }
             }
         }
-
+        throw new Error("Unable to find solution")
     }
 
     it("part 2", () => {

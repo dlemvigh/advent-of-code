@@ -5,6 +5,8 @@ import {
   splitIntoGroups,
   splitAndMapIntoGroups,
   chunk,
+  getPermutations,
+  tests,
 } from "./util";
 
 describe("map into lines", () => {
@@ -77,4 +79,23 @@ describe("chunk", ()=>{
       expect(chunk(input, chunkSize)).toEqual(expected)
     })
   })
+})
+
+describe("permutations", () => {
+  tests<number[], number[][]>(
+    (input, expected) => {
+      expect(getPermutations(input)).toEqual(expected);
+    }, [
+      [[1],[[1]]],
+      [[1,2], [[1,2],[2,1]]],
+      [[1,2,3], [
+        [1,2,3],
+        [1,3,2],
+        [2,1,3],
+        [2,3,1],
+        [3,1,2],
+        [3,2,1]
+      ]]
+    ]
+  )
 })

@@ -2,10 +2,6 @@ import { describe, it, expect } from "vitest";
 import { readInput, tests } from "../util";
 import { executeInstruction, executeProgram, Input, Output, parseInput, Program, State, stateFactory } from "./intcode";
 
-function part1(input: string){}
-function part2(input: string){}
-
-
 describe("Day 5", () => {
 
     describe("input", ()=>{

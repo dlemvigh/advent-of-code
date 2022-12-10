@@ -111,6 +111,19 @@ export function executeInstruction(state: State): State {
     return state;
 }
 
+export function executeTillHalt(state: State): State {
+    while(!state.isHalted) {
+        executeInstruction(state);
+    }
+    return state;
+}
+
+export function executeTillOutput(state: State): State {
+    while(!state.isHalted && !state.output?.length) {
+        executeInstruction(state);
+    }
+    return state;
+}
 
 export function executeProgram(state: State): State {
     while(!state.isHalted) {
