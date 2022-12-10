@@ -38,7 +38,7 @@ function parseMoves(input: string[]): Moves {
   return input.map<Move>((line: string) => {
     const match = line.trim().match(/^move (\d+) from (\d+) to (\d+)$/);
     if (match == null) {
-      throw new Error("Unable to parse move");
+      throw new Error(`Unable to parse move: '${line}`);
     }
 
     const [_, count, from, to] = match;

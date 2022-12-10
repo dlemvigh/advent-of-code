@@ -1,25 +1,6 @@
 import { expect, describe, it } from "vitest";
-import { readInput, splitAndMapIntoGroups } from "../util";
-import { sum } from "../math";
-
-function getCaloriesByGroup(input: string): number[] {
-  const groups = splitAndMapIntoGroups(input, Number);
-  const sums = groups.map(sum);
-  return sums;
-}
-
-function part1(input: string): number {
-  const sums = getCaloriesByGroup(input);
-  const max = Math.max(...sums);
-  return max;
-}
-
-function part2(input: string): number {
-  const sums = getCaloriesByGroup(input);
-  sums.sort((a, b) => b - a);
-  const top3 = sums.slice(0, 3);
-  return sum(top3);
-}
+import { readInput } from "../util";
+import { part1, part2 } from "./day1";
 
 describe("day 1", () => {
   describe("part 1", () => {
