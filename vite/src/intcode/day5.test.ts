@@ -7,7 +7,7 @@ describe("Day 5", () => {
     describe("input", ()=>{
         tests<[Program, Input, number], Program>(([program, input, ip], expected) => {
                 // arrange
-                const state: State = stateFactory(program, input)
+                const state: State = stateFactory(program, { input })
 
                 // act
                 executeInstruction(state);
@@ -51,7 +51,7 @@ describe("Day 5", () => {
         // arrange
         const program = [3,0,4,0,99];
         const input = [123];
-        const state = stateFactory(program, input);
+        const state = stateFactory(program, { input });
 
         // act
         executeProgram(state);
@@ -186,7 +186,7 @@ describe("Day 5", () => {
         // arrange
         const input = readInput(__dirname, "day5.txt");
         const program = parseInput(input);
-        const state = stateFactory(program, [1]);
+        const state = stateFactory(program, { input: [1] });
 
         // act
         executeProgram(state);
@@ -201,7 +201,7 @@ describe("Day 5", () => {
     tests<[Program, number],number>(
         ([program, input], output) => {
         // arrange
-        const state = stateFactory(program, [input]);
+        const state = stateFactory(program, { input: [input] });
 
         // act
         executeProgram(state);
@@ -238,7 +238,7 @@ describe("Day 5", () => {
         // arrange
         const input = readInput(__dirname, "day5.txt");
         const program = parseInput(input);
-        const state = stateFactory(program, [5]);
+        const state = stateFactory(program, { input: [5] });
 
         // act
         executeProgram(state);

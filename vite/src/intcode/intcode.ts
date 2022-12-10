@@ -23,20 +23,21 @@ export type Output = number[];
 export type State = {
     program: Program,
     ip: number,
-    relBase: 0,
+    relBase: number,
     isPendingInput?: boolean,
     isHalted?: true,
     input: Input,
     output: Output
 }
 
-export function stateFactory(program: Program, input: Input = []): State {
+export function stateFactory(program: Program, state: Partial<Omit<State, "program">> = {}): State {
     return {
-        program: [...program],
         ip: 0,
         relBase: 0,
-        input,
-        output: []
+        input: [],
+        output: [],
+        ...state,
+        program: [...program],
     }
 }
 
@@ -103,6 +104,11 @@ export function executeInstruction(state: State): State {
             write(state, value, modes[2]);
             break;
         }
+        case Op.SetRelBase: {
+            const value = read(state, modes[0]);
+            state.relBase += value;
+            break;
+        }
         case Op.Halt: {
             state.isHalted = true;
             break;
@@ -143,9 +149,14 @@ export function read(state: State, mode: Mode): number {
 }
 
 export function write(state: State, value: number, mode: Mode): void {
+    const adr = state.program[state.ip++];
     switch(mode) {
-        case Mode.Relative: state.program[state.program[state.ip++] + state.relBase] = value;
-        default: state.program[state.program[state.ip++]] = value;
+        case Mode.Relative: 
+            state.program[adr + state.relBase] = value;
+            break;
+        default: 
+            state.program[adr] = value;
+            break;
     }
 }
 

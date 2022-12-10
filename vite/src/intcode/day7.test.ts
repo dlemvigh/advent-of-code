@@ -5,7 +5,7 @@ import { executeTillOutput, parseInput, Program, stateFactory } from "./intcode"
 type PhaseSetting = number[];
 
 function execute5amp(program: Program, phase: PhaseSetting, init: number) {
-    const amps = phase.map(p => stateFactory(program, [p]))
+    const amps = phase.map(p => stateFactory(program, { input: [p] }))
 
     let arg = init
     amps.forEach((amp) => {
@@ -17,7 +17,7 @@ function execute5amp(program: Program, phase: PhaseSetting, init: number) {
 }
 
 function executeLOOPamp(program: Program, phase: PhaseSetting, init: number) {
-    const amps = phase.map(p => stateFactory(program, [p]))
+    const amps = phase.map(p => stateFactory(program, { input: [p] }))
 
     let arg = init
     for (let i = 0; true; i++) {
