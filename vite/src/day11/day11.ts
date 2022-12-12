@@ -1,4 +1,4 @@
-import { splitAndMapIntoGroups, splitIntoGroups, splitIntoLines } from "../util";
+import { splitIntoGroups, splitIntoLines } from "../util";
 
 export type Monkey = {
     key: number,
