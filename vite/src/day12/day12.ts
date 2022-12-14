@@ -1,5 +1,5 @@
 import { getOrtogonallyAdjacent } from "../adjacency";
-import { addEdgeBi, addNode, dijkstra, Graph, graphFactory, GraphNode, nodeFactory } from "../graph";
+import { addEdge, addEdgeBi, addNode, dijkstra, Graph, graphFactory, GraphNode, nodeFactory } from "../graph";
 import { splitAndMapIntoGrid } from "../util";
 
 type Meta = {
@@ -62,15 +62,18 @@ export function parseInput(input: string): [GraphType, Meta] {
     return [graph, { width, height, start: start!, end: end! }];
 }
 
-function addNeighbors(graph: Graph<string, GraphValue>, meta: Meta) {
+export function isReachable(from: number, to: number): boolean {
+    return to - from <= 1;
+}
+
+function addNeighbors(graph: Graph<string, GraphValue>, meta: Meta, canConnect = isReachable) {
     Object.values(graph.nodes).forEach(from => {
         const neighbors = getOrtogonallyAdjacent(from.value.row, from.value.col, meta.width, meta.height)
         neighbors.forEach(([row, col]) => {
             const key = coordsToKey(row, col);
             const to = graph.nodes[key];
-            const heightDiff = Math.abs(to.value.height - from.value.height);
-            if (heightDiff <= 1) {
-                addEdgeBi(from, to);
+            if (canConnect(from.value.height, to.value.height)) {
+                addEdge(from, to);
             }
         })
     })
@@ -80,10 +83,6 @@ export function part1(input: string) {
     const [graph, meta] = parseInput(input);
     addNeighbors(graph, meta);
     const result = dijkstra(graph, meta.start.key, meta.end.key);
-    // console.log("res", result);
-    // console.log("S", meta.start)
-    // console.log("E", meta.end)
-    console.log(result.dist)
     for (let row = 0; row < meta.height; row++) {
         const distRow = [];
         for (let col = 0; col < meta.width; col++) {
@@ -95,7 +94,7 @@ export function part1(input: string) {
             // if (d??0 < 100) str = " " + str;
             distRow.push(str);
         }
-        console.log(distRow.join(","))
+        // console.log(distRow.join(","))
     }
     return result.dist.get(meta.end.key);
 }

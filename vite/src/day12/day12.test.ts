@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { readInput } from "../util";
-import { charToHeight, parseInput, part1, part2 } from "./day12";
+import { charToHeight, isReachable, parseInput, part1, part2 } from "./day12";
 
 describe("Day 12", () => {
   describe("char to height", ()=>{
@@ -18,6 +18,23 @@ describe("Day 12", () => {
     testCases.forEach(([input, expected], index) => {
       it(`Test case #${index + 1}`, ()=>{
         expect(charToHeight(input)).toBe(expected);
+      })
+    })
+  })
+
+  describe("is reachable", ()=>{
+    type TestCase = [number, number, boolean];
+    const testCases: TestCase[] = [
+      [0,0, true],
+      [1, 1, true],
+      [100, 100, true],
+      [0, 1, true],
+      [0, 2, false]
+    ];
+
+    testCases.forEach(([from, to, expected], index) => {
+      it(`Test case #${index + 1}`, ()=>{
+        expect(isReachable(from, to)).toBe(expected);
       })
     })
   })
@@ -100,11 +117,13 @@ describe("Day 12", () => {
   describe("part 1", () => {
     it("sample", () => {
       const input = readInput(__dirname, "sample2.txt");
-      input && expect(part1(input)).toBe(31);
+      expect(part1(input)).toBe(31);
     });
-    it.skip("input", () => {
+    it("input", () => {
       const input = readInput(__dirname, "input.txt");
-      input && expect(part1(input)).toBe(undefined);
+      const result = part1(input);
+      expect(result).toBeGreaterThan(148)
+      expect(result).toBe(490)
     });
   });
   describe("part 2", () => {
