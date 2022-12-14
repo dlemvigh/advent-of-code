@@ -6,21 +6,21 @@ describe("Day _", () => {
   describe("part 1", () => {
     it("sample", () => {
       const input = readInput(__dirname, "sample.txt");
-      expect(part1(input)).toBe(undefined);
+      input && expect(part1(input)).toBe(undefined);
     });
     it("input", () => {
       const input = readInput(__dirname, "input.txt");
-      expect(part1(input)).toBe(undefined);
+      input && expect(part1(input)).toBe(undefined);
     });
   });
   describe("part 2", () => {
     it("sample", () => {
       const input = readInput(__dirname, "sample.txt");
-      expect(part2(input)).toBe(undefined);
+      input && expect(part2(input)).toBe(undefined);
     });
     it("input", () => {
       const input = readInput(__dirname, "input.txt");
-      expect(part2(input)).toBe(undefined);
+      input && expect(part2(input)).toBe(undefined);
     });
   });
 });
