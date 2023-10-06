@@ -9,10 +9,4 @@
             this.Name = name;
         }
     }
-
-    public interface Solution
-    {
-        object PartOne(string input) => null;
-        object PartTwo(string input) => null;
-    }
 }
