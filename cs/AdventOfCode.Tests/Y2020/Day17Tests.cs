@@ -97,6 +97,203 @@ public class Day17Tests {
         Assert.Equal(expected, near);
     }
 
+    [Theory]
+    [InlineData(
+        new [] { 1, 1, 1},
+        new [] { 0, 0, 0 },
+        false
+    )]
+    // dead stays dead
+    [InlineData(
+        new [] { 2, 2},
+        new [] { 0, 0 },
+        false
+    )]
+    // (2x2)
+    // .#
+    // ##
+    [InlineData(
+        new [] { 2, 2},
+        new [] { 0, 0 },
+        true,
+        new [] { 0, 1},
+        new [] { 1, 0},
+        new [] { 1, 1}
+    )]
+    [InlineData(
+        new [] { 2, 2},
+        new [] { 0, 1 },
+        true,
+        new [] { 0, 1},
+        new [] { 1, 0},
+        new [] { 1, 1}
+    )]
+    [InlineData(
+        new [] { 2, 2},
+        new [] { 1, 0 },
+        true,
+        new [] { 0, 1},
+        new [] { 1, 0},
+        new [] { 1, 1}
+    )]
+    [InlineData(
+        new [] { 2, 2},
+        new [] { 1, 1 },
+        true,
+        new [] { 0, 1},
+        new [] { 1, 0},
+        new [] { 1, 1}
+    )]
+    // (3x1x1)
+    // ###
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 0, 0, 0},
+        false,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 1, 0, 0},
+        true,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 2, 0, 0},
+        false,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 0, 1, 0},
+        false,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 0, 0, 1},
+        false,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 0, -1, 0},
+        false,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 0, 0, -1},
+        false,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 1, 1, 0},
+        true,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 1, 0, 1},
+        true,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 1, -1, 0},
+        true,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    [InlineData(
+        new [] { 3, 1, 1},
+        new [] { 1, 0, -1},
+        true,
+        new [] { 0, 0, 0},
+        new [] { 1, 0, 0},
+        new [] { 2, 0, 0}
+    )]
+    public void Cube_GetNext(int[] dimensions, int[] vector, bool expected, params int[][] active) {
+        // arrange
+        var cube = new Day17.Cube(dimensions);
+        foreach (var a in active) {
+            cube[a] = true;
+        }
+
+        // act
+        var actual = cube.GetNext(vector);
+
+        // assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 0, 0, 0 }, false)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 1, 0, 0 }, true)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 2, 0, 0 }, false)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 0, 1, 0 }, false)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 1, 1, 0 }, false)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 2, 1, 0 }, true)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 0, 2, 0 }, true)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 1, 2, 0 }, true)]
+    [FileTestData("Y2020/Day17/sample.in", new [] { 3, 3, 1 }, new [] { 2, 2, 0 }, true)]
+    public void Cube_ParseInput(string input, int [] dimensions, int[] vector, bool expected) {
+        var cube = Day17.Cube.ParseInput(input, dimensions);
+        Assert.Equal(expected, cube[vector]);
+    }
+
+    [Theory]
+    [InlineData(
+        new [] { 1 },
+        new [] { 0 }
+    )]
+    [InlineData(
+        new [] { 1, 1 },
+        new [] { 0, 0 }
+    )]
+    [InlineData(
+        new [] { 1, 1, 1 },
+        new [] { 0, 0, 0 }
+    )]
+    [InlineData(
+        new [] { 3 },
+        new [] { 0 },
+        new [] { 1 },
+        new [] { 2 }
+    )]
+    [InlineData(
+        new [] { 2, 2 },
+        new [] { 0, 0 },
+        new [] { 0, 1 },
+        new [] { 1, 0 },
+        new [] { 1, 1 }
+    )]
+    public void Cube_GetAllVectors(int[] dimensions, params int[][] expected) {
+        var cube = new Day17.Cube(dimensions);
+        var vectors = cube.GetAllVectors();
+        Assert.Equal(expected, vectors);
+    }
 
     // [Theory]
     // [FileTestData("Y2020/Day17/sample.in", 2020, 514579)]
