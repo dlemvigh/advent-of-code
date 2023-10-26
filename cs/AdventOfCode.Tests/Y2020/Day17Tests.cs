@@ -16,6 +16,16 @@ public class Day17Tests {
     }
 
     [Theory]
+    [InlineData(new [] { 1 }, new  [] { 0 }, 0)]
+    [InlineData(new [] { 1 }, new  [] { 1 }, -1)]
+    [InlineData(new [] { 1 }, new  [] { -1 }, -1)]
+    [InlineData(new [] { 1, 1 }, new  int[] { }, 0)]
+    [InlineData(new [] { 1, 1 }, new  int[] { 0 }, 0)]
+    [InlineData(new [] { 1, 1 }, new  int[] { 1 }, -1)]
+    [InlineData(new [] { 1, 1 }, new  int[] { -1 }, -1)]
+    [InlineData(new [] { 1, 1 }, new  int[] { 0, 0 }, 0)]
+    [InlineData(new [] { 1, 1 }, new  int[] { 0, 1 }, -1)]
+    [InlineData(new [] { 1, 1 }, new  int[] { 0, -1 }, -1)]
     [InlineData(new [] { 2, 3, 5 }, new  [] {0, 0, 0 }, 0)]
     [InlineData(new [] { 2, 3, 5 }, new  [] {1, 0, 0 }, 1)]
     [InlineData(new [] { 2, 3, 5 }, new  [] {0, 1, 0 }, 2)]
@@ -295,18 +305,18 @@ public class Day17Tests {
         Assert.Equal(expected, vectors);
     }
 
-    // [Theory]
-    // [FileTestData("Y2020/Day17/sample.in", 2020, 514579)]
-    // [FileTestData("Y2020/Day17/input.in", 2020, 956091)]
-    // public void Part1(string input, int target, int expected) {
-    //     Assert.Equal(expected, sut.Part1(input, target));
-    // }j
+    [Theory]
+    [FileTestData("Y2020/Day17/sample.in", 112)]
+    [FileTestData("Y2020/Day17/input.in", 230)]
+    public void Part1(string input, int expected) {
+        Assert.Equal(expected, sut.Part1(input));
+    }
 
-    // [Theory]
-    // [FileTestData("Y2020/Day17/sample.in", 2020, 241861950)]
-    // [FileTestData("Y2020/Day17/input.in", 2020, 79734368)]
-    // public void Part2(string input, int target, int expected) {
-    //     Assert.Equal(expected, sut.Part2(input, target));
-    // }
+    [Theory]
+    [FileTestData("Y2020/Day17/sample.in", 848)]
+    [FileTestData("Y2020/Day17/input.in", 1600)]
+    public void Part2(string input, int expected) {
+        Assert.Equal(expected, sut.Part2(input));
+    }
 
 }

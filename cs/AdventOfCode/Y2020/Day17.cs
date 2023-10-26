@@ -3,7 +3,25 @@ namespace AdventOfCode.Y2020;
 public class Day17 {
 
     public int Part1(string input) {
+        var lines = input.Split("\n");
+        var x = lines.First().Length;
+        var y = lines.Length;
+        var init = Cube.ParseInput(input, new int[] { x, y, 1 });
+        var final = init.GetNextGeneration(6);
+        return CountActive(final);
+    }
 
+    public int Part2(string input) {
+        var lines = input.Split("\n");
+        var x = lines.First().Length;
+        var y = lines.Length;
+        var init = Cube.ParseInput(input, new int[] { x, y, 1, 1 });
+        var final = init.GetNextGeneration(6);
+        return CountActive(final);
+    }
+
+    public static int CountActive(Cube cube) {
+        return cube.GetAllVectors().Count(vector => cube[vector]);
     }
 
     public class Cube {
@@ -112,7 +130,11 @@ public class Day17 {
             }
         }
 
-        public Cube GetNextGeneration(Cube prev) {
+        public Cube GetNextGeneration() {
+            return GetNextGeneration(this);
+        }
+
+        public static Cube GetNextGeneration(Cube prev) {
             var nextDimensions = prev.dimensions.Select(x => x + 2).ToArray();
             var next = new Cube(nextDimensions);
 
@@ -125,7 +147,11 @@ public class Day17 {
             return next;
         }
 
-        public Cube GetNextGeneration(Cube cube, int count) {
+        public Cube GetNextGeneration(int count) {
+            return GetNextGeneration(this, count);
+        }
+
+        public static Cube GetNextGeneration(Cube cube, int count) {
             if (count <= 0) throw new ArgumentException("count must be greater than zero", nameof(count));
             
             for (var it = 0; it < count; it++) {
