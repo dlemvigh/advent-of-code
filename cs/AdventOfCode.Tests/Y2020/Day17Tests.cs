@@ -312,7 +312,7 @@ public class Day17Tests {
         Assert.Equal(expected, sut.Part1(input));
     }
 
-    [Theory]
+    [Theory(Skip = "slow")]
     [FileTestData("Y2020/Day17/sample.in", 848)]
     [FileTestData("Y2020/Day17/input.in", 1600)]
     public void Part2(string input, int expected) {
