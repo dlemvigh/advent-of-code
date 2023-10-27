@@ -20,29 +20,31 @@ namespace AdventOfCode.Tests
 
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
-            var rootDir = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.Parent;
-            if (rootDir == null)
-            {
-                throw new Exception($"Unable to determine root dir {Environment.CurrentDirectory}");
-            }
-
-            var path = Path.Join(rootDir.FullName, "TestData", this.path);
-
-            if (!File.Exists(path))
-            {
-                throw new ArgumentException($"Could not find file at path: {path}");
-            }
-
-            var fileData = ReadFile(path);
+            var fileData = ReadFile(this.path);
 
             var data = Prefix(fileData, this.data);
 
             yield return data;
         }
 
-        private static string ReadFile(string path)
+
+
+        public static string ReadFile(string path)
         {
-            var text = File.ReadAllText(path);
+            var rootDir = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.Parent;
+            if (rootDir == null)
+            {
+                throw new Exception($"Unable to determine root dir {Environment.CurrentDirectory}");
+            }
+
+            var fullpath = Path.Join(rootDir.FullName, "TestData", path);
+
+            if (!File.Exists(fullpath))
+            {
+                throw new ArgumentException($"Could not find file at path: {fullpath}");
+            }
+
+            var text = File.ReadAllText(fullpath);
             return text.ReplaceLineEndings("\n").Trim();
         }
 
