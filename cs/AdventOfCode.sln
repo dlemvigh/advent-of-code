@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode.Tests", "Adven
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Shared", "AdventOfCode.Shared\AdventOfCode.Shared.csproj", "{2FBA0D24-C71F-4289-B38E-586A9E945C1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.2020", "AdventOfCode.2020\AdventOfCode.2020.csproj", "{213CD740-A01A-4CFA-A448-005D41C33819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.2020.Tests", "AdventOfCode.2020.Tests\AdventOfCode.2020.Tests.csproj", "{44E5380F-D8C7-4B50-BE52-A69B4079D687}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Shared.Tests", "AdventOfCode.Shared.Tests\AdventOfCode.Shared.Tests.csproj", "{D0D89BDA-A9F4-43A3-AB25-94346ABC9009}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,18 @@ Global
 		{2FBA0D24-C71F-4289-B38E-586A9E945C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FBA0D24-C71F-4289-B38E-586A9E945C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FBA0D24-C71F-4289-B38E-586A9E945C1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{213CD740-A01A-4CFA-A448-005D41C33819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{213CD740-A01A-4CFA-A448-005D41C33819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{213CD740-A01A-4CFA-A448-005D41C33819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{213CD740-A01A-4CFA-A448-005D41C33819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44E5380F-D8C7-4B50-BE52-A69B4079D687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44E5380F-D8C7-4B50-BE52-A69B4079D687}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44E5380F-D8C7-4B50-BE52-A69B4079D687}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44E5380F-D8C7-4B50-BE52-A69B4079D687}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0D89BDA-A9F4-43A3-AB25-94346ABC9009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0D89BDA-A9F4-43A3-AB25-94346ABC9009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0D89BDA-A9F4-43A3-AB25-94346ABC9009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0D89BDA-A9F4-43A3-AB25-94346ABC9009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
