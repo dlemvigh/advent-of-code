@@ -28,6 +28,7 @@ namespace AdventOfCode2023.Tests
         }
 
         [Theory]
+        [InlineData("1", 11)]
         [InlineData("11", 11)]
         [InlineData("111", 11)]
         [InlineData("123", 13)]
@@ -36,6 +37,44 @@ namespace AdventOfCode2023.Tests
             var sut = new Day1();
 
             var value = sut.GetFirstAndLast(input);
+
+            Assert.Equal(expected, value);
+        }
+
+        [Theory]
+        [InlineData("zero", "zero")]
+        [InlineData("one", "1")]
+        [InlineData("two", "2")]
+        [InlineData("three", "3")]
+        [InlineData("four", "4")]
+        [InlineData("five", "5")]
+        [InlineData("six", "6")]
+        [InlineData("seven", "7")]
+        [InlineData("eight", "8")]
+        [InlineData("nine", "9")]
+        [InlineData("onetwothree", "1two3")]
+        [InlineData("4five6seven8", "45678")]
+        [InlineData("XnineX", "X9X")]
+        [InlineData("eightwothree", "8wo3")]
+        public void ReplaceStrings(string input, string expected)
+        {
+            var sut = new Day1();
+
+            var value = sut.ReplaceStrings(input);
+
+            Assert.Equal(expected, value);
+        }
+
+        [Theory]
+        [InlineData("1abc2", 12)]
+        [InlineData("pqr3stu8vwx", 38)]
+        [InlineData("a1b2c3d4e5f", 15)]
+        [InlineData("treb7uchet", 77)]
+        public void Part1Line(string input, int expected)
+        {
+            var sut = new Day1();
+
+            var value = sut.Part1Line(input);
 
             Assert.Equal(expected, value);
         }
@@ -56,12 +95,28 @@ namespace AdventOfCode2023.Tests
         }
 
         [Theory]
-        [InlineData("1", 1)]
-        [InlineData("1\n2", 2)]
-        [InlineData("1\n2\n\n0", 0)]
-        [InlineData("1\n2\n\n9", 9)]
-        [FileTestData("DayX/sample.in", 4)]
-        [FileTestData("DayX/input.in", 41)]
+        [InlineData("oneight", 18)]
+        [InlineData("two1nine", 29)]
+        [InlineData("eightwothree", 83)]
+        [InlineData("abcone2threexyz", 13)]
+        [InlineData("xtwone3four", 24)]
+        [InlineData("4nineeightseven2", 42)]
+        [InlineData("zoneight234", 14)]
+        [InlineData("7pqrstsixteen", 76)]
+        public void Part2Line(string input, int expected)
+        {
+            var sut = new Day1();
+
+            var value = sut.Part2Line(input);
+
+            Assert.Equal(expected, value);
+        }
+
+        [Theory]
+        [FileTestData("Day1/sample.in", 142)]
+        [FileTestData("Day1/sample2.in", 281)]
+        //[FileTestData("Day1/input.in", 54718)] // TOO HIGH
+        [FileTestData("Day1/input.in", 54706)]
         public void Part2(string input, int expected)
         {
             // arrange 
