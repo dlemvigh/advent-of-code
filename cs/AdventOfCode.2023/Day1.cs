@@ -25,7 +25,6 @@ namespace AdventOfCode.Y2022
             var digits = GetDigits(input);
             var value = GetFirstAndLast(digits);
             return value;
-
         }
 
         public int Part2(string input)
@@ -42,7 +41,6 @@ namespace AdventOfCode.Y2022
             var digits = GetDigitsOrWords(input);
             var value = GetFirstAndLast(digits);
             return value;
-
         }
 
         public IEnumerable<string> ParseInput(string input)
@@ -59,15 +57,15 @@ namespace AdventOfCode.Y2022
         {
             var replacements = new Dictionary<string, int>
             {
-                {"one", 1 },
-                {"two", 2 },
-                {"three", 3 },
-                {"four", 4 },
-                {"five", 5 },
-                {"six", 6 },
-                {"seven", 7 },
-                {"eight", 8 },
-                {"nine", 9 },
+                { "one", 1 },
+                { "two", 2 },
+                { "three", 3 },
+                { "four", 4 },
+                { "five", 5 },
+                { "six", 6 },
+                { "seven", 7 },
+                { "eight", 8 },
+                { "nine", 9 },
             };
 
             for (var i = 0; i < input.Length; i++)
@@ -75,18 +73,20 @@ namespace AdventOfCode.Y2022
                 if (char.IsDigit(input[i]))
                 {
                     yield return input[i] - '0';
-                } else
+                }
+                else
                 {
-                    foreach(var pair in replacements) {
-                        if (input.Length >= i + pair.Key.Length && 
-                            input.Substring(i, pair.Key.Length) == pair.Key)
+                    foreach (var pair in replacements)
+                    {
+                        if (
+                            input.Length >= i + pair.Key.Length
+                            && input.Substring(i, pair.Key.Length) == pair.Key
+                        )
                         {
                             yield return pair.Value;
                         }
                     }
                 }
-
-
             }
         }
 

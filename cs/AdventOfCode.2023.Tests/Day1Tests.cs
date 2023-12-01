@@ -11,7 +11,6 @@ namespace AdventOfCode2023.Tests
 {
     public class Day1Tests
     {
-
         [Theory]
         [InlineData("", "")]
         [InlineData("1", "1")]
@@ -60,7 +59,7 @@ namespace AdventOfCode2023.Tests
         [FileTestData("Day1/input.in", 55447)]
         public void Part1(string input, int expected)
         {
-            // arrange 
+            // arrange
             var sut = new Day1();
 
             // act
@@ -95,7 +94,7 @@ namespace AdventOfCode2023.Tests
         [FileTestData("Day1/input.in", 54706)]
         public void Part2(string input, int expected)
         {
-            // arrange 
+            // arrange
             var sut = new Day1();
 
             // act
