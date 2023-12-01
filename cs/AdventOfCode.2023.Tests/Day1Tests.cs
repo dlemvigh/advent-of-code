@@ -42,30 +42,6 @@ namespace AdventOfCode2023.Tests
         }
 
         [Theory]
-        [InlineData("zero", "zero")]
-        [InlineData("one", "1")]
-        [InlineData("two", "2")]
-        [InlineData("three", "3")]
-        [InlineData("four", "4")]
-        [InlineData("five", "5")]
-        [InlineData("six", "6")]
-        [InlineData("seven", "7")]
-        [InlineData("eight", "8")]
-        [InlineData("nine", "9")]
-        [InlineData("onetwothree", "1two3")]
-        [InlineData("4five6seven8", "45678")]
-        [InlineData("XnineX", "X9X")]
-        [InlineData("eightwothree", "8wo3")]
-        public void ReplaceStrings(string input, string expected)
-        {
-            var sut = new Day1();
-
-            var value = sut.ReplaceStrings(input);
-
-            Assert.Equal(expected, value);
-        }
-
-        [Theory]
         [InlineData("1abc2", 12)]
         [InlineData("pqr3stu8vwx", 38)]
         [InlineData("a1b2c3d4e5f", 15)]

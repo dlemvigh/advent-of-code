@@ -90,32 +90,6 @@ namespace AdventOfCode.Y2022
             }
         }
 
-        public string ReplaceStrings(string input, bool leftToRight = true)
-        {
-            var replacements = new Dictionary<string, string>
-            {
-                {"one", "1" },
-                {"two", "2" },
-                {"three", "3" },
-                {"four", "4" },
-                {"five", "5" },
-                {"six", "6" },
-                {"seven", "7" },
-                {"eight", "8" },
-                {"nine", "9" },
-            };
-
-            var pattern = "(?=(" + String.Join("|", replacements.Keys) + "))";
-            var matches = Regex.Matches(input, pattern);
-            var match = leftToRight ? matches.First() : matches.Last();
-
-            var replaced = input.Substring(0, match.Index) +
-                replacements[match.Value] +
-                input.Substring(match.Index + match.Length);
-
-            return replaced;
-        }
-
         public int GetFirstAndLast(IEnumerable<char> digits)
         {
             var digit10s = digits.First() - '0';
