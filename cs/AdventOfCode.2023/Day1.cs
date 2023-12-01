@@ -13,20 +13,39 @@ namespace AdventOfCode.Y2022
         public int Part1(string input)
         {
             var parsed = ParseInput(input);
-            return parsed.First();
-            throw new NotImplementedException();
+
+            var cases = parsed.Select(line => {
+                var digits = GetDigits(line);
+                var value = GetFirstAndLast(digits);
+                return value;
+            });
+
+
+            return cases.Sum();
         }
 
         public int Part2(string input)
         {
             var parsed = ParseInput(input);
-            return parsed.Last();
+
             throw new NotImplementedException();
 
         }
-        public IEnumerable<int> ParseInput(string input)
+        public IEnumerable<string> ParseInput(string input)
         {
-            return input.Split("\n").Select(int.Parse);
+            return input.Split("\n");
+        }
+
+        public IEnumerable<char> GetDigits(string input)
+        {
+            return input.Where(char.IsDigit);
+        }
+
+        public int GetFirstAndLast(IEnumerable<char> digits)
+        {
+            var digit10s = digits.First() - '0';
+            var digit1s = digits.Last() - '0';
+            return digit10s * 10 + digit1s;
         }
     }
 }
