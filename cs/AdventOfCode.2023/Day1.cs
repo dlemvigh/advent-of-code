@@ -8,7 +8,7 @@ using AdventOfCode.Shared;
 
 namespace AdventOfCode.Y2022
 {
-    [ProblemName("")]
+    [ProblemName("Trebuchet?!")]
     public class Day1
     {
         public int Part1(string input)
