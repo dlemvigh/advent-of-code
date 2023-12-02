@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,7 @@ namespace AdventOfCode.Y2022
 
         public IEnumerable<Game> FilterGames(IEnumerable<Game> games, int redLimit, int greenLimit, int blueLimit)
         {
-            return games.Where(game => game.Draws.All(draw => draw.red <= redLimit && draw.green <= greenLimit && draw.blue <= blueLimit));
+            return games.Where(game => game.Draws.All(draw => draw.Red <= redLimit && draw.Green <= greenLimit && draw.Blue <= blueLimit));
         }
 
         public int Part2(string input)
@@ -38,9 +38,9 @@ namespace AdventOfCode.Y2022
             // get min cubes
             var power = games.Select(game =>
             {
-                var red = game.Draws.Max(x => x.red);
-                var green = game.Draws.Max(x => x.green);
-                var blue = game.Draws.Max(x => x.blue);
+                var red = game.Draws.Max(x => x.Red);
+                var green = game.Draws.Max(x => x.Green);
+                var blue = game.Draws.Max(x => x.Blue);
                 return red * green * blue;
             });
 
@@ -54,40 +54,46 @@ namespace AdventOfCode.Y2022
         }
 
         public Game ParseLine(string line) {
-            var game = new Game();
-            var lineParts = line.Split(": ");
+            var parts = line.Split(": ");
 
-            game.ID = int.Parse(lineParts[0].Split(" ")[1]);
-            var draws = lineParts[1].Split("; ");
-            game.Draws = draws.Select(ParseDraw);
+            var id = int.Parse(parts[0].Split(" ")[1]);
+            var draws = parts[1].Split("; ").Select(ParseDraw);
 
-            return game;
+            return new Game { ID = id, Draws = draws };
         }
 
-        public Draw ParseDraw(string line) {
-            var pattern = @"(\d+) (red|green|blue)";
-            var draw = new Draw();
+    public Draw ParseDraw(string line)
+    {
+        var pattern = @"(\d+) (red|green|blue)";
+        var matches = Regex.Matches(line, pattern, RegexOptions.Compiled);
 
-            var matches = Regex.Matches(line, pattern);
-            foreach(Match match in matches) {
-                if (match.Groups[2].Value == "red") draw.red = int.Parse(match.Groups[1].Value);
-                if (match.Groups[2].Value == "green") draw.green = int.Parse(match.Groups[1].Value);
-                if (match.Groups[2].Value == "blue") draw.blue = int.Parse(match.Groups[1].Value);
+        int red = 0, green = 0, blue = 0;
+        foreach (Match match in matches)
+        {
+            int value = int.Parse(match.Groups[1].Value);
+            switch (match.Groups[2].Value)
+            {
+                case "red": red = value; break;
+                case "green": green = value; break;
+                case "blue": blue = value; break;
             }
-            
-            return draw;
         }
 
+        return new Draw { Red = red, Green = green, Blue = blue };
+    }
 
-        public record Game {
-            public int ID;
-            public IEnumerable<Draw> Draws;
+        public record Game
+        {
+            public int ID { get; init; }
+            public IEnumerable<Draw> Draws { get; init; }
         }
 
-        public record Draw {
-            public int red;
-            public int green;
-            public int blue;
+        public record Draw
+        {
+            public int Red { get; init; }
+            public int Green { get; init; }
+            public int Blue { get; init; }
         }
+        
     }
 }

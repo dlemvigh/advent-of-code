@@ -27,9 +27,9 @@ namespace AdventOfCode2023.Tests
             var actual = sut.ParseDraw(input);
 
             // assert
-            Assert.Equal(red, actual.red);
-            Assert.Equal(green, actual.green);
-            Assert.Equal(blue, actual.blue);
+            Assert.Equal(red, actual.Red);
+            Assert.Equal(green, actual.Green);
+            Assert.Equal(blue, actual.Blue);
         }
 
         [Theory]
