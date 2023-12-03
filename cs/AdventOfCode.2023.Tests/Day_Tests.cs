@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ using AdventOfCode2023;
 
 namespace AdventOfCode2023.Tests
 {
-    public class DayTests
+    public class Day_Tests
     {
 
         [Theory]
@@ -22,7 +22,7 @@ namespace AdventOfCode2023.Tests
         public void Part1(string input, int expected)
         {
             // arrange 
-            var sut = new DayTemplate();
+            var sut = new Day_();
 
             // act
             var actual = sut.Part1(input);
@@ -41,7 +41,7 @@ namespace AdventOfCode2023.Tests
         public void Part2(string input, int expected)
         {
             // arrange 
-            var sut = new DayTemplate();
+            var sut = new Day_();
 
             // act
             var actual = sut.Part2(input);

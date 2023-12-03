@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ using AdventOfCode.Shared;
 namespace AdventOfCode.Y2022
 {
     [ProblemName("")]
-    public class DayTemplate
+    public class Day_
     {
         public int Part1(string input)
         {
