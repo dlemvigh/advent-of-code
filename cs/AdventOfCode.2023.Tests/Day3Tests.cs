@@ -83,23 +83,19 @@ namespace AdventOfCode2023.Tests
             Assert.Equal(expected, actual);
         }
 
-        //[Theory]
-        //[InlineData("1", 1)]
-        //[InlineData("1\n2", 2)]
-        //[InlineData("1\n2\n\n0", 0)]
-        //[InlineData("1\n2\n\n9", 9)]
-        //[FileTestData("DayX/sample.in", 4)]
-        //[FileTestData("DayX/input.in", 41)]
-        //public void Part2(string input, int expected)
-        //{
-        //    // arrange 
-        //    var sut = new Day3();
+        [Theory]
+        [FileTestData("Day3/sample.in", 467835)]
+        [FileTestData("Day3/input.in", 84159075)]
+        public void Part2(string input, int expected)
+        {
+            // arrange 
+            var sut = new Day3();
 
-        //    // act
-        //    var actual = sut.Part2(input);
+            // act
+            var actual = sut.Part2(input);
 
-        //    // assert
-        //    Assert.Equal(expected, actual);
-        //}
+            // assert
+            Assert.Equal(expected, actual);
+        }
     }
 }

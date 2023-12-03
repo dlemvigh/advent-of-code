@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode.Shared;
+using static AdventOfCode.Y2022.Day3;
 
 namespace AdventOfCode.Y2022
 {
@@ -18,34 +19,57 @@ namespace AdventOfCode.Y2022
 
             return numbers.Distinct().Sum(x => x.number);
         }
+        public int Part2(string input)
+        {
+            var parsed = ParseInput(input);
+
+            var numbers = FindGearMachineNumbers(parsed);
+
+            return numbers.Sum();
+        }
 
         public IEnumerable<MachineNumber> FindAllMachineNumbers(string[] image)
         {
-            // loop through image
-            // find all symbols
             var symbols = FindAllSymbols(image);
 
-            // look around symbols
-            foreach (var symbol in symbols)
-            {
-                for (var row = symbol.row - 1; row <= symbol.row + 1; row++)
-                {
-                    for (var col = symbol.col - 1; col <= symbol.col + 1; col++)
-                    {
-                        if (
-                            row < 0 || 
-                            col < 0 || 
-                            row >= image.Length || 
-                            col >= image[row].Length
-                        ) continue;
+            IEnumerable<MachineNumber> numbers = symbols.SelectMany(symbol => FindMachineNumbersForSymbol(image, symbol));
 
-                        // follow numbers left/right
-                        // add FULL number to list, with location (row, start, end)
-                        var number = FindMachineNumber(image[row], row, col);
-                        if (number !=  null)
-                        {
-                            yield return number;
-                        }
+            return numbers;
+        }
+
+        public IEnumerable<int> FindGearMachineNumbers(string[] image)
+        {
+            var symbols = FindAllSymbols(image).Where(x => x.symbol == '*');
+
+            var numbers = symbols.Select(symbol => {
+                var numbers = FindMachineNumbersForSymbol(image, symbol).Distinct();
+                if (numbers.Count() != 2)
+                {
+                    return 0;
+                }
+                return numbers.First().number * numbers.Last().number;
+            });
+
+            return numbers;
+        }
+
+        public IEnumerable<MachineNumber> FindMachineNumbersForSymbol(string[] image, Symbol symbol)
+        {
+            for (var row = symbol.row - 1; row <= symbol.row + 1; row++)
+            {
+                for (var col = symbol.col - 1; col <= symbol.col + 1; col++)
+                {
+                    if (
+                        row < 0 ||
+                        col < 0 ||
+                        row >= image.Length ||
+                        col >= image[row].Length
+                    ) continue;
+
+                    var number = FindMachineNumber(image[row], row, col);
+                    if (number != null)
+                    {
+                        yield return number;
                     }
                 }
             }
@@ -82,12 +106,6 @@ namespace AdventOfCode.Y2022
 
         }
 
-        public int Part2(string input)
-        {
-            var parsed = ParseInput(input);
-            throw new NotImplementedException();
-
-        }
         public string[] ParseInput(string input)
         {
             return input.Split("\n").ToArray();
