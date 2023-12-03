@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,24 +20,29 @@ namespace AdventOfCode.Tests
 
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
+            var fileData = GetTestData(this.path);
+
+            var data = Prefix(fileData, this.data);
+
+            yield return data;
+        }
+
+        public static string GetTestData(string path)
+        {
             var rootDir = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.Parent;
             if (rootDir == null)
             {
                 throw new Exception($"Unable to determine root dir {Environment.CurrentDirectory}");
             }
 
-            var path = Path.Join(rootDir.FullName, "TestData", this.path);
+            var fullpath = Path.Join(rootDir.FullName, "TestData", path);
 
-            if (!File.Exists(path))
+            if (!File.Exists(fullpath))
             {
-                throw new ArgumentException($"Could not find file at path: {path}");
+                throw new ArgumentException($"Could not find file at path: {fullpath}");
             }
 
-            var fileData = ReadFile(path);
-
-            var data = Prefix(fileData, this.data);
-
-            yield return data;
+            return ReadFile(fullpath);
         }
 
         private static string ReadFile(string path)
