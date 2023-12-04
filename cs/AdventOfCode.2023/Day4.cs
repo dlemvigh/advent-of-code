@@ -17,22 +17,43 @@ namespace AdventOfCode.Y2022
             var scores = parsed.Select(card => GetScratchcardScore(card.win, card.my));
             return scores.Sum();
         }
+        public int Part2(string input)
+        {
+            var parsed = ParseInput(input);
+            var cardCounts = Enumerable.Repeat(1, parsed.Count()).ToArray();
+            var winCounts = parsed.Select(card => GetScratchcardWinCount(card.win, card.my)).ToArray();
+
+            for (var card = 0; card < winCounts.Length; card++)
+            {
+                var cardCount = cardCounts[card];
+                var winCount = winCounts[card];
+                if (winCount > 0)
+                {
+                    for (var i = 0; i < winCount; i++)
+                    {
+                        cardCounts[card + i + 1] += cardCount;
+                    }
+                }
+            }
+
+            return cardCounts.Sum();
+        }
 
         public int GetScratchcardScore(IEnumerable<int> winNumbers, IEnumerable<int> myNumbers)
         {
-            var myWinNumbers = winNumbers.Intersect(myNumbers);
-            var myWinCount = myWinNumbers.Count();
+            var myWinCount = GetScratchcardWinCount(winNumbers, myNumbers);
             if (myWinCount <= 1) return myWinCount;
             var score = (int) Math.Pow(2, myWinCount - 1);
             return score;
         }
 
-        public int Part2(string input)
+        public int GetScratchcardWinCount(IEnumerable<int> winNumbers, IEnumerable<int> myNumbers)
         {
-            var parsed = ParseInput(input);
-            throw new NotImplementedException();
-
+            var myWinNumbers = winNumbers.Intersect(myNumbers);
+            var myWinCount = myWinNumbers.Count();
+            return myWinCount;
         }
+
         public IEnumerable<(IEnumerable<int> win, IEnumerable<int> my)> ParseInput(string input)
         {
             return input.Split("\n").Select(ParseLine);
