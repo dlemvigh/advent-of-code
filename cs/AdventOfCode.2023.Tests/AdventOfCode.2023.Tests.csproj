@@ -50,10 +50,10 @@
     <None Update="TestData\Day4\sample.in">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\Day_\input.in">
+    <None Update="TestData\Day5\input.in">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\Day_\sample.in">
+    <None Update="TestData\Day5\sample.in">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
