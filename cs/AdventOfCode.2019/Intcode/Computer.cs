@@ -14,16 +14,19 @@ namespace AdventOfCode2019.Intcode
     public class Computer : IComputer
     {
         public IMemory Memory { get; init; }
+        public IParser Parser { get; init; }
         public State State { get; init; }
 
-        public Computer (IMemory memory, State state) {
+        public Computer (IMemory memory, IParser parser, State state) {
             this.Memory = memory ?? throw new ArgumentNullException(nameof(memory));
+            this.Parser = parser ?? throw new ArgumentNullException(nameof(parser));
             this.State = state;
         }
 
         public Computer(string program) {
             this.State = new State();
             this.Memory = new Memory(program, this.State);
+            this.Parser = new Parser();
         }
 
         public void RunStep()
@@ -39,8 +42,8 @@ namespace AdventOfCode2019.Intcode
             throw new NotImplementedException();
         }
 
-        internal void ReadInstruction() {
-
+        public Instruction ReadInstruction() {
+            return this.Parser.ParseNextInstruction(this.Memory, this.State);
         }
     }
 }
