@@ -21,17 +21,26 @@ namespace AdventOfCode.Y2022
 
         public long Part2(string input)
         {
-            var parsed = ParseInput(input);
-            throw new NotImplementedException();
+            var (time, dist) = ParseInput2(input);
+            var result = FindWinningWaitTime(time, dist);
+            return result;
 
         }
-        public IEnumerable<(int time, int dist)> ParseInput(string input)
+        public IEnumerable<(long time, long dist)> ParseInput(string input)
         {
             var lines = input.Split("\n");
-            var times = Regex.Split(lines[0], @"\s+").Skip(1).Select(int.Parse);
-            var dists = Regex.Split(lines[1], @"\s+").Skip(1).Select(int.Parse);
+            var times = Regex.Split(lines[0], @"\s+").Skip(1).Select(long.Parse);
+            var dists = Regex.Split(lines[1], @"\s+").Skip(1).Select(long.Parse);
             var pairs = times.Zip(dists);
             return pairs;
+        }
+
+        public (long time, long dist) ParseInput2(string input)
+        {
+            var lines = input.Split("\n");
+            var time = long.Parse(lines[0].Split(":")[1].Replace(" ", ""));
+            var dist = long.Parse(lines[1].Split(":")[1].Replace(" ", ""));
+            return (time, dist);
         }
 
         public long FindWinningWaitTime(long time, long dist) {
