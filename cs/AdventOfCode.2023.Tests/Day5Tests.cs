@@ -18,7 +18,7 @@ namespace AdventOfCode2023.Tests
         public void ParseMap(string input, int fromStart, int fromEnd, int toStart, int toEnd, int diff)
         {
             // arrange 
-            var sut = new Day5();
+            var sut = new Day5.InputParser();
 
             // act
             var actual = sut.ParseMap(input);
@@ -40,11 +40,12 @@ namespace AdventOfCode2023.Tests
         public void Map(string input, int value, int expected)
         {
             // arrange 
-            var sut = new Day5();
+            var parser = new Day5.InputParser();
+            var sut = new Day5.ValueMapper();
 
             // act
-            var mapper = sut.ParseMap(input);
-            var actual = sut.Map(value, mapper);
+            var mapper = parser.ParseMap(input);
+            var actual = sut.MapValue(value, mapper);
 
             // assert
             Assert.Equal(expected, actual);
@@ -63,11 +64,12 @@ namespace AdventOfCode2023.Tests
         public void Mappers(string[] inputs, int value, int expected)
         {
             // arrange 
-            var sut = new Day5();
+            var parser = new Day5.InputParser();
+            var sut = new Day5.ValueMapper();
 
             // act
-            var mappers = inputs.Select(sut.ParseMap).ToArray();
-            var actual = sut.Map(value, mappers);
+            var mappers = inputs.Select(parser.ParseMap).ToArray();
+            var actual = sut.MapValue(value, mappers);
 
             // assert
             Assert.Equal(expected, actual);
@@ -80,7 +82,7 @@ namespace AdventOfCode2023.Tests
         public void Part1(string input, int expected)
         {
             // arrange 
-            var sut = new Day5();
+            var sut = new Day5.Day5();
 
             // act
             var actual = sut.Part1(input);
@@ -98,10 +100,11 @@ namespace AdventOfCode2023.Tests
         public void ValueIsInRange(string input, int value, bool expected)
         {
             // arrange 
-            var sut = new Day5();
+            var parser = new Day5.InputParser();
+            var sut = new Day5.ValueMapper();
+            var mapper = parser.ParseMap(input);
 
             // act
-            var mapper = sut.ParseMap(input);
             var actual = sut.IsInRange(value, mapper);
 
             // assert
@@ -119,8 +122,9 @@ namespace AdventOfCode2023.Tests
         {
             // arrange 
             var range = new Day5.LongRange(from, to);
-            var sut = new Day5();
-            var mapper = sut.ParseMap(input);
+            var parser = new Day5.InputParser();
+            var sut = new Day5.RangeMapper();
+            var mapper = parser.ParseMap(input);
 
             // act
             var actual = sut.IsInRange(range, mapper);
@@ -135,7 +139,7 @@ namespace AdventOfCode2023.Tests
         public void Part2(string input, int expected)
         {
             // arrange 
-            var sut = new Day5();
+            var sut = new Day5.Day5();
 
             // act
             var actual = sut.Part2(input);
