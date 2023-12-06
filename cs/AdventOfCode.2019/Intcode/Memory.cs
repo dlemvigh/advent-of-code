@@ -23,9 +23,9 @@ namespace AdventOfCode2019.Intcode
         public State State { get; private set; }
         internal int[] Program { get; init; }
 
-        public Memory(string program, State state) 
+        public Memory(string program, State? state = null) 
         {
-            this.Program = program.Split(" ").Select(int.Parse).ToArray();
+            this.Program = program.Split(new[] {' ', ',' }).Select(int.Parse).ToArray();
             this.State = state ?? new State();
         }
 

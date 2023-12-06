@@ -34,8 +34,4 @@
     <ProjectReference Include="..\AdventOfCode.Shared.Tests\AdventOfCode.Shared.Tests.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Intcode\" />
-  </ItemGroup>
-
 </Project>

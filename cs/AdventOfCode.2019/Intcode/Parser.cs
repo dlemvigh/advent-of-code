@@ -19,14 +19,20 @@ namespace AdventOfCode2019.Intcode
             var opcode = memory.ReadPos(state.MemoryAddress);
 
             var op = (Op)(opcode % 100);
-            var args = new Arg[GetArgLength(op)];
+            var modes = new[]
+            {
+                (Mode)((opcode / 100 % 10)),
+                (Mode)((opcode / 1000 % 10)),
+                (Mode)((opcode / 10000 % 10))
+            };
+            var args = Enumerable.Range(0, GetArgLength(op)).Select(index =>
+            {
+                var adr = memory.ReadPos(state.MemoryAddress + index + 1);
+                var mode = modes[index];
+                return new Arg(adr, mode);
+            }).ToArray();
 
-            var modeA = (Mode)((opcode / 100 % 10));
-            var modeB = (Mode)((opcode / 1000 % 10));
-            var modeC = (Mode)((opcode / 10000 % 10));
-        
-
-            throw new NotImplementedException();
+            return new Instruction(op, args);
         }
 
         public int GetArgLength(Op op)
