@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode.Tests;
@@ -88,19 +89,59 @@ namespace AdventOfCode2023.Tests
             Assert.Equal(expected, actual);
         }
 
-        //[Theory]
-        //[FileTestData("Day5/sample.in", 4)]
-        //[FileTestData("Day5/input.in", 41)]
-        //public void Part2(string input, int expected)
-        //{
-        //    // arrange 
-        //    var sut = new Day5();
+        [Theory]
+        [InlineData("0 1 2", 0, false)]
+        [InlineData("0 1 3", 1, true)]
+        [InlineData("0 1 3", 2, true)]
+        [InlineData("0 1 3", 3, true)]
+        [InlineData("0 1 3", 4, false)]
+        public void ValueIsInRange(string input, int value, bool expected)
+        {
+            // arrange 
+            var sut = new Day5();
 
-        //    // act
-        //    var actual = sut.Part2(input);
+            // act
+            var mapper = sut.ParseMap(input);
+            var actual = sut.IsInRange(value, mapper);
 
-        //    // assert
-        //    Assert.Equal(expected, actual);
-        //}
+            // assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("0 1 3", 0, 0, false)]
+        [InlineData("0 1 3", 2, 2, true)]
+        [InlineData("0 1 3", 4, 4, false)]
+        [InlineData("0 1 3", 0, 1, true)]
+        [InlineData("0 1 3", 3, 4, true)]
+        [InlineData("0 1 3", 0, 4, true)]
+        public void RangeIsInRange(string input, int from, int to, bool expected)
+        {
+            // arrange 
+            var range = new Day5.LongRange(from, to);
+            var sut = new Day5();
+            var mapper = sut.ParseMap(input);
+
+            // act
+            var actual = sut.IsInRange(range, mapper);
+
+            // assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [FileTestData("Day5/sample.in", 46)]
+        [FileTestData("Day5/input.in", 15880236)]
+        public void Part2(string input, int expected)
+        {
+            // arrange 
+            var sut = new Day5();
+
+            // act
+            var actual = sut.Part2(input);
+
+            // assert
+            Assert.Equal(expected, actual);
+        }
     }
 }
