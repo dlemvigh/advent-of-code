@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,20 +15,32 @@ namespace AdventOfCode2019.Intcode
 
     public class Computer : IComputer
     {
+        public State State { get; init; }
+        public Queue<int> Inputs { get; init; }
+        public Queue<int> Outputs { get; init; }
+
         public IMemory Memory { get; init; }
         public IParser Parser { get; init; }
-        public State State { get; init; }
+        public IALU ALU { get; init; }
+        
+        public Computer (IMemory memory, IParser parser, IALU alu, State state) {
+            this.State = state;
+            this.Inputs = Inputs ?? new Queue<int>();
+            this.Outputs = Outputs ?? new Queue<int>();
 
-        public Computer (IMemory memory, IParser parser, State state) {
             this.Memory = memory ?? throw new ArgumentNullException(nameof(memory));
             this.Parser = parser ?? throw new ArgumentNullException(nameof(parser));
-            this.State = state;
+            this.ALU = alu ?? throw new ArgumentException(nameof(alu));
         }
 
         public Computer(string program) {
             this.State = new State();
+            this.Inputs = Inputs ?? new Queue<int>();
+            this.Outputs = Outputs ?? new Queue<int>();
+
             this.Memory = new Memory(program, this.State);
-            this.Parser = new Parser();
+            this.Parser = new Parser(this.Memory, this.State);
+            this.ALU = new ALU(this.Memory, this.State, this.Inputs, this.Outputs);
         }
 
         public void RunStep()
@@ -44,7 +57,7 @@ namespace AdventOfCode2019.Intcode
         }
 
         public Instruction ReadInstruction() {
-            return this.Parser.ParseNextInstruction(this.Memory, this.State);
+            return this.Parser.ParseNextInstruction();
         }
     }
 }

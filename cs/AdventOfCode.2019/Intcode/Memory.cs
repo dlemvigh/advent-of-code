@@ -8,11 +8,15 @@ using AdventOfCode2019.Intcode.Models;
 
 namespace AdventOfCode2019.Intcode
 {
-    public interface IMemory
-    {
+    public interface IReadOnlyMemory {
+        int Read(Arg arg);
         int Read(int adr, Mode mode);
         int ReadPos(int adr);
         int ReadRel(int adr);
+    }
+    public interface IMemory : IReadOnlyMemory
+    {
+        void Write(Arg arg, int value);
         void Write(int adr, Mode mode, int value);
         void WritePos(int adr, int value);
         void WriteRel(int adr, int value);
@@ -21,13 +25,18 @@ namespace AdventOfCode2019.Intcode
 
     public class Memory : IMemory
     {
-        public State State { get; private set; }
-        internal int[] Program { get; init; }
+        public State State { get; init; }
+        public int[] Program { get; init; }
 
         public Memory(string program, State? state = null) 
         {
             this.Program = program.Split(new[] {' ', ',' }).Select(int.Parse).ToArray();
             this.State = state ?? new State();
+        }
+
+        public int Read(Arg arg) 
+        {
+            return Read(arg.adr, arg.mode);
         }
 
         public int Read(int adr, Mode mode)
@@ -42,13 +51,24 @@ namespace AdventOfCode2019.Intcode
         }
 
         public int ReadPos(int adr) {
-            return Program[adr];
+            try {
+                return Program[adr];
+            } catch (IndexOutOfRangeException) {
+                return 0;
+            }
         }
 
         public int ReadRel(int adr) {
+            try {
             return Program[adr + State.RelativeBase];
+            } catch (IndexOutOfRangeException) {
+                return 0;
+            }
         }
 
+        public void Write(Arg arg, int value) {
+            Write(arg.adr, arg.mode, value);
+        }
         public void Write(int adr, Mode mode, int value)
         {
             switch (mode)
