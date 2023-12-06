@@ -1,6 +1,7 @@
 using Xunit;
 using AdventOfCode2019.Intcode;
 using System;
+using AdventOfCode2019.Intcode.Models;
 
 namespace AdventOfCode2019.Tests;
 

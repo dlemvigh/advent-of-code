@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AdventOfCode2019.Intcode.Models;
 
 namespace AdventOfCode2019.Intcode
 {

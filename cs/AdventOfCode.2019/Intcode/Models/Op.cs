@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2019.Intcode
+namespace AdventOfCode2019.Intcode.Models
 {
     public enum Op
     {
