@@ -46,6 +46,9 @@ namespace AdventOfCode2019.Intcode
         public void RunStep()
         {
             // read next instruction
+            var inst = Parser.ParseNextInstruction();
+            State.MemoryAddress += Parser.GetInstructionWidth(inst);
+
             // execute next instruction
             throw new NotImplementedException();
         }

@@ -10,6 +10,7 @@ namespace AdventOfCode2019.Intcode
     public interface IParser
     {
         public Instruction ParseNextInstruction();
+        public int GetInstructionWidth(Instruction inst);
     }
 
     public class Parser : IParser
@@ -112,6 +113,10 @@ namespace AdventOfCode2019.Intcode
                     return 0;
                 default: throw new ArgumentException("Unknown op", nameof(op));
             }
+        }
+
+        public int GetInstructionWidth(Instruction inst) {
+            return 1 + inst.inputs.Length + (inst.output == null ? 0 : 1);
         }
     }
 }
