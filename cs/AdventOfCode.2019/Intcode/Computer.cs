@@ -9,7 +9,7 @@ using AdventOfCode2019.Intcode.Models;
 namespace AdventOfCode2019.Intcode
 {
     public interface IComputer {
-        void RunStep();
+        Instruction RunStep();
         void RunTillHalt();
     }
 
@@ -43,24 +43,39 @@ namespace AdventOfCode2019.Intcode
             this.ALU = new ALU(this.Memory, this.State, this.Inputs, this.Outputs);
         }
 
-        public void RunStep()
+        public Instruction RunStep()
         {
-            // read next instruction
             var inst = Parser.ParseNextInstruction();
             State.MemoryAddress += Parser.GetInstructionWidth(inst);
+            ALU.ExecuteInstruction(inst);
 
-            // execute next instruction
-            throw new NotImplementedException();
+            return inst;
+        }
+
+        public void RunTillHaltOrOutput()
+        {
+            var running = true;
+            while (running)
+            {
+                var inst = RunStep();
+                if (inst.op == Op.HALT || inst.op == Op.OUT)
+                {
+                    running = false;
+                }
+            }
         }
 
         public void RunTillHalt()
         {
-            // execute RunStep till Halt
-            throw new NotImplementedException();
-        }
-
-        public Instruction ReadInstruction() {
-            return this.Parser.ParseNextInstruction();
+            var running = true;
+            while (running)
+            {
+                var inst = RunStep();
+                if (inst.op == Op.HALT)
+                {
+                    running = false;
+                }
+            }
         }
     }
 }
