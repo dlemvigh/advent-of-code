@@ -16,6 +16,8 @@ namespace AdventOfCode2019.Tests
         [InlineData("2,3,0,3,99", 3, 6)]
         [InlineData("2,4,4,5,99,0", 5, 9801)]
         [InlineData("1,1,1,4,99,5,6,0,99", 0, 30)]
+        [InlineData("1002,4,3,4,33", 4, 99)]
+        [InlineData("1101,100,-1,4,0", 4, 99)]
         public void RunTillHalt(string input, int adr, int expected)
         {
             // arrange 
