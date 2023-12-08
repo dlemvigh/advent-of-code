@@ -13,25 +13,33 @@ namespace AdventOfCode2019
     {
         public int Part1(string input)
         {
-            var computer = new Computer(input);
-            computer.Memory.WritePos(1, 12);
-            computer.Memory.WritePos(2, 02);
+            return RunProgram(input, 12, 2);
+        }
+
+        public int Part2(string input, int target)
+        {
+            for (var noun = 0; noun < 100; noun++)
+            {
+                for (var verb = 0; verb < 100; verb++)
+                {
+                    if (RunProgram(input, noun, verb) == target)
+                    {
+                        return 100 * noun + verb;
+                    }
+                }
+            }
+            throw new Exception("No noun/verb combination matched expected value");
+        }
+
+        public int RunProgram(string program, int noun, int verb)
+        {
+            var computer = new Computer(program);
+            computer.Memory.WritePos(1, noun);
+            computer.Memory.WritePos(2, verb);
 
             computer.RunTillHalt();
 
             return computer.Memory.ReadPos(0);
-        }
-
-        public int Part2(string input)
-        {
-            var parsed = ParseInput(input);
-            return parsed.Last();
-            throw new NotImplementedException();
-
-        }
-        public IEnumerable<int> ParseInput(string input)
-        {
-            return input.Split("\n").Select(int.Parse);
         }
     }
 }
