@@ -21,7 +21,7 @@ namespace AdventOfCode2019
             throw new NotImplementedException();
         }
 
-        public int RunAmpSetting(string program, int[] settings, int input)
+        public long RunAmpSetting(string program, int[] settings, long input)
         {
             var amps = settings.Select(setting => new Computer(program)).ToArray();
 
@@ -36,7 +36,7 @@ namespace AdventOfCode2019
             return input;
         }
 
-        public int RunAmpSettingLoop(string program, int[] settings, int input)
+        public long RunAmpSettingLoop(string program, int[] settings, long input)
         {
             var amps = settings.Select(setting => new Computer(program)).ToArray();
 
@@ -64,7 +64,7 @@ namespace AdventOfCode2019
             return input;
         }
 
-        public (int max, int[] settings) FindMaxAmpSetting(string program, int[] settings, int input)
+        public (long max, int[] settings) FindMaxAmpSetting(string program, int[] settings, long input)
         {
             var permutations = GetPermutations(settings);
             return permutations.Select(permutation => {
@@ -74,7 +74,7 @@ namespace AdventOfCode2019
             }).MaxBy(x => x.value);
         }
 
-        public (int max, int[] settings) FindMaxAmpSettingLoop(string program, int[] settings, int input)
+        public (long max, int[] settings) FindMaxAmpSettingLoop(string program, int[] settings, long input)
         {
             var permutations = GetPermutations(settings);
             return permutations.Select(permutation => {

@@ -11,12 +11,12 @@ namespace AdventOfCode2019
     [ProblemName("1202 Program Alarm")]
     public class Day2
     {
-        public int Part1(string input)
+        public long Part1(string input)
         {
             return RunProgram(input, 12, 2);
         }
 
-        public int Part2(string input, int target)
+        public long Part2(string input, int target)
         {
             for (var noun = 0; noun < 100; noun++)
             {
@@ -31,7 +31,7 @@ namespace AdventOfCode2019
             throw new Exception("No noun/verb combination matched expected value");
         }
 
-        public int RunProgram(string program, int noun, int verb)
+        public long RunProgram(string program, int noun, int verb)
         {
             var computer = new Computer(program);
             computer.Memory.WritePos(1, noun);

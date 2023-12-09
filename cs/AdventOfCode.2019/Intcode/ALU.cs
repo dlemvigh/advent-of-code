@@ -12,10 +12,10 @@ namespace AdventOfCode2019.Intcode
     {
         private readonly IMemory memory;
         private readonly State state;
-        private readonly Queue<int> inputs;
-        private readonly Queue<int> outputs;
+        private readonly Queue<long> inputs;
+        private readonly Queue<long> outputs;
 
-        public ALU(IMemory memory, State state, Queue<int> inputs, Queue<int> outputs)
+        public ALU(IMemory memory, State state, Queue<long> inputs, Queue<long> outputs)
         {
             this.memory = memory;
             this.state = state;
