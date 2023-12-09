@@ -21,10 +21,12 @@ public class MemoryTests
     [InlineData("1 2 3", 0, 1, Mode.REL, 2)] // Test ReadRel with RelativeBase = 0
     [InlineData("1 2 3", 1, 0, Mode.REL, 2)] // Test ReadRel with RelativeBase = 1
     [InlineData("1 2 3", 1, 1, Mode.REL, 3)] // Test ReadRel with RelativeBase = 1
+    [InlineData("1 2 3", 0, 99, Mode.POS, 0)]// Test ReadPos out of bounds
+    [InlineData("1 2 3", 99, 0, Mode.REL, 0)]// Test ReadPos out of bounds
     public void Read_ShouldReturnCorrectValue(string program, int relBase, int adr, Mode mode, int expected)
     {
         var memory = CreateTestMemory(program, relBase);
-        int result = memory.Read(adr, mode);
+        var result = memory.Read(adr, mode);
         Assert.Equal(expected, result);
     }
 
@@ -35,6 +37,8 @@ public class MemoryTests
     [InlineData("1 2 3 4", 0, 1, Mode.REL, 99)] // Test WriteRel with RelativeBase = 0
     [InlineData("1 2 3 4", 1, 0, Mode.REL, 99)] // Test WriteRel with RelativeBase = 1
     [InlineData("1 2 3 4", 1, 1, Mode.REL, 99)] // Test WriteRel with RelativeBase = 1
+    [InlineData("1 2 3 4", 0, 99, Mode.POS, 99)]// Test WritePos out of bounds
+    [InlineData("1 2 3 4", 99, 0, Mode.POS, 99)]// Test WritePos out of bounds
     public void Write_ShouldModifyMemory(string program, int relBase, int adr, Mode mode, int value)
     {
         var memory = CreateTestMemory(program, relBase);

@@ -12,10 +12,10 @@ namespace AdventOfCode2019.Intcode
     {
         private readonly IMemory memory;
         private readonly State state;
-        private readonly Queue<int> inputs;
-        private readonly Queue<int> outputs;
+        private readonly Queue<long> inputs;
+        private readonly Queue<long> outputs;
 
-        public ALU(IMemory memory, State state, Queue<int> inputs, Queue<int> outputs)
+        public ALU(IMemory memory, State state, Queue<long> inputs, Queue<long> outputs)
         {
             this.memory = memory;
             this.state = state;
@@ -55,6 +55,7 @@ namespace AdventOfCode2019.Intcode
                     ExecuteOutput(inst);
                     break;
                 case Op.HALT:
+                    ExecuteHalt(inst);
                     break;
                 default:
                     throw new NotImplementedException("Operation is not implemented yet");
@@ -125,6 +126,11 @@ namespace AdventOfCode2019.Intcode
         {
             var value = memory.Read(inst.inputs[0]);
             outputs.Enqueue(value);
+        }
+
+        public void ExecuteHalt(Instruction inst)
+        {
+            state.IsHalted = true;
         }
     }
 }

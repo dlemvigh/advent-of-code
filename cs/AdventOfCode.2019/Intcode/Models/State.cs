@@ -8,7 +8,8 @@ namespace AdventOfCode2019.Intcode
 {
     public record State
     {
-        public int MemoryAddress { get; set; }
-        public int RelativeBase { get; set; }
+        public bool IsHalted { get; set; }
+        public long MemoryAddress { get; set; }
+        public long RelativeBase { get; set; }
     }
 }

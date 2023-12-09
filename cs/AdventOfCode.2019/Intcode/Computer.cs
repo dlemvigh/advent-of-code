@@ -16,8 +16,8 @@ namespace AdventOfCode2019.Intcode
     public class Computer : IComputer
     {
         public State State { get; init; }
-        public Queue<int> Inputs { get; init; }
-        public Queue<int> Outputs { get; init; }
+        public Queue<long> Inputs { get; init; }
+        public Queue<long> Outputs { get; init; }
 
         public IMemory Memory { get; init; }
         public IParser Parser { get; init; }
@@ -25,8 +25,8 @@ namespace AdventOfCode2019.Intcode
         
         public Computer (IMemory memory, IParser parser, IALU alu, State state) {
             this.State = state;
-            this.Inputs = Inputs ?? new Queue<int>();
-            this.Outputs = Outputs ?? new Queue<int>();
+            this.Inputs = Inputs ?? new Queue<long>();
+            this.Outputs = Outputs ?? new Queue<long>();
 
             this.Memory = memory ?? throw new ArgumentNullException(nameof(memory));
             this.Parser = parser ?? throw new ArgumentNullException(nameof(parser));
@@ -35,8 +35,8 @@ namespace AdventOfCode2019.Intcode
 
         public Computer(string program) {
             this.State = new State();
-            this.Inputs = Inputs ?? new Queue<int>();
-            this.Outputs = Outputs ?? new Queue<int>();
+            this.Inputs = Inputs ?? new Queue<long>();
+            this.Outputs = Outputs ?? new Queue<long>();
 
             this.Memory = new Memory(program, this.State);
             this.Parser = new Parser(this.Memory, this.State);

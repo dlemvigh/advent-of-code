@@ -12,16 +12,16 @@ public class ALUTests
     private readonly ALU sut;
     private readonly Mock<IMemory> mockMemory;
     private readonly State state;
-    private readonly Queue<int> inputQueue;
-    private readonly Queue<int> outputQueue;
+    private readonly Queue<long> inputQueue;
+    private readonly Queue<long> outputQueue;
 
     public ALUTests()
     {
         // Common setup for all tests
         mockMemory = new Mock<IMemory>();
         state = new State(); // Assuming this is a valid class
-        inputQueue = new Queue<int>();
-        outputQueue = new Queue<int>();
+        inputQueue = new Queue<long>();
+        outputQueue = new Queue<long>();
 
         sut = new ALU(mockMemory.Object, state, inputQueue, outputQueue);
     }
@@ -30,7 +30,7 @@ public class ALUTests
     [InlineData(2, 2, 4)]
     [InlineData(2, -2, 0)]
     [InlineData(-2, -2, -4)]
-    public void ExecuteAdd(int a, int b, int expected)
+    public void ExecuteAdd(long a, long b, int expected)
     {
         // Arrange
         var inputs = new[] { new Arg(1, Mode.POS), new Arg(2, Mode.IM) };
@@ -224,7 +224,7 @@ public class ALUTests
         sut.ExecuteInstruction(instruction);
 
         // Assert
-        Assert.Equal(new[] { 42 }, outputQueue);
+        Assert.Equal(new[] { 42L }, outputQueue);
     }
 
     [Fact]
@@ -245,7 +245,7 @@ public class ALUTests
         sut.ExecuteInstruction(instruction);
 
         // Assert
-        Assert.Equal(new[] { 1, 2, 3 }, outputQueue);
+        Assert.Equal(new[] { 1L, 2L, 3L }, outputQueue);
         Assert.Equal(1, outputQueue.Dequeue());
         Assert.Equal(2, outputQueue.Dequeue());
         Assert.Equal(3, outputQueue.Dequeue());
@@ -276,9 +276,11 @@ public class ALUTests
         var instruction = new Instruction(Op.HALT, inputs);
 
         // Act
+        Assert.False(state.IsHalted);
         sut.ExecuteInstruction(instruction);
 
         // Assert
+        Assert.True(state.IsHalted);
         mockMemory.VerifyNoOtherCalls();
     }
 }
