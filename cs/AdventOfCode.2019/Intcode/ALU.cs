@@ -25,112 +25,113 @@ namespace AdventOfCode2019.Intcode
 
         public void ExecuteInstruction(Instruction inst)
         {
-            switch (inst.op)
+            switch (inst)
             {
-                case Op.ADD:
-                    ExecuteAdd(inst);
+                case AddInstruction addInst:
+                    ExecuteAdd(addInst);
                     break;
-                case Op.MUL:
-                    ExecuteMultiply(inst);
+                case MultiplyInstruction mulInst:
+                    ExecuteMultiply(mulInst);
                     break;
-                case Op.JUMP_TRUE:
-                    ExecuteJumpTrue(inst);
+                case JumpTrueInstruction jtInst:
+                    ExecuteJumpTrue(jtInst);
                     break;
-                case Op.JUMP_FALSE:
-                    ExecuteJumpFalse(inst);
+                case JumpFalseInstruction jfInst:
+                    ExecuteJumpFalse(jfInst);
                     break;
-                case Op.LESS:
-                    ExecuteLessThan(inst);
+                case LessThanInstruction ltInst:
+                    ExecuteLessThan(ltInst);
                     break;
-                case Op.EQUAL:
-                    ExecuteEquals(inst);
+                case EqualToInstruction eqInst:
+                    ExecuteEquals(eqInst);
                     break;
-                case Op.ADJ_REL_BASE:
-                    ExecuteUpdateRelBase(inst);
+                case InputInstruction inInst:
+                    ExecuteInput(inInst);
                     break;
-                case Op.IN:
-                    ExecuteInput(inst);
+                case OutputInstruction outInst:
+                    ExecuteOutput(outInst);
                     break;
-                case Op.OUT:
-                    ExecuteOutput(inst);
+                case AdjustRelativeBaseInstruction arbInst:
+                    ExecuteUpdateRelBase(arbInst);
                     break;
-                case Op.HALT:
-                    ExecuteHalt(inst);
+                case HaltInstruction haltInst:
+                    ExecuteHalt(haltInst);
                     break;
                 default:
-                    throw new NotImplementedException("Operation is not implemented yet");
+                    throw new ArgumentException("Unknown instruction type");
             }
         }
 
-        public void ExecuteAdd(Instruction inst)
+        public void ExecuteAdd(AddInstruction inst)
         {
-            var a = memory.Read(inst.inputs[0]);
-            var b = memory.Read(inst.inputs[1]);
-            memory.Write(inst.output!, a + b);
+            var a = memory.Read(inst.A);
+            var b = memory.Read(inst.B);
+            memory.Write(inst.C, a + b);
         }
 
-        public void ExecuteMultiply(Instruction inst)
+        public void ExecuteMultiply(MultiplyInstruction inst)
         {
-            var a = memory.Read(inst.inputs[0]);
-            var b = memory.Read(inst.inputs[1]);
-            memory.Write(inst.output!, a * b);
+            var a = memory.Read(inst.A);
+            var b = memory.Read(inst.B);
+            memory.Write(inst.C, a * b);
         }
 
-        public void ExecuteJumpTrue(Instruction inst)
+        public void ExecuteJumpTrue(JumpTrueInstruction inst)
         {
-            var cond = memory.Read(inst.inputs[0]);
-            var adr = memory.Read(inst.inputs[1]);
+            var cond = memory.Read(inst.A);
+            var adr = memory.Read(inst.B);
             if (cond != 0)
             {
                 state.MemoryAddress = adr;
             }
         }
 
-        public void ExecuteJumpFalse(Instruction inst)
+        public void ExecuteJumpFalse(JumpFalseInstruction inst)
         {
-            var cond = memory.Read(inst.inputs[0]);
-            var adr = memory.Read(inst.inputs[1]);
+            var cond = memory.Read(inst.A);
+            var adr = memory.Read(inst.B);
             if (cond == 0)
             {
                 state.MemoryAddress = adr;
             }
         }
 
-        public void ExecuteLessThan(Instruction inst)
+        public void ExecuteLessThan(LessThanInstruction inst)
         {
-            var a = memory.Read(inst.inputs[0]);
-            var b = memory.Read(inst.inputs[1]);
-            memory.Write(inst.output!, a < b ? 1 : 0);
+            var a = memory.Read(inst.A);
+            var b = memory.Read(inst.B);
+            memory.Write(inst.C, a < b ? 1 : 0);
         }
 
-        public void ExecuteEquals(Instruction inst)
+        public void ExecuteEquals(EqualToInstruction inst)
         {
-            var a = memory.Read(inst.inputs[0]);
-            var b = memory.Read(inst.inputs[1]);
-            memory.Write(inst.output!, a == b ? 1 : 0);
+            var a = memory.Read(inst.A);
+            var b = memory.Read(inst.B);
+            memory.Write(inst.C, a == b ? 1 : 0);
         }
 
-        public void ExecuteUpdateRelBase(Instruction inst)
+        public void ExecuteUpdateRelBase(AdjustRelativeBaseInstruction inst)
         {
-            var value = memory.Read(inst.inputs[0]);
+            var value = memory.Read(inst.A);
             memory.UpdateRelBase(value);
         }
 
-        public void ExecuteInput(Instruction inst)
+        public void ExecuteInput(InputInstruction inst)
         {
             var value = inputs.Dequeue();
-            memory.Write(inst.output!, value);
+            memory.Write(inst.A, value);
         }
 
-        public void ExecuteOutput(Instruction inst)
+        public void ExecuteOutput(OutputInstruction inst)
         {
-            var value = memory.Read(inst.inputs[0]);
+            var value = memory.Read(inst.A);
             outputs.Enqueue(value);
         }
 
-        public void ExecuteHalt(Instruction inst)
+        public void ExecuteHalt(HaltInstruction inst)
         {
             state.IsHalted = true;
         }
+
     }
 }

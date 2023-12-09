@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2019.Intcode.Models
 {
-    public record Instruction(Op op, Arg[] inputs, Arg? output = null);
+    // public record Instruction(Op op, Arg[] inputs, Arg? output = null);
     public record Arg(long adr, Mode mode);
 
-    public abstract record InstructionNoArgs 
+    public abstract record Instruction 
     {
         public Op Op { get; init; }
 
-        protected InstructionNoArgs(Op op)
+        protected Instruction(Op op)
         {
             Op = op;
         }
     }
 
-    public abstract record InstructionOneArg : InstructionNoArgs
+    public abstract record InstructionOneArg : Instruction
     {
         public Arg A { get; init; }
 
@@ -78,7 +78,7 @@ namespace AdventOfCode2019.Intcode.Models
     public record AdjustRelativeBaseInstruction : InstructionOneArg {
         public AdjustRelativeBaseInstruction(Arg a) : base(Op.IN, a) {}
     }
-    public record HaltInstruction : InstructionNoArgs {
+    public record HaltInstruction : Instruction {
         public HaltInstruction() : base(Op.HALT) {}
     }
 }

@@ -58,7 +58,7 @@ namespace AdventOfCode2019.Intcode
             while (running)
             {
                 var inst = RunStep();
-                if (inst.op == Op.HALT || inst.op == Op.OUT)
+                if (inst.Op == Op.HALT || inst.Op == Op.OUT)
                 {
                     running = false;
                 }
@@ -71,7 +71,7 @@ namespace AdventOfCode2019.Intcode
             while (running)
             {
                 var inst = RunStep();
-                if (inst.op == Op.HALT)
+                if (inst.Op == Op.HALT)
                 {
                     running = false;
                 }
