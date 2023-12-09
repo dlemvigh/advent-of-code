@@ -37,5 +37,20 @@ namespace AdventOfCode2019.Tests
             // assert
             Assert.Equal(expected, computer.Outputs.Dequeue());
         }
+
+        [Theory]
+        [FileTestData("Day9/input.in", 1, 3906448201)]
+        [FileTestData("Day9/input.in", 2, 59785)]
+        public void BOOST(string program, long input, long expected) {
+            // arrange
+            var computer = new Computer(program);
+
+            // act
+            computer.Inputs.Enqueue(input);
+            computer.RunTillHalt();
+
+            // assert
+            Assert.Equal(expected, computer.Outputs.Dequeue());
+        }
     }
 }
