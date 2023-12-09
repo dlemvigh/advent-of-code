@@ -55,6 +55,7 @@ namespace AdventOfCode2019.Intcode
                     ExecuteOutput(inst);
                     break;
                 case Op.HALT:
+                    ExecuteHalt(inst);
                     break;
                 default:
                     throw new NotImplementedException("Operation is not implemented yet");
@@ -125,6 +126,11 @@ namespace AdventOfCode2019.Intcode
         {
             var value = memory.Read(inst.inputs[0]);
             outputs.Enqueue(value);
+        }
+
+        public void ExecuteHalt(Instruction inst)
+        {
+            state.IsHalted = true;
         }
     }
 }

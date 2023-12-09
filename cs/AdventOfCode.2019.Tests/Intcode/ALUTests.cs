@@ -276,9 +276,11 @@ public class ALUTests
         var instruction = new Instruction(Op.HALT, inputs);
 
         // Act
+        Assert.False(state.IsHalted);
         sut.ExecuteInstruction(instruction);
 
         // Assert
+        Assert.True(state.IsHalted);
         mockMemory.VerifyNoOtherCalls();
     }
 }
