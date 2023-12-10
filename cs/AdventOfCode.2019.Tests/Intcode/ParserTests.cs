@@ -44,8 +44,8 @@ public class ParserTests
     public void ParseNextInstruction(string program, Instruction expected) 
     {
         // arrange 
-        var memory = new Memory(program);
         var state = new State();
+        var memory = new Memory(program, state);
         var parser = new Parser(memory, state);
 
         // act

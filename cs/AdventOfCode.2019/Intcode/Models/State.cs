@@ -8,8 +8,14 @@ namespace AdventOfCode2019.Intcode
 {
     public record State
     {
-        public bool IsHalted { get; set; }
-        public long MemoryAddress { get; set; }
-        public long RelativeBase { get; set; }
+        public State(bool IsHalted = default, long MemoryAddress = default, long RelativeBase = default) {
+            this.IsHalted = IsHalted;
+            this.MemoryAddress = MemoryAddress;
+            this.RelativeBase = RelativeBase;
+        }
+
+        public bool IsHalted { get; internal set; }
+        public long MemoryAddress { get; internal set; }
+        public long RelativeBase { get; internal set; }
     }
 }

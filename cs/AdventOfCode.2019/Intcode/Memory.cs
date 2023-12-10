@@ -25,17 +25,19 @@ namespace AdventOfCode2019.Intcode
 
     public class Memory : IMemory
     {
-        public State State { get; init; }
-        public long[] InitialMemory { get; init; }
-        public Dictionary<long, long> ExtendedMemory { get; init; }
+        public State State { get; }
+        public long[] InitialMemory { get; }
+        public Dictionary<long, long> ExtendedMemory { get; }
 
-        public Memory(string program, State? state = null) 
+        public Memory(string program, State state) 
         {
+            this.State = state;
+
             this.InitialMemory = program.Split(new[] {' ', ',' })
                 .Select(long.Parse)
                 .ToArray();
+
             this.ExtendedMemory = new Dictionary<long, long>();
-            this.State = state ?? new State();
         }
 
         public long Read(Arg arg) 

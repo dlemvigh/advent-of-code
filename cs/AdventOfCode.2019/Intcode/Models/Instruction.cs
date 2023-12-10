@@ -11,7 +11,7 @@ namespace AdventOfCode2019.Intcode.Models
 
     public abstract record Instruction 
     {
-        public Op Op { get; init; }
+        public Op Op { get; }
 
         protected Instruction(Op op)
         {
@@ -21,7 +21,7 @@ namespace AdventOfCode2019.Intcode.Models
 
     public abstract record InstructionOneArg : Instruction
     {
-        public Arg A { get; init; }
+        public Arg A { get; }
 
         protected InstructionOneArg(Op op, Arg a) : base(op)
         {
@@ -31,7 +31,7 @@ namespace AdventOfCode2019.Intcode.Models
 
     public abstract record InstructionTwoArgs : InstructionOneArg
     {
-        public Arg B { get; init; }
+        public Arg B { get; }
 
         protected InstructionTwoArgs(Op op, Arg a, Arg b) : base(op, a)
         {
@@ -41,7 +41,7 @@ namespace AdventOfCode2019.Intcode.Models
 
     public abstract record InstructionThreeArgs : InstructionTwoArgs
     {
-        public Arg C { get; init; }
+        public Arg C { get; }
 
         protected InstructionThreeArgs(Op op, Arg a, Arg b, Arg c) : base(op, a, b)
         {
