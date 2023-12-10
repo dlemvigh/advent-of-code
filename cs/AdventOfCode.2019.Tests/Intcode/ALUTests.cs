@@ -33,18 +33,20 @@ public class ALUTests
     public void ExecuteAdd(long a, long b, int expected)
     {
         // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS), new Arg(2, Mode.IM) };
-        var output = new Arg(3, Mode.REL);
-        var instruction = new Instruction(Op.ADD, inputs, output);
+        var instruction = new AddInstruction(
+            new Arg(1, Mode.POS), 
+            new Arg(2, Mode.IM), 
+            new Arg(3, Mode.REL)
+        );
 
-        mockMemory.Setup(m => m.Read(inputs[0])).Returns(a);
-        mockMemory.Setup(m => m.Read(inputs[1])).Returns(b);
+        mockMemory.Setup(m => m.Read(instruction.A)).Returns(a);
+        mockMemory.Setup(m => m.Read(instruction.B)).Returns(b);
 
         // Act
         sut.ExecuteInstruction(instruction);
 
         // Assert
-        mockMemory.Verify(m => m.Write(output, expected), Times.Once());
+        mockMemory.Verify(m => m.Write(instruction.C, expected), Times.Once());
     }
 
     [Theory]
@@ -58,18 +60,20 @@ public class ALUTests
     public void ExecuteMultiply(int a, int b, int expected)
     {
         // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS), new Arg(2, Mode.IM) };
-        var output = new Arg(3, Mode.REL);
-        var instruction = new Instruction(Op.MUL, inputs, output);
+        var instruction = new MultiplyInstruction(
+            new Arg(1, Mode.POS), 
+            new Arg(2, Mode.IM), 
+            new Arg(3, Mode.REL)
+        );
 
-        mockMemory.Setup(m => m.Read(inputs[0])).Returns(a);
-        mockMemory.Setup(m => m.Read(inputs[1])).Returns(b);
+        mockMemory.Setup(m => m.Read(instruction.A)).Returns(a);
+        mockMemory.Setup(m => m.Read(instruction.B)).Returns(b);
 
         // Act
         sut.ExecuteInstruction(instruction);
 
         // Assert
-        mockMemory.Verify(m => m.Write(output, expected), Times.Once());
+        mockMemory.Verify(m => m.Write(instruction.C, expected), Times.Once());
     }
 
     [Theory]
@@ -80,10 +84,13 @@ public class ALUTests
     {
         // Arrange
         var inputs = new[] { new Arg(1, Mode.POS), new Arg(2, Mode.IM) };
-        var instruction = new Instruction(Op.JUMP_TRUE, inputs, null);
+        var instruction = new JumpTrueInstruction(
+            new Arg(1, Mode.POS), 
+            new Arg(2, Mode.IM)
+        );
 
-        mockMemory.Setup(m => m.Read(inputs[0])).Returns(cond);
-        mockMemory.Setup(m => m.Read(inputs[1])).Returns(adr);
+        mockMemory.Setup(m => m.Read(instruction.A)).Returns(cond);
+        mockMemory.Setup(m => m.Read(instruction.B)).Returns(adr);
 
         // Act
         sut.ExecuteInstruction(instruction);
@@ -99,11 +106,13 @@ public class ALUTests
     public void ExecuteJumpFalse(int cond, int adr, int expected)
     {
         // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS), new Arg(2, Mode.IM) };
-        var instruction = new Instruction(Op.JUMP_FALSE, inputs, null);
+        var instruction = new JumpFalseInstruction(
+            new Arg(1, Mode.POS), 
+            new Arg(2, Mode.IM)
+        );
 
-        mockMemory.Setup(m => m.Read(inputs[0])).Returns(cond);
-        mockMemory.Setup(m => m.Read(inputs[1])).Returns(adr);
+        mockMemory.Setup(m => m.Read(instruction.A)).Returns(cond);
+        mockMemory.Setup(m => m.Read(instruction.B)).Returns(adr);
 
         // Act
         sut.ExecuteInstruction(instruction);
@@ -125,19 +134,20 @@ public class ALUTests
     public void ExecuteLess(int a, int b, int expected)
     {
         // Arrange
-        // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS), new Arg(2, Mode.IM) };
-        var output = new Arg(3, Mode.REL);
-        var instruction = new Instruction(Op.LESS, inputs, output);
+        var instruction = new LessThanInstruction(
+            new Arg(1, Mode.POS), 
+            new Arg(2, Mode.IM), 
+            new Arg(3, Mode.REL)
+        );
 
-        mockMemory.Setup(m => m.Read(inputs[0])).Returns(a);
-        mockMemory.Setup(m => m.Read(inputs[1])).Returns(b);
+        mockMemory.Setup(m => m.Read(instruction.A)).Returns(a);
+        mockMemory.Setup(m => m.Read(instruction.B)).Returns(b);
 
         // Act
         sut.ExecuteInstruction(instruction);
 
         // Assert
-        mockMemory.Verify(m => m.Write(output, expected), Times.Once());
+        mockMemory.Verify(m => m.Write(instruction.C, expected), Times.Once());
     }
 
     [Theory]
@@ -153,28 +163,28 @@ public class ALUTests
     public void ExecuteEqual(int a, int b, int expected)
     {
         // Arrange
-        // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS), new Arg(2, Mode.IM) };
-        var output = new Arg(3, Mode.REL);
-        var instruction = new Instruction(Op.EQUAL, inputs, output);
+        var instruction = new EqualToInstruction(
+            new Arg(1, Mode.POS), 
+            new Arg(2, Mode.IM), 
+            new Arg(3, Mode.REL)
+        );
 
-        mockMemory.Setup(m => m.Read(inputs[0])).Returns(a);
-        mockMemory.Setup(m => m.Read(inputs[1])).Returns(b);
+        mockMemory.Setup(m => m.Read(instruction.A)).Returns(a);
+        mockMemory.Setup(m => m.Read(instruction.B)).Returns(b);
 
         // Act
         sut.ExecuteInstruction(instruction);
 
         // Assert
-        mockMemory.Verify(m => m.Write(output, expected), Times.Once());
+        mockMemory.Verify(m => m.Write(instruction.C, expected), Times.Once());
     }
 
     [Fact]
     public void ExecuteInput()
     {
         // Arrange
-        var inputs = new Arg[] { };
         var output = new Arg(3, Mode.REL);
-        var instruction = new Instruction(Op.IN, inputs, output);
+        var instruction = new InputInstruction(output);
 
         inputQueue.Enqueue(42);
 
@@ -189,9 +199,8 @@ public class ALUTests
     public void ExecuteInput_PreservesOrder()
     {
         // Arrange
-        var inputs = new Arg[] { };
         var output = new Arg(3, Mode.REL);
-        var instruction = new Instruction(Op.IN, inputs, output);
+        var instruction = new InputInstruction(output);
 
         inputQueue.Enqueue(1);
         inputQueue.Enqueue(2);
@@ -215,10 +224,10 @@ public class ALUTests
     public void ExecuteOutput()
     {
         // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS) };
-        var instruction = new Instruction(Op.OUT, inputs);
+        var output = new Arg(3, Mode.REL);
+        var instruction = new OutputInstruction(output);
 
-        mockMemory.Setup(x => x.Read(inputs[0])).Returns(42);
+        mockMemory.Setup(x => x.Read(output)).Returns(42);
 
         // Act
         sut.ExecuteInstruction(instruction);
@@ -231,10 +240,10 @@ public class ALUTests
     public void ExecuteOutput_PreservesOrder()
     {
         // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS) };
-        var instruction = new Instruction(Op.OUT, inputs);
+        var output = new Arg(3, Mode.REL);
+        var instruction = new OutputInstruction(output);
 
-        mockMemory.SetupSequence(x => x.Read(inputs[0]))
+        mockMemory.SetupSequence(x => x.Read(output))
             .Returns(1)
             .Returns(2)
             .Returns(3);
@@ -256,10 +265,10 @@ public class ALUTests
     public void ExecuteUpdateRelBase()
     {
         // Arrange
-        var inputs = new[] { new Arg(1, Mode.POS) };
-        var instruction = new Instruction(Op.ADJ_REL_BASE, inputs);
+        var output = new Arg(3, Mode.REL);
+        var instruction = new AdjustRelativeBaseInstruction(output);
 
-        mockMemory.Setup(x => x.Read(inputs[0])).Returns(42);
+        mockMemory.Setup(x => x.Read(output)).Returns(42);
 
         // Act
         sut.ExecuteInstruction(instruction);
@@ -272,8 +281,7 @@ public class ALUTests
     public void ExecuteHalt()
     {
         // Arrange
-        var inputs = new Arg[] { };
-        var instruction = new Instruction(Op.HALT, inputs);
+        var instruction = new HaltInstruction();
 
         // Act
         Assert.False(state.IsHalted);

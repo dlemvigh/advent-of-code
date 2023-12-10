@@ -35,21 +35,25 @@ namespace AdventOfCode2019.Intcode
                 (Mode)(opcode / 10000 % 10)
             };
 
-            var argLength = GetArgLength(op);
-            var inputLength = GetInputLength(op);
-            var hasOutput = GetHasOutput(op);
-
-            var args = Enumerable.Range(0, GetArgLength(op)).Select(index =>
-            {
+            var arg = (int index) => {
                 var adr = memory.ReadPos(state.MemoryAddress + index + 1);
                 var mode = modes[index];
                 return new Arg(adr, mode);
-            });
+            };
 
-            var inputs = args.Take(inputLength).ToArray();
-            var output = hasOutput ? args.Last() : null;
-            
-            return new Instruction(op, inputs, output);
+            switch (op) {
+                case Op.ADD: return new AddInstruction(arg(0), arg(1), arg(2));
+                case Op.MUL: return new MultiplyInstruction(arg(0), arg(1), arg(2));
+                case Op.IN: return new InputInstruction(arg(0));
+                case Op.OUT: return new OutputInstruction(arg(0));
+                case Op.JUMP_TRUE: return new JumpTrueInstruction(arg(0), arg(1));
+                case Op.JUMP_FALSE: return new JumpFalseInstruction(arg(0), arg(1));
+                case Op.LESS: return new LessThanInstruction(arg(0), arg(1), arg(2));
+                case Op.EQUAL: return new EqualToInstruction(arg(0), arg(1), arg(2));
+                case Op.ADJ_REL_BASE: return new AdjustRelativeBaseInstruction(arg(0));
+                case Op.HALT: return new HaltInstruction();
+                default: throw new ArgumentException("Unknown operation");
+            }
         }
 
         public int GetInputLength(Op op)
@@ -71,26 +75,6 @@ namespace AdventOfCode2019.Intcode
                     return 0;
                 default: throw new ArgumentException("Unknown op", nameof(op));
             }
-        }
-
-        public bool GetHasOutput(Op op) {
-            switch(op)
-            {
-                case Op.ADD:
-                case Op.MUL:
-                case Op.LESS:
-                case Op.EQUAL:
-                case Op.IN:
-                    return true;
-                case Op.JUMP_TRUE:
-                case Op.JUMP_FALSE:
-                case Op.OUT:
-                case Op.ADJ_REL_BASE:
-                case Op.HALT:
-                    return false;
-                default: throw new ArgumentException("Unknown op", nameof(op));
-            }
-
         }
 
         public int GetArgLength(Op op)
@@ -116,7 +100,7 @@ namespace AdventOfCode2019.Intcode
         }
 
         public int GetInstructionWidth(Instruction inst) {
-            return 1 + inst.inputs.Length + (inst.output == null ? 0 : 1);
+            return 1 + GetArgLength(inst.Op);
         }
     }
 }

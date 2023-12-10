@@ -9,7 +9,9 @@ public class MemoryTests
 {
     private Memory CreateTestMemory(string program, int relBase = 0)
     {
-        return new Memory(program, new State { RelativeBase = relBase });
+        var state = new State(RelativeBase: relBase);
+        var memory = new Memory(program, state);
+        return memory;
     }
 
     [Theory]
@@ -52,8 +54,7 @@ public class MemoryTests
     [InlineData(5, -5, 0)] // Test UpdateRelBase
     public void UpdateRelBase_ShouldUpdateRelativeBase(int initialBase, int value, int expectedBase)
     {
-        var memory = CreateTestMemory("1 2 3 4");
-        memory.State.RelativeBase = initialBase;
+        var memory = CreateTestMemory("1 2 3 4", initialBase);
         memory.UpdateRelBase(value);
         Assert.Equal(expectedBase, memory.State.RelativeBase);
     }

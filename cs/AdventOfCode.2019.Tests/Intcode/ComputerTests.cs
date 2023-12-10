@@ -28,7 +28,7 @@ public class ComputerTests
     public void RunTillHalt_WhenCalled_StopsAtHaltInstruction()
     {
         // Arrange
-        var instruction = new Instruction( Op.HALT, new Arg[]{ } );
+        var instruction = new HaltInstruction();
         mockParser.Setup(p => p.ParseNextInstruction()).Returns(instruction);
 
         // Act
@@ -43,17 +43,17 @@ public class ComputerTests
     {
       // Arrange
       mockParser.SetupSequence(p => p.ParseNextInstruction())
-        .Returns(new Instruction( Op.ADD, new Arg[]{ } ))
-        .Returns(new Instruction( Op.MUL, new Arg[]{ } ))
-        .Returns(new Instruction( Op.IN, new Arg[]{ } ))
-        .Returns(new Instruction( Op.OUT, new Arg[]{ } ))
-        .Returns(new Instruction( Op.JUMP_TRUE, new Arg[]{ } ))
-        .Returns(new Instruction( Op.JUMP_FALSE, new Arg[]{ } ))
-        .Returns(new Instruction( Op.LESS, new Arg[]{ } ))
-        .Returns(new Instruction( Op.EQUAL, new Arg[]{ } ))
-        .Returns(new Instruction( Op.ADJ_REL_BASE, new Arg[]{ } ))
-        .Returns(new Instruction( Op.HALT, new Arg[]{ } ))
-        .Returns(new Instruction( Op.HALT, new Arg[]{ } ));
+        .Returns(new AddInstruction(It.IsAny<Arg>(), It.IsAny<Arg>(), It.IsAny<Arg>()))
+        .Returns(new MultiplyInstruction(It.IsAny<Arg>(), It.IsAny<Arg>(), It.IsAny<Arg>()))
+        .Returns(new InputInstruction(It.IsAny<Arg>() ))
+        .Returns(new OutputInstruction(It.IsAny<Arg>() ))
+        .Returns(new JumpTrueInstruction(It.IsAny<Arg>(), It.IsAny<Arg>() ))
+        .Returns(new JumpFalseInstruction(It.IsAny<Arg>(), It.IsAny<Arg>()))
+        .Returns(new LessThanInstruction(It.IsAny<Arg>(), It.IsAny<Arg>(), It.IsAny<Arg>()))
+        .Returns(new EqualToInstruction(It.IsAny<Arg>(), It.IsAny<Arg>(), It.IsAny<Arg>()))
+        .Returns(new AdjustRelativeBaseInstruction(It.IsAny<Arg>() ))
+        .Returns(new HaltInstruction())
+        .Returns(new HaltInstruction());
 
       // Act
       sut.RunTillHalt();
@@ -66,7 +66,7 @@ public class ComputerTests
     public void RunTillHaltOrOutput_WhenCalled_StopsAtHaltInstruction()
     {
         // Arrange
-        var instruction = new Instruction( Op.HALT, new Arg[]{ } );
+        var instruction = new HaltInstruction();
         mockParser.Setup(p => p.ParseNextInstruction()).Returns(instruction);
 
         // Act
@@ -80,7 +80,7 @@ public class ComputerTests
     public void RunTillHaltOrOutput_WhenCalled_StopsAtOutInstruction()
     {
         // Arrange
-        var instruction = new Instruction( Op.OUT, new Arg[]{ } );
+        var instruction = new HaltInstruction();
         mockParser.Setup(p => p.ParseNextInstruction()).Returns(instruction);
 
         // Act
