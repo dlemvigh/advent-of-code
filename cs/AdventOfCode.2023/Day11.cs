@@ -7,37 +7,93 @@ using AdventOfCode.Shared;
 
 namespace AdventOfCode.Y2022
 {
-    [ProblemName("")]
+    [ProblemName("Cosmic Expansion")]
     public class Day11
     {
-        public int Part1(string input)
+        private Dictionary<(long, long), long> rowCache = new Dictionary<(long, long), long>();
+        private Dictionary<(long, long), long> colCache = new Dictionary<(long, long), long>();
+
+        public long Part1(string input)
+        { 
+            return GetAllGalaxyDistances(input, 1);
+        }
+
+        public long Part2(string input)
+        {
+            return GetAllGalaxyDistances(input, 999999);
+        }
+
+
+        public long GetAllGalaxyDistances(string input, long multipier = 1)
         {
             var universe = ParseInput(input);
 
+            var emptyRows = FindEmptyRows(universe);
+            var emptyColumns = FindEmptyColumns(universe);
+
             // Expand galaxy
-            var expandedUniverse = ExpandUniverse(universe);
+            //var expandedUniverse = ExpandUniverse(universe);
 
             // Find galaxies
-            var galaxies = FindGalaxies(expandedUniverse);
+            var galaxies = FindGalaxies(universe);
 
-            var distances = FindDistances(galaxies);
+            var distances = FindDistances(galaxies, emptyRows, emptyColumns, multipier).ToList();
 
             return distances.Sum();
         }
 
-        public IEnumerable<int> FindDistances(IEnumerable<Galaxy> galaxies)
+        public IEnumerable<long> FindDistances(IEnumerable<Galaxy> galaxies, IEnumerable<int> emptyRows, IEnumerable<int> emptyCols, long multiplier)
         {
             var galaxyList = galaxies.ToList();
-            for (int i = 0; i < galaxyList.Count; i++)
+            for (var i = 0; i < galaxyList.Count; i++)
             {
-                for (int j = i + 1; j < galaxyList.Count; j++)
+                for (var j = i + 1; j < galaxyList.Count; j++)
+                {
+                    yield return FindDistance(galaxyList[i], galaxyList[j], emptyRows, emptyCols, multiplier);
+                }
+            }
+        }
+
+        public IEnumerable<long> FindDistances(IEnumerable<Galaxy> galaxies)
+        {
+            var galaxyList = galaxies.ToList();
+            for (var i = 0; i < galaxyList.Count; i++)
+            {
+                for (var j = i + 1; j < galaxyList.Count; j++)
                 {
                     yield return FindDistance(galaxyList[i], galaxyList[j]);
                 }
             }
         }
 
-        public int FindDistance(Galaxy a, Galaxy b)
+        public long FindDistance(Galaxy a, Galaxy b, IEnumerable<int> emptyRows, IEnumerable<int> emptyCols, long multiplier)
+        {
+            long rowDistance = Math.Abs(a.row - b.row);
+            long colDistance = Math.Abs(a.col - b.col);
+
+            var rowEmpty = GetEmpty(a.row, b.row, emptyRows, rowCache);
+            var colEmpty = GetEmpty(a.col, b.col, emptyCols, colCache);
+
+            rowDistance += multiplier * rowEmpty;
+            colDistance += multiplier * colEmpty;
+            var distance = rowDistance + colDistance;
+
+            return distance;
+        }
+
+        public long GetEmpty(long a, long b, IEnumerable<int> empty, IDictionary<(long, long), long> cache)
+        {
+            if (cache.TryGetValue((a, b), out var cached))
+            {
+                return cached;
+            }
+
+            var dist = empty.Where(e => Math.Min(a, b) < e && e < Math.Max(a, b)).Count();
+            cache[(a, b)] = dist;
+            return dist;
+        }
+
+        public long FindDistance(Galaxy a, Galaxy b)
         {
             return Math.Abs(a.row - b.row) + Math.Abs(a.col - b.col);
         }
@@ -109,19 +165,11 @@ namespace AdventOfCode.Y2022
             return newUniverse.ToArray();
         }
 
-
-
-        public int Part2(string input)
-        {
-            var parsed = ParseInput(input);
-            throw new NotImplementedException();
-        }
-
         public string[] ParseInput(string input)
         {
             return input.Split("\n");
         }
 
-        public record Galaxy(int row, int col);
+        public record Galaxy(long row, long col);
     }
 }

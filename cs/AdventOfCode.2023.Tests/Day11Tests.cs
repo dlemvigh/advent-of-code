@@ -13,33 +13,24 @@ namespace AdventOfCode2023.Tests
     {
 
         [Theory]
-        [FileTestData("Day11/sample.in", 374)]
-        [FileTestData("Day11/input.in", 9693756)]
-        public void Part1(string input, int expected)
+        // Part 1
+        [FileTestData("Day11/sample.in", 1, 374)]
+        [FileTestData("Day11/input.in", 1, 9693756)]
+        // Part 2
+        [FileTestData("Day11/sample.in", 9, 1030)]
+        [FileTestData("Day11/sample.in", 99, 8410)]
+        [FileTestData("Day11/input.in", 999999L, 717878258016L)]
+        public void GetAllGalaxyDistances(string input, long multiplier, long expected)
         {
             // arrange 
             var sut = new Day11();
 
             // act
-            var actual = sut.Part1(input);
+            var actual = sut.GetAllGalaxyDistances(input, multiplier);
 
             // assert
             Assert.Equal(expected, actual);
         }
 
-        //[Theory]
-        //[FileTestData("Day11/sample.in", 4)]
-        //[FileTestData("Day11/input.in", 41)]
-        //public void Part2(string input, int expected)
-        //{
-        //    // arrange 
-        //    var sut = new Day11();
-
-        //    // act
-        //    var actual = sut.Part2(input);
-
-        //    // assert
-        //    Assert.Equal(expected, actual);
-        //}
     }
 }
