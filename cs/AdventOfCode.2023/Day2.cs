@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -85,7 +85,7 @@ namespace AdventOfCode.Y2022
         public record Game
         {
             public int ID { get; init; }
-            public IEnumerable<Draw> Draws { get; init; }
+            public IEnumerable<Draw> Draws { get; init; } = Enumerable.Empty<Draw>();
         }
 
         public record Draw

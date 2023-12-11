@@ -29,9 +29,9 @@ namespace AdventOfCode.Y2022
         public int FollowSteps(string steps, Dictionary<string, Node> nodes, string src, string dest)
         {
             var count = 0;
-            var node = nodes[src];
+            var node = nodes[src] ?? throw new ArgumentException("Unable to find src node", nameof(src));
 
-            while (node.Name != dest)
+            while (node!.Name != dest)
             {
                 if (steps[count % steps.Length] == 'L')
                 {
@@ -94,11 +94,11 @@ namespace AdventOfCode.Y2022
         {
             if (step == 'L')
             {
-                return node.Left;
+                return node.Left ?? throw new ArgumentException("Node does not have a left child");
             }
             else
             {
-                return node.Right;
+                return node.Right ?? throw new ArgumentException("Node does not have a right child");
             }
         }   
 
@@ -137,7 +137,7 @@ namespace AdventOfCode.Y2022
 
             foreach (var info in parsed)
             {
-               nodes.Add(info.name, new Node(info.name));
+               nodes.Add(info.name, new Node { Name = info.name });
             }
             foreach (var info in parsed)
             {
@@ -161,14 +161,9 @@ namespace AdventOfCode.Y2022
 
         public class Node
         {
-            public string Name { get; init; }
-            public Node Left { get; set; }
-            public Node Right { get; set; }
-
-            public Node(string name)
-            {
-                Name = name;
-            }
+            public required string Name { get; init; }
+            public Node? Left { get; set; }
+            public Node? Right { get; set; }
         }
     }
 }
