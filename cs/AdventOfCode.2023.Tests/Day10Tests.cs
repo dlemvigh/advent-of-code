@@ -32,7 +32,7 @@ namespace AdventOfCode2023.Tests
         [Theory]
         [FileTestData("Day10/sample1.in", 4)]
         [FileTestData("Day10/sample2.in", 8)]
-        [FileTestData("Day10/input.in", 23)]
+        [FileTestData("Day10/input.in", 7173)]
         public void Part1(string input, int expected)
         {
             // arrange 
@@ -45,23 +45,25 @@ namespace AdventOfCode2023.Tests
             Assert.Equal(expected, actual);
         }
 
-        //[Theory]
-        //[InlineData("1", 1)]
-        //[InlineData("1\n2", 2)]
-        //[InlineData("1\n2\n\n0", 0)]
-        //[InlineData("1\n2\n\n9", 9)]
-        //[FileTestData("Day_/sample.in", 4)]
-        //[FileTestData("Day_/input.in", 41)]
-        //public void Part2(string input, int expected)
-        //{
-        //    // arrange 
-        //    var sut = new Day10();
+        [Theory]
+        [FileTestData("Day10/sample1.in", 1 )]
+        [FileTestData("Day10/sample2.in", 1)]
+        [FileTestData("Day10/sample3.in", 4)]
+        [FileTestData("Day10/sample4.in", 8)]
+        [FileTestData("Day10/sample5.in", 4)]
+        [FileTestData("Day10/sample6.in", 4)]
+        [FileTestData("Day10/sample7.in", 1)]
+        [FileTestData("Day10/input.in", 291)] // 284 too low
+        public void Part2(string input, int expected)
+        {
+            // arrange 
+            var sut = new Day10();
 
-        //    // act
-        //    var actual = sut.Part2(input);
+            // act
+            var actual = sut.Part2(input);
 
-        //    // assert
-        //    Assert.Equal(expected, actual);
-        //}
+            // assert
+            Assert.Equal(expected, actual);
+        }
     }
 }

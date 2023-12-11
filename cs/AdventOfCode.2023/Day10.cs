@@ -12,39 +12,24 @@ namespace AdventOfCode.Y2022
     {
         public int Part1(string input)
         {
-            // Parse input into list of strings
             var lines = ParseInput(input);
 
-            // Find S in input
             var start = FindStart(lines);
 
-            // Follow pipes until you get back to S
-            var state = FollowPipes(start, lines);
+            var result = FollowPipes(start, lines);
 
-            if (state != null)
-            {
-                return state.Steps / 2;
-            }
-
-            // Count number of steps
-            // Might be dead end
-
-            // state 
-            // current position (row, col)
-            // current direction (up, down, left, right) (drow, dcol)
-            // steps taken
-            // initial state
-            // current position = S
-            // current direction = down
-            // steps taken = 0
-
-            throw new NotImplementedException();
+            return result.state.steps / 2;
         }
 
         public int Part2(string input)
         {
-            var parsed = ParseInput(input);
-            throw new NotImplementedException();
+            var lines = ParseInput(input);
+
+            var start = FindStart(lines);
+
+            var result = FollowPipes2(start, lines);
+
+            return result;
         }
 
         public string[] ParseInput(string input)
@@ -52,49 +37,120 @@ namespace AdventOfCode.Y2022
             return input.Split("\n");
         }
 
-        public State FollowPipes((int row, int col) start, string[] lines)
+        public int FollowPipes2((int row, int col) start, string[] lines)
         {
-            var dirs = new[] { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
+            // Follow path again
+            // look for enclosed tiles, to the "right" of path
+            // if tile to the right is enclosed
+            // flood fill to find enclosed tiles
+            // add to hashset
+            // compare hashPath and enclosed to find all tiles
+            // return size of enclosed tiles
+
+            var result = FollowPipes(start, lines);
+            var hashPath = result.meta.path.ToHashSet();
+            var count = FollowPipes2(start, lines, result.meta.dir, hashPath);
+            return count;
+        }
+
+        public int FollowPipes2((int row, int col) start, string[] lines, Direction dir, HashSet<(int row, int col)> path)
+        {
+            var state = new State(start.row, start.col, dir, 0);
+            var enclosed = new HashSet<(int row, int col)>();
+
+            while (state.steps == 0 || lines[state.row][state.col] != 'S')
+            {
+                try
+                {
+                    state = FollowPipe(state, lines);
+                    var tile = lines[state.row][state.col];
+                    // look to the right
+                    var toTheRight = GetPositionsToTheRight(state.row, state.col, state.dir, tile);
+                    foreach(var pos in toTheRight)
+                    {
+                        FloodFill(pos, path, enclosed);
+                    }
+                }
+                catch (Exception)
+                {
+                    return -1;
+                }
+            }
+            return enclosed.Count;
+        }
+
+        /// <summary>
+        /// Recursively looks around the tile to find enclosed tiles
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="path"></param>
+        /// <param name="enclosed"></param>
+        public void FloodFill((int row, int col) pos, HashSet<(int row, int col)> path, HashSet<(int row, int col)> enclosed)
+        {
+            if (enclosed.Contains(pos) || path.Contains(pos))
+            {
+                return;
+            }
+            enclosed.Add(pos);
+
+            // Recursively call FloodFill on the neighboring tiles
+            FloodFill((pos.row - 1, pos.col), path, enclosed); // Up
+            FloodFill((pos.row + 1, pos.col), path, enclosed); // Down
+            FloodFill((pos.row, pos.col - 1), path, enclosed); // Left
+            FloodFill((pos.row, pos.col + 1), path, enclosed); // Right
+        }
+
+
+        public (State state, Meta meta) FollowPipes((int row, int col) start, string[] lines)
+        {
+            var dirs = new[] { 
+                Direction.Right,
+                Direction.Down,
+                Direction.Left,
+                Direction.Up // technically 4th check is not needed, a prior check will always have succeeded, if  there is a valid solution
+            };
             foreach (var dir in dirs)
             {
-                var state = FollowPipes(start, lines, dir);
-                if (state != null)
+                var result = FollowPipes(start, lines, dir);
+                if (result.HasValue)
                 {
-                    return state;
+                    return result.Value;
                 }
             }
             throw new Exception("Could not find end");
         }
 
-        public State? FollowPipes((int row, int col) start, string[] lines, Direction dir)
+        public (State state , Meta meta)? FollowPipes((int row, int col) start, string[] lines, Direction dir)
         {
+            var meta = new Meta(new List<(int, int)>(), dir);
             var state = new State(start.row, start.col, dir, 0);
-            while (state.Steps == 0 || lines[state.Row][state.Col] != 'S')
+            while (state.steps == 0 || lines[state.row][state.col] != 'S')
             {
                 try
                 {
+                    meta.path.Add((state.row, state.col));
                     state = FollowPipe(state, lines);
-                } catch (Exception e)
+                } catch (Exception)
                 {
                     return null;
                 }
             }
-            return state;
+            return (state, meta);
 
         }
 
         public State FollowPipe(State state, string[] lines)
         {
-            var (row, col) = GetNextPosition(state.Row, state.Col, state.Dir);
+            var (row, col) = GetNextPosition(state.row, state.col, state.dir);
             var pipe = lines[row][col];
-            var steps = state.Steps + 1;
+            var steps = state.steps + 1;
 
             if (pipe == 'S')
             {
-                return new State(row, col, state.Dir, steps);
+                return new State(row, col, state.dir, steps);
             }
 
-            var dir = GetNextDirection(pipe, state.Dir);
+            var dir = GetNextDirection(pipe, state.dir);
             var next = new State(row, col, dir, steps);
             return next;
         }
@@ -171,6 +227,58 @@ namespace AdventOfCode.Y2022
             };
         }
 
+        public (int row, int col) GetPositionBehind(int row, int col, Direction dir)
+        {
+            return dir switch
+            {
+                Direction.Up => (row + 1, col),
+                Direction.Down => (row - 1, col),
+                Direction.Left => (row, col + 1),
+                Direction.Right => (row, col - 1),
+                _ => throw new NotImplementedException()
+            };
+        }
+        public IEnumerable<(int row, int col)> GetPositionsToTheRight(int row, int col, Direction dir, char tile)
+        {
+            switch (tile, dir)
+            {
+                // straight
+                case ('-', _):
+                case ('|', _):
+                    yield return GetPositionToTheRight(row, col, dir);
+                    break;
+                // inside/concave corner
+                case ('J', Direction.Up):
+                case ('7', Direction.Left):
+                case ('F', Direction.Down):
+                case ('L', Direction.Right):
+                    yield return GetPositionToTheRight(row, col, dir);
+                    yield return GetPositionBehind(row, col, dir);
+                    break;
+                // outside/convext corner
+                case ('J', _):
+                case ('7', _):
+                case ('F', _):
+                case ('L', _):
+                // start
+                case ('S', _):
+                    break;
+                default:
+                    throw new ArgumentException($"Unknown tile {tile}", nameof(tile));
+            }
+        }
+
+        public (int row, int col) GetPositionToTheRight(int row, int col, Direction dir)
+        {
+            return dir switch
+            {
+                Direction.Up => GetNextPosition(row, col, Direction.Right),
+                Direction.Right => GetNextPosition(row, col, Direction.Down),
+                Direction.Down => GetNextPosition(row, col, Direction.Left),
+                Direction.Left => GetNextPosition(row, col, Direction.Up),
+                _ => throw new NotImplementedException()
+            };
+        }
         public (int row, int col) GetNextPosition(int row, int col, Direction dir)
         {
             return dir switch
@@ -183,6 +291,7 @@ namespace AdventOfCode.Y2022
             };
         }
 
-        public record State(int Row, int Col, Direction Dir, int Steps);
+        public record State(int row, int col, Direction dir, int steps);
+        public record Meta (List<(int row, int col)> path, Direction dir);
     }
 }
