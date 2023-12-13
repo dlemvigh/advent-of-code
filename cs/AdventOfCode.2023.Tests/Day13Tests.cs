@@ -57,22 +57,24 @@ namespace AdventOfCode2023.Tests
         }
 
         [Theory]
-        [InlineData(1, 0, 0)]
-        [InlineData(1, 1, 1)]
-        [InlineData(-1, 1, 2)]
-        [InlineData(1, 42, 42)]
-        [InlineData(1, 0, 0, 1)]
-        [InlineData(2, 0, 1, 1)]
-        [InlineData(2, 0, 1, 1, 0)]
-        [InlineData(2, 2, 1, 1, 2)]
-        public void GetReflection(int expected, params int[] values)
+        [InlineData(1, null, 0, 0)]
+        [InlineData(1, null, 1, 1)]
+        [InlineData(-1, null, 1, 2)]
+        [InlineData(1, null, 42, 42)]
+        [InlineData(1, null, 0, 0, 1)]
+        [InlineData(2, null, 0, 1, 1)]
+        [InlineData(2, null, 0, 1, 1, 0)]
+        [InlineData(2, null, 2, 1, 1, 2)]
+        [InlineData(1, null, 0, 0, 0)]
+        [InlineData(2, 1, 0, 0, 0)]
+        public void GetReflection(int expected, int? ignore, params int[] values)
         {
             // arrange 
             var input = values.Select(x => (long) x);
             var sut = new Day13();
 
             // act
-            var actual = sut.GetReflection(input);
+            var actual = sut.GetReflection(input, ignore);
 
             // assert
             Assert.Equal(expected, actual);
@@ -93,9 +95,9 @@ namespace AdventOfCode2023.Tests
             Assert.Equal(expected, actual);
         }
 
-        [Theory(Skip = "NYI")]
-        [FileTestData("Day13/sample.in", 4)]
-        [FileTestData("Day13/input.in", 41)]
+        [Theory]
+        [FileTestData("Day13/sample.in", 400)]
+        [FileTestData("Day13/input.in", 31603)] // 22044 too low // 28832 too low
         public void Part2(string input, int expected)
         {
             // arrange 
