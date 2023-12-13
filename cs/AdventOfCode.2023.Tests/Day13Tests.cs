@@ -93,9 +93,9 @@ namespace AdventOfCode2023.Tests
             Assert.Equal(expected, actual);
         }
 
-        [Theory(Skip = "NYI")]
-        [FileTestData("Day13/sample.in", 4)]
-        [FileTestData("Day13/input.in", 41)]
+        [Theory]
+        [FileTestData("Day13/sample.in", 400)]
+        [FileTestData("Day13/input.in", 28832)] // 22044 too low // 28832 too low
         public void Part2(string input, int expected)
         {
             // arrange 

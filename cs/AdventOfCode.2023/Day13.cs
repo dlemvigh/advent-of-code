@@ -13,27 +13,86 @@ namespace AdventOfCode.Y2022
         public int Part1(string input)
         {
             var parsed = ParseInput(input);
-            var hashed = parsed.Select(HashImage);
-            var reflections = hashed.Select(GetReflectionId);
+            var reflections = parsed.Select(GetReflectionId);
             return reflections.Sum();
         }
 
         public int Part2(string input)
         {
             var parsed = ParseInput(input);
-            throw new NotImplementedException();
+            var reflections = parsed.Select(GetFixedReflectionId).ToList();
+            return reflections.Sum();
+        }
+        public int GetFixedReflectionId(Image image)
+        {
+            var oldReflections = GetReflections(image);
+            foreach(var flipped in GetAllImages(image))
+            {
+                var newReflections = GetReflections(flipped, oldReflections);
+
+                var flippedId = TryGetNewReflection(oldReflections, newReflections);
+
+                if (flippedId != -1)
+                    return flippedId;
+            }
+            throw new InvalidOperationException("Unable to fix reflection");
         }
 
-        public int GetReflectionId(HashedImage image)
+        public int TryGetNewReflection((int row, int col) oldReflections, (int row, int col) newReflections)
         {
-            var row = GetReflection(image.rows);
-            var col = GetReflection(image.columns);
+            if (newReflections.row == -1 && newReflections.col == -1) return -1;
+
+            if (oldReflections.row != newReflections.row) return newReflections.row * 100;
+            if (oldReflections.col != newReflections.col) return newReflections.col;
+
+            return -1;
+        }
+
+        public IEnumerable<Image> GetAllImages(Image image)
+        {
+            for (var row = 0; row < image.rows.Length; row++)
+            {
+                for (var col = 0; col < image.rows[row].Length; col++)
+                {
+                    yield return FlipPixel(image, row, col);
+                }
+            }
+        }
+
+        public Image FlipPixel(Image image, int r, int c)
+        {
+            var rows = image.rows.Select((row, rowIndex) =>
+            {
+                var chars = row.Select((col, colIndex) =>
+                {
+                    if (r == rowIndex && c == colIndex)
+                        return col == '.' ? '#' : '.';
+                    else                         
+                        return col;
+                });
+                return new string(chars.ToArray());
+            });
+            return new Image(rows.ToArray());
+        }
+
+        public (int, int) GetReflections(Image image, (int row, int col)? oldReflections = null)
+        {
+            var hashed = HashImage(image);
+            var row = GetReflection(hashed.rows, oldReflections?.row);
+            var col = GetReflection(hashed.columns, oldReflections?.col);
+
+            return (row, col);
+        }
+
+        public int GetReflectionId(Image image)
+        {
+            var (row, col) = GetReflections(image);
 
             if (row == -1) return col;
             if (col == -1) return row * 100;
 
             return -1;
-        }
+        }   
 
         public HashedImage HashImage(Image image)
         {
@@ -63,11 +122,14 @@ namespace AdventOfCode.Y2022
             return new Image(rows);
         }
 
-        public int GetReflection(IEnumerable<long> values)
+        public int GetReflection(IEnumerable<long> values, int? ignore = null)
         {
             for (var i = 1; i < values.Count(); i++)
             {
-                if (IsReflectionAt(values, i))
+                var isIgnored = ignore.HasValue && ignore.Value == i;
+                var isReflection = IsReflectionAt(values, i);
+
+                if (isReflection && !isIgnored)
                     return i;
             }
             return -1;
