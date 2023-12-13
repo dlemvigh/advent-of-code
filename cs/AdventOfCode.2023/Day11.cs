@@ -54,18 +54,6 @@ namespace AdventOfCode.Y2022
             }
         }
 
-        public IEnumerable<long> FindDistances(IEnumerable<Galaxy> galaxies)
-        {
-            var galaxyList = galaxies.ToList();
-            for (var i = 0; i < galaxyList.Count; i++)
-            {
-                for (var j = i + 1; j < galaxyList.Count; j++)
-                {
-                    yield return FindDistance(galaxyList[i], galaxyList[j]);
-                }
-            }
-        }
-
         public long FindDistance(Galaxy a, Galaxy b, IEnumerable<int> emptyRows, IEnumerable<int> emptyCols, long multiplier)
         {
             long rowDistance = Math.Abs(a.row - b.row);
@@ -93,11 +81,6 @@ namespace AdventOfCode.Y2022
             return dist;
         }
 
-        public long FindDistance(Galaxy a, Galaxy b)
-        {
-            return Math.Abs(a.row - b.row) + Math.Abs(a.col - b.col);
-        }
-
         private IEnumerable<Galaxy> FindGalaxies(string[] expandedUniverse)
         {
             var galaxies = new List<Galaxy>();
@@ -115,16 +98,6 @@ namespace AdventOfCode.Y2022
             return galaxies;
         }
 
-        public string[] ExpandUniverse(string[] universe)
-        {
-            var emptyColumns = FindEmptyColumns(universe);
-            var emptyRows = FindEmptyRows(universe);
-
-            universe = ExpandColumns(universe, emptyColumns);
-            universe = ExpandRows(universe, emptyRows);
-
-            return universe;
-        }
 
         public IEnumerable<int> FindEmptyColumns(string[] universe)
         {
@@ -138,31 +111,6 @@ namespace AdventOfCode.Y2022
                 .Select((row, index) => (row, index))
                 .Where(x => x.row.All(c => c == '.'))
                 .Select(x => x.index);
-        }
-
-        public string[] ExpandColumns(string[] universe, IEnumerable<int> emptyColumns)
-        {
-            var expanded = universe.Select(row =>
-            {
-                var newRow = new StringBuilder(row);
-                foreach (var emptyColumn in emptyColumns.OrderByDescending(x => x))
-                {
-                    newRow.Insert(emptyColumn, '.');
-                }
-                return newRow.ToString();
-            });
-
-            return expanded.ToArray();
-        }
-
-        public string[] ExpandRows(string[] universe, IEnumerable<int> emptyRows)
-        {
-            var newUniverse = new List<string>(universe);
-            foreach (var emptyRow in emptyRows.OrderByDescending(x => x))
-            {
-                newUniverse.Insert(emptyRow, new string('.', universe[0].Length));
-            }
-            return newUniverse.ToArray();
         }
 
         public string[] ParseInput(string input)
