@@ -26,14 +26,16 @@ namespace AdventOfCode.Y2022
         public int GetFixedReflectionId(Image image)
         {
             var oldReflections = GetReflections(image);
+
             foreach(var flipped in GetAllImages(image))
             {
                 var newReflections = GetReflections(flipped, oldReflections);
-
                 var flippedId = TryGetNewReflection(oldReflections, newReflections);
 
-                if (flippedId != -1)
+                if (flippedId > -1)
+                {
                     return flippedId;
+                }
             }
             throw new InvalidOperationException("Unable to fix reflection");
         }
@@ -42,8 +44,8 @@ namespace AdventOfCode.Y2022
         {
             if (newReflections.row == -1 && newReflections.col == -1) return -1;
 
-            if (oldReflections.row != newReflections.row) return newReflections.row * 100;
-            if (oldReflections.col != newReflections.col) return newReflections.col;
+            if (newReflections.row != -1 && oldReflections.row != newReflections.row) return newReflections.row * 100;
+            if (newReflections.col != -1 && oldReflections.col != newReflections.col) return newReflections.col;
 
             return -1;
         }
@@ -72,10 +74,10 @@ namespace AdventOfCode.Y2022
                 });
                 return new string(chars.ToArray());
             });
-            return new Image(rows.ToArray());
+            return new Image(rows.ToArray(), (r, c));
         }
 
-        public (int, int) GetReflections(Image image, (int row, int col)? oldReflections = null)
+        public (int row, int col) GetReflections(Image image, (int row, int col)? oldReflections = null)
         {
             var hashed = HashImage(image);
             var row = GetReflection(hashed.rows, oldReflections?.row);
@@ -154,7 +156,7 @@ namespace AdventOfCode.Y2022
             return true;
         }
 
-        public record Image(string[] rows);
+        public record Image(string[] rows, (int row, int col)? flipped = null);
         public record HashedImage(IEnumerable<long> rows, IEnumerable<long> columns);
     }
 }
