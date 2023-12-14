@@ -23,7 +23,8 @@ namespace AdventOfCode.Y2022
         public long Part2(string input)
         {
             var finalCycle = 1000000000L;
-            var seen = new List<string>() { input };
+            var seenSet = new HashSet<string>() { input };
+            var seenList = new List<string>() { input };
             var rocks = ParseInput(input);
             var count = 0;
             while (count < finalCycle)
@@ -31,15 +32,16 @@ namespace AdventOfCode.Y2022
                 rocks = MoveRocksCycle(rocks);
                 input = string.Join("\n", rocks);
 
-                if (seen.Contains(input)) break;
-                seen.Add(input);
+                if (seenSet.Contains(input)) break;
+                seenSet.Add(input);
+                seenList.Add(input);
                 count++;
             }
 
-            var tailLength = seen.IndexOf(input);
-            var loopLength = seen.Count - tailLength;
+            var tailLength = seenList.IndexOf(input);
+            var loopLength = seenSet.Count - tailLength;
             var finalIndex = tailLength + ((finalCycle - tailLength) % loopLength);
-            var final = seen[(int)finalIndex];
+            var final = seenList[(int)finalIndex];
 
             var load = GetRockLoad(ParseInput(final));
             return load;
@@ -105,10 +107,11 @@ namespace AdventOfCode.Y2022
         {
             return lines.Select(x => MoveRocks(x, left)).ToArray();
         }
+        private static readonly Regex RocksAndSpaces = new Regex(@"[\.O]+", RegexOptions.Compiled);
 
         public string MoveRocks(string line, bool left)
         {
-            return Regex.Replace(line, @"[\.O]+", (match) =>
+            return RocksAndSpaces.Replace(line, (match) =>
             {
 
                 var rockCount = CountOccurences(match.Value, 'O');
