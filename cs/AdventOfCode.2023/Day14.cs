@@ -22,31 +22,46 @@ namespace AdventOfCode.Y2022
 
         public long Part2(string input)
         {
+            var rocks = ParseInput(input);
             var finalCycle = 1000000000L;
             var seenSet = new HashSet<string>() { input };
             var seenList = new List<string>() { input };
-            var rocks = ParseInput(input);
-            var count = 0;
-            while (count < finalCycle)
+
+            var isSeenInput = (string input) => seenSet.Contains(input);
+            var addSeenInput = (string input) => { 
+                seenSet.Add(input);
+                seenList.Add(input);
+            };
+            var getLoopSize = (string input) => {
+                var tailLength = seenList.IndexOf(input);
+                var loopLength = seenSet.Count - tailLength;
+                return (tailLength, loopLength);
+            };
+            var getCycleInput = (long index) => {
+                var (tailLength, loopLength) = getLoopSize(input);
+                var finalIndex = tailLength + ((index - tailLength) % loopLength);
+                var final = seenList[(int)finalIndex];
+                return final;
+            };           
+
+            for (var cycleCount = 0; cycleCount < finalCycle; cycleCount++)
             {
                 rocks = MoveRocksCycle(rocks);
                 input = string.Join("\n", rocks);
 
-                if (seenSet.Contains(input)) break;
-                seenSet.Add(input);
-                seenList.Add(input);
-                count++;
+                if (isSeenInput(input)) break;
+
+                addSeenInput(input);
             }
 
-            var tailLength = seenList.IndexOf(input);
-            var loopLength = seenSet.Count - tailLength;
-            var finalIndex = tailLength + ((finalCycle - tailLength) % loopLength);
-            var final = seenList[(int)finalIndex];
+            input = getCycleInput(finalCycle);
+            rocks = ParseInput(input);
 
-            var load = GetRockLoad(ParseInput(final));
+            var load = GetRockLoad(rocks);
+
             return load;
-
         }
+
         public string[] ParseInput(string input)
         {
             return input.Split("\n");
