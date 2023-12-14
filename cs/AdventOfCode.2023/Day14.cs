@@ -22,21 +22,26 @@ namespace AdventOfCode.Y2022
 
         public long Part2(string input)
         {
-            var seen = new HashSet<string> { input };
+            var finalCycle = 1000000000L;
+            var seen = new List<string>() { input };
             var rocks = ParseInput(input);
             var count = 0;
-            while (count < 1000000000L)
+            while (count < finalCycle)
             {
                 rocks = MoveRocksCycle(rocks);
                 input = string.Join("\n", rocks);
 
-                var load2 = GetRockLoad(rocks);
                 if (seen.Contains(input)) break;
                 seen.Add(input);
                 count++;
             }
 
-            var load = GetRockLoad(rocks);
+            var tailLength = seen.IndexOf(input);
+            var loopLength = seen.Count - tailLength;
+            var finalIndex = tailLength + ((finalCycle - tailLength) % loopLength);
+            var final = seen[(int)finalIndex];
+
+            var load = GetRockLoad(ParseInput(final));
             return load;
 
         }

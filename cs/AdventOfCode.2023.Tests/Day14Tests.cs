@@ -89,7 +89,7 @@ namespace AdventOfCode2023.Tests
 
         [Theory]
         [FileTestData("Day14/sample.in", 64)]
-        [FileTestData("Day14/input.in", 41)] // 87286 too high
+        [FileTestData("Day14/input.in", 87273)] // 87286 too high
         public void Part2(string input, int expected)
         {
             // arrange 
