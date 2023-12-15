@@ -8,7 +8,7 @@ using AdventOfCode.Shared;
 
 namespace AdventOfCode.Y2022
 {
-    [ProblemName("")]
+    [ProblemName("Lens Library")]
     public class Day15
     {
         private readonly Dictionary<string, int> cache = new Dictionary<string, int>();
@@ -22,14 +22,17 @@ namespace AdventOfCode.Y2022
 
         public int Part2(string input)
         {
-            var boxes = Enumerable.Range(0, 256).Select(index => new Box(index, new List<LensFocus>())).ToList();
+            var boxes = CreateBoxes();
+            var instructions = ParseInstructions(input);
 
-            var instructions = parseInstructions(input);
             FollowInstructions(boxes, instructions);
 
-            var totalFocusPower = GetTotalFocusPower(boxes);
+            return GetTotalFocusPower(boxes);
+        }
 
-            return totalFocusPower; ;
+        private static List<Box> CreateBoxes()
+        {
+            return Enumerable.Range(0, 256).Select((_) => new Box(new List<LensFocus>())).ToList();
         }
 
         public int GetTotalFocusPower(List<Box> boxes)
@@ -71,7 +74,7 @@ namespace AdventOfCode.Y2022
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    throw new ArgumentException("Unknown instruction", nameof(instruction));
                 }
             }
         }
@@ -107,7 +110,7 @@ namespace AdventOfCode.Y2022
             return input.Split(",");
         }
 
-        public IEnumerable<Instruction> parseInstructions(string input)
+        public IEnumerable<Instruction> ParseInstructions(string input)
         {
             return input.Split(",").Select(ParseInstruction);
         }
@@ -137,6 +140,6 @@ namespace AdventOfCode.Y2022
 
         public record LensFocus(string lens, int focus);
 
-        public record Box(int index, List<LensFocus> lenses);
+        public record Box(List<LensFocus> lenses);
     }
 }
