@@ -81,8 +81,8 @@ namespace AdventOfCode2023.Tests
         }
 
         [Theory]
-        [FileTestData("Day16/sample.in", 4)]
-        [FileTestData("Day16/input.in", 41)]
+        [FileTestData("Day16/sample.in", 51)]
+        [FileTestData("Day16/input.in", 7831)]
         public void Part2(string input, int expected)
         {
             // arrange 

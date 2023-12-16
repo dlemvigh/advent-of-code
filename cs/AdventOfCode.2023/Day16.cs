@@ -13,11 +13,49 @@ namespace AdventOfCode.Y2022
         public int Part1(string input)
         {
             var parsed = ParseInput(input);
-            var init = new Beam(0, 0, Dir.Right);
-            var beams = FollowBeam(parsed, init);
+            var initBeam = new Beam(0, 0, Dir.Right);
+            var beams = FollowBeam(parsed, initBeam);
             var result = GetDistinctPositions(beams);
             return result;
         }
+
+        public int Part2(string input)
+        {
+            var parsed = ParseInput(input);
+            var initBeams = GetAllInitBeams(parsed);
+            var results = initBeams.Select(initBeam =>
+            {
+                var beams = FollowBeam(parsed, initBeam);
+                var result = GetDistinctPositions(beams);
+                return result;
+            });
+            return results.Max();
+        }
+
+        public IEnumerable<Beam> GetAllInitBeams(string[] map)
+        {
+            // top row, going down
+            for (var col = 0; col < map[0].Length; col++)
+            {
+                yield return new Beam(0, col, Dir.Down);
+            }
+            // left col, going right
+            for (var row = 0; row < map.Length; row++)
+            {
+                yield return new Beam(row, 0, Dir.Right);
+            }
+            // right col, going left
+            for (var row = 0; row < map.Length; row++)
+            {
+                yield return new Beam(row, map[row].Length - 1, Dir.Left);
+            }
+            // bottom row, going up
+            for (var col = 0; col < map[0].Length; col++)
+            {
+                yield return new Beam(map.Length - 1, col, Dir.Up);
+            }
+        }
+
 
         public IEnumerable<Beam> FollowBeam(string[] map, Beam init)
         {
@@ -63,12 +101,6 @@ namespace AdventOfCode.Y2022
             }
         }
 
-        public int Part2(string input)
-        {
-            var parsed = ParseInput(input);
-            throw new NotImplementedException();
-
-        }
         public string[] ParseInput(string input)
         {
             return input.Split("\n");
