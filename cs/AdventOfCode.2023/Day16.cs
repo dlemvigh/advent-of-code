@@ -70,7 +70,7 @@ namespace AdventOfCode.Y2022
                 visited.Add(beam);
 
                 var tile = (Tile) map[beam.row][beam.col];
-                var nextBeams = StepBeam(tile, beam);
+                var nextBeams = GetNextBeams(tile, beam);
                 foreach (var nextBeam in nextBeams)
                 {
                     if (IsInBounds(map, nextBeam.row, nextBeam.col)) { 
@@ -92,7 +92,7 @@ namespace AdventOfCode.Y2022
             return beams.Select(b => (b.row, b.col)).Distinct().Count();
         }
 
-        public IEnumerable<Beam> StepBeam(Tile tile, Beam beam)
+        public IEnumerable<Beam> GetNextBeams(Tile tile, Beam beam)
         {
             foreach(var dir in GetNextDir(tile, beam.dir))
             {
@@ -117,8 +117,8 @@ namespace AdventOfCode.Y2022
         public enum Tile
         {
             Empty = '.',
-            PrismUpDown = '|',
-            PrismLeftRight = '-',
+            PrismVertical = '|',
+            PrismHorizontal = '-',
             MirrorSlash = '/',
             MirrorBackslash = '\\',
         }
@@ -140,19 +140,19 @@ namespace AdventOfCode.Y2022
             switch (tile, dir)
             {
                 case (Tile.Empty, _):
-                case (Tile.PrismUpDown, Dir.Up):
-                case (Tile.PrismUpDown, Dir.Down):
-                case (Tile.PrismLeftRight, Dir.Left):
-                case (Tile.PrismLeftRight, Dir.Right):
+                case (Tile.PrismVertical, Dir.Up):
+                case (Tile.PrismVertical, Dir.Down):
+                case (Tile.PrismHorizontal, Dir.Left):
+                case (Tile.PrismHorizontal, Dir.Right):
                     yield return dir;
                     break;
-                case (Tile.PrismUpDown, Dir.Left):
-                case (Tile.PrismUpDown, Dir.Right):
+                case (Tile.PrismVertical, Dir.Left):
+                case (Tile.PrismVertical, Dir.Right):
                     yield return Dir.Up;
                     yield return Dir.Down;
                     break;
-                case (Tile.PrismLeftRight, Dir.Up):
-                case (Tile.PrismLeftRight, Dir.Down):
+                case (Tile.PrismHorizontal, Dir.Up):
+                case (Tile.PrismHorizontal, Dir.Down):
                     yield return Dir.Left;
                     yield return Dir.Right;
                     break;
