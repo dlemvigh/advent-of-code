@@ -81,7 +81,7 @@ namespace AdventOfCode2023.Tests
             // act
             var edge = sut.ParseEdge(input);
             Assert.NotNull(edge.cond);
-            var actual = edge.cond(part);
+            var actual = edge.cond.test(part);
 
             // assert
             Assert.Equal(expected, actual);

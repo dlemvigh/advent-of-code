@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AdventOfCode.Shared;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AdventOfCode.Y2022
 {
@@ -52,7 +53,7 @@ namespace AdventOfCode.Y2022
             while (states.ContainsKey(state))
             {
                 var edges = states[state].edges;
-                var edge = edges.FirstOrDefault(e => e.cond?.Invoke(part) ?? true);
+                var edge = edges.FirstOrDefault(e => e.cond?.test.Invoke(part) ?? true);
                 if (edge == null)
                     throw new Exception("No matching edge found");
                 state = edge.state;
@@ -102,12 +103,20 @@ namespace AdventOfCode.Y2022
             var op = match.Groups["op"].Value;
             var value = int.Parse(match.Groups["value"].Value);
 
-            switch (op)
+            Func<Part, bool> test = op switch
             {
-                case ("<"): return new Edge(p => p[arg] < value, state);
-                case (">"): return new Edge(p => p[arg] > value, state);
-                default: throw new ArgumentException("Invalid input", nameof(line));
-            }
+                "<" => (p => p[arg] < value),
+                ">" => (p => p[arg] > value),
+                _ => throw new ArgumentException("Invalid input", nameof(line)),
+            };
+
+            return new Edge(
+                new EdgeCond(
+                    arg,
+                    value,
+                    op,
+                    test),
+                state);
         }
 
         private static Regex ParsePartRegex = new Regex(
@@ -135,8 +144,8 @@ namespace AdventOfCode.Y2022
 
         public record State(string name, IEnumerable<Edge> edges);
 
-        public record Edge(Func<Part, bool>? cond, string state);
-        public record EdgeCond(string arg, int? min, int? max);
+        public record Edge(EdgeCond? cond, string state);
+        public record EdgeCond(string arg, int value, string op, Func<Part, bool>  test);
 
         public class Part : Dictionary<string, int> { }
         public record Range(int min, int max);
