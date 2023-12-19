@@ -43,10 +43,6 @@ namespace AdventOfCode.Y2022
 
         public long SumPart(Part p)
         {
-            return p.x + p.m + p.a + p.s;
-        }
-        public long SumPart(PartDict p)
-        {
             return p.Values.Sum();
         }
 
@@ -106,16 +102,10 @@ namespace AdventOfCode.Y2022
             var op = match.Groups["op"].Value;
             var value = int.Parse(match.Groups["value"].Value);
 
-            switch (arg, op)
+            switch (op)
             {
-                case ("x", "<"): return new Edge(p => p.x < value, state);
-                case ("x", ">"): return new Edge(p => p.x > value, state);
-                case ("m", "<"): return new Edge(p => p.m < value, state);
-                case ("m", ">"): return new Edge(p => p.m > value, state);
-                case ("a", "<"): return new Edge(p => p.a < value, state);
-                case ("a", ">"): return new Edge(p => p.a > value, state);
-                case ("s", "<"): return new Edge(p => p.s < value, state);
-                case ("s", ">"): return new Edge(p => p.s > value, state);
+                case ("<"): return new Edge(p => p[arg] < value, state);
+                case (">"): return new Edge(p => p[arg] > value, state);
                 default: throw new ArgumentException("Invalid input", nameof(line));
             }
         }
@@ -134,20 +124,7 @@ namespace AdventOfCode.Y2022
             if (!match.Success)
                 throw new ArgumentException("Invalid input", nameof(line));
 
-            return new Part(
-                int.Parse(match.Groups["x"].Value),
-                int.Parse(match.Groups["m"].Value),
-                int.Parse(match.Groups["a"].Value),
-                int.Parse(match.Groups["s"].Value)
-            );
-        }
-        public PartDict ParsePart2(string line)
-        {
-            var match = ParsePartRegex.Match(line);
-            if (!match.Success)
-                throw new ArgumentException("Invalid input", nameof(line));
-
-            return new PartDict
+            return new Part
             {
                 ["x"] = int.Parse(match.Groups["x"].Value),
                 ["m"] = int.Parse(match.Groups["m"].Value),
@@ -161,8 +138,7 @@ namespace AdventOfCode.Y2022
         public record Edge(Func<Part, bool>? cond, string state);
         public record EdgeCond(string arg, int? min, int? max);
 
-        public record Part(int x, int m, int a, int s);
-        public class PartDict : Dictionary<string, int> { }
+        public class Part : Dictionary<string, int> { }
         public record Range(int min, int max);
     }
 }

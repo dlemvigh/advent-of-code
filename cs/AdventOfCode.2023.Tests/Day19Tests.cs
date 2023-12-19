@@ -18,7 +18,7 @@ namespace AdventOfCode2023.Tests
         public void ParsePart(string input, int x, int m, int a, int s)
         {
             // arrange 
-            var expected = new Part(x, m, a, s);
+            var expected = new Part { ["x"] = x, ["m"] = m, ["a"] = a, ["s"] = s };
             var sut = new Day19();
 
             // act
@@ -50,23 +50,24 @@ namespace AdventOfCode2023.Tests
         {
             get
             {
-                yield return new object[] { "x>0:A", new Part(0, 0, 0, 0), false };
-                yield return new object[] { "x>0:A", new Part(1, 0, 0, 0), true };
-                yield return new object[] { "m>0:A", new Part(0, 0, 0, 0), false };
-                yield return new object[] { "m>0:A", new Part(0, 1, 0, 0), true };
-                yield return new object[] { "a>0:A", new Part(0, 0, 0, 0), false };
-                yield return new object[] { "a>0:A", new Part(0, 0, 1, 0), true };
-                yield return new object[] { "s>0:A", new Part(0, 0, 0, 0), false };
-                yield return new object[] { "s>0:A", new Part(0, 0, 0, 1), true };
+                yield return new object[] { "x>0:A", new Part { ["x"] = 0 }, false };
+                yield return new object[] { "x>0:A", new Part { ["x"] = 1 }, true };
 
-                yield return new object[] { "x<1:A", new Part(0, 0, 0, 0), true };
-                yield return new object[] { "x<1:A", new Part(1, 0, 0, 0), false };
-                yield return new object[] { "m<1:A", new Part(0, 0, 0, 0), true };
-                yield return new object[] { "m<1:A", new Part(0, 1, 0, 0), false };
-                yield return new object[] { "a<1:A", new Part(0, 0, 0, 0), true };
-                yield return new object[] { "a<1:A", new Part(0, 0, 1, 0), false };
-                yield return new object[] { "s<1:A", new Part(0, 0, 0, 0), true };
-                yield return new object[] { "s<1:A", new Part(0, 0, 0, 1), false };
+                yield return new object[] { "m>0:A", new Part { ["m"] = 0 }, false };
+                yield return new object[] { "m>0:A", new Part { ["m"] = 1 }, true };
+                yield return new object[] { "a>0:A", new Part { ["a"] = 0 }, false };
+                yield return new object[] { "a>0:A", new Part { ["a"] = 1 }, true };
+                yield return new object[] { "s>0:A", new Part { ["s"] = 0 }, false };
+                yield return new object[] { "s>0:A", new Part { ["s"] = 1 }, true };
+
+                yield return new object[] { "x<1:A", new Part { ["x"] = 0 }, true };
+                yield return new object[] { "x<1:A", new Part { ["x"] = 1 }, false };
+                yield return new object[] { "m<1:A", new Part { ["m"] = 0 }, true };
+                yield return new object[] { "m<1:A", new Part { ["m"] = 1 }, false };
+                yield return new object[] { "a<1:A", new Part { ["a"] = 0 }, true };
+                yield return new object[] { "a<1:A", new Part { ["a"] = 1 }, false };
+                yield return new object[] { "s<1:A", new Part { ["s"] = 0 }, true };
+                yield return new object[] { "s<1:A", new Part { ["s"] = 1 }, false };
             }
         }
 
