@@ -50,8 +50,37 @@ namespace AdventOfCode.Y2022
 
         public int Part2(string input)
         {
-            var parsed = ParseInput(input);
-            throw new NotImplementedException();
+            var modules = ParseInput(input);
+            var pulses = new Queue<Pulse>();
+
+            var rxPulse = false;
+            var it = 0;
+
+            while(rxPulse == false)
+            {
+                pulses.Enqueue(new Pulse("button", Signal.Low, "broadcaster"));
+                while (pulses.Count > 0)
+                {
+                    var pulse = pulses.Dequeue();
+
+                    if (pulse.dest == "rx" && pulse.signal == Signal.Low)
+                    {
+                        rxPulse = true;
+                    }
+
+                    if (modules.TryGetValue(pulse.dest, out var module))
+                    {
+                        var newPulses = module.Process(pulse);
+                        foreach (var newPulse in newPulses)
+                        {
+                            pulses.Enqueue(newPulse);
+                        }
+                    }
+                }
+                 it++;
+            }
+
+            return it;
 
         }
         public static Regex ParseLineRegex = new Regex(@"(?<type>[%&])?(?<name>\w+) -> (?<out>.*)", RegexOptions.Compiled);
