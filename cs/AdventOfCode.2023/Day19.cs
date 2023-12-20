@@ -84,11 +84,23 @@ namespace AdventOfCode.Y2022
                 var falseRange = new PartRange(nextRange);
                 if (edge.cond.op == ">")
                 {
+                    if (edge.cond.value >= nextRange[edge.cond.arg].max) continue; 
+                    if (edge.cond.value < nextRange[edge.cond.arg].min)
+                    {
+                        yield return (edge.state, nextRange);
+                        break;
+                    }
                     trueRange[edge.cond.arg] = new Range(edge.cond.value + 1, nextRange[edge.cond.arg].max);
                     falseRange[edge.cond.arg] = new Range(nextRange[edge.cond.arg].min, edge.cond.value);
                 }
                 else if (edge.cond.op == "<")
                 {
+                    if (edge.cond.value <= nextRange[edge.cond.arg].min) continue;
+                    if (edge.cond.value > nextRange[edge.cond.arg].max)
+                    {
+                        yield return (edge.state, nextRange);
+                        break;
+                    }
                     trueRange[edge.cond.arg] = new Range(nextRange[edge.cond.arg].min, edge.cond.value - 1);
                     falseRange[edge.cond.arg] = new Range(edge.cond.value, nextRange[edge.cond.arg].max);
                 }
@@ -100,13 +112,7 @@ namespace AdventOfCode.Y2022
                 {
                     yield return (edge.state, trueRange);
                 }
-                if (falseRange[edge.cond.arg].min <= falseRange[edge.cond.arg].max)
-                {
-                    nextRange = falseRange;
-                } else
-                {
-                    break;
-                }
+                nextRange = falseRange;
             }
         }
 
@@ -122,7 +128,7 @@ namespace AdventOfCode.Y2022
 
         public long SumPartRange(PartRange part)
         {
-            return part.Values.Select(x => x.max - x.min + 1).Aggregate(1, (a, b) => a * b);
+            return part.Values.Select(x => x.max - x.min + 1).Aggregate(1L, (a, b) => a * b);
         }
 
         public long SumPart(Part p)

@@ -83,72 +83,78 @@ namespace AdventOfCode2023.Tests
         {
             get
             {
-                //yield return new object[]
-                //{
-                //    new PartRange { ["x"] = new Day19.Range(1, 4000) },
-                //    ParseState("in{x>2000:A,R}"),
-                //    ("A", new PartRange { ["x"] = new Day19.Range(2001, 4000) }),
-                //    ("R", new PartRange { ["x"] = new Day19.Range(1, 2000) })
-                //};
-                //yield return new object[]
-                //{
-                //    new PartRange { ["x"] = new Day19.Range(1, 4000) },
-                //    ParseState("in{x>3000:a,x>2000:b,x>1000:c,d}"),
-                //    ("a", new PartRange { ["x"] = new Day19.Range(3001, 4000) }),
-                //    ("b", new PartRange { ["x"] = new Day19.Range(2001, 3000) }),
-                //    ("c", new PartRange { ["x"] = new Day19.Range(1001, 2000) }),
-                //    ("d", new PartRange { ["x"] = new Day19.Range(0001, 1000) }),
-                //};
-                //yield return new object[]
-                //{
-                //    new PartRange { 
-                //        ["x"] = new Day19.Range(1, 4000),
-                //        ["m"] = new Day19.Range(1, 4000),
-                //        ["a"] = new Day19.Range(1, 4000),
-                //        ["s"] = new Day19.Range(1, 4000)
-                //    },
-                //    ParseState("in{x>2000:a,m>2000:b,a>2000:c,s>2000:d,e}"),
-                //    ("a",
-                //        new PartRange {
-                //        ["x"] = new Day19.Range(2001, 4000),
-                //        ["m"] = new Day19.Range(0001, 4000),
-                //        ["a"] = new Day19.Range(0001, 4000),
-                //        ["s"] = new Day19.Range(0001, 4000)
-                //    }),
-                //    ("b",
-                //        new PartRange {
-                //        ["x"] = new Day19.Range(0001, 2000),
-                //        ["m"] = new Day19.Range(2001, 4000),
-                //        ["a"] = new Day19.Range(0001, 4000),
-                //        ["s"] = new Day19.Range(0001, 4000)
-                //    }),
-                //    ("c",
-                //        new PartRange {
-                //        ["x"] = new Day19.Range(0001, 2000),
-                //        ["m"] = new Day19.Range(0001, 2000),
-                //        ["a"] = new Day19.Range(2001, 4000),
-                //        ["s"] = new Day19.Range(0001, 4000)
-                //    }),
-                //    ("d",
-                //        new PartRange {
-                //        ["x"] = new Day19.Range(0001, 2000),
-                //        ["m"] = new Day19.Range(0001, 2000),
-                //        ["a"] = new Day19.Range(0001, 2000),
-                //        ["s"] = new Day19.Range(2001, 4000)
-                //    }),
-                //    ("e",
-                //        new PartRange {
-                //        ["x"] = new Day19.Range(0001, 2000),
-                //        ["m"] = new Day19.Range(0001, 2000),
-                //        ["a"] = new Day19.Range(0001, 2000),
-                //        ["s"] = new Day19.Range(0001, 2000)
-                //    })
-                //};
+                yield return new object[]
+                {
+                    new PartRange { ["x"] = new Day19.Range(1, 4000) },
+                    ParseState("in{x>2000:A,R}"),
+                    ("A", new PartRange { ["x"] = new Day19.Range(2001, 4000) }),
+                    ("R", new PartRange { ["x"] = new Day19.Range(1, 2000) })
+                };
+                yield return new object[]
+                {
+                    new PartRange { ["x"] = new Day19.Range(1, 4000) },
+                    ParseState("in{x>3000:a,x>2000:b,x>1000:c,d}"),
+                    ("a", new PartRange { ["x"] = new Day19.Range(3001, 4000) }),
+                    ("b", new PartRange { ["x"] = new Day19.Range(2001, 3000) }),
+                    ("c", new PartRange { ["x"] = new Day19.Range(1001, 2000) }),
+                    ("d", new PartRange { ["x"] = new Day19.Range(0001, 1000) }),
+                };
+                yield return new object[]
+                {
+                    new PartRange {
+                        ["x"] = new Day19.Range(1, 4000),
+                        ["m"] = new Day19.Range(1, 4000),
+                        ["a"] = new Day19.Range(1, 4000),
+                        ["s"] = new Day19.Range(1, 4000)
+                    },
+                    ParseState("in{x>2000:a,m>2000:b,a>2000:c,s>2000:d,e}"),
+                    ("a",
+                        new PartRange {
+                        ["x"] = new Day19.Range(2001, 4000),
+                        ["m"] = new Day19.Range(0001, 4000),
+                        ["a"] = new Day19.Range(0001, 4000),
+                        ["s"] = new Day19.Range(0001, 4000)
+                    }),
+                    ("b",
+                        new PartRange {
+                        ["x"] = new Day19.Range(0001, 2000),
+                        ["m"] = new Day19.Range(2001, 4000),
+                        ["a"] = new Day19.Range(0001, 4000),
+                        ["s"] = new Day19.Range(0001, 4000)
+                    }),
+                    ("c",
+                        new PartRange {
+                        ["x"] = new Day19.Range(0001, 2000),
+                        ["m"] = new Day19.Range(0001, 2000),
+                        ["a"] = new Day19.Range(2001, 4000),
+                        ["s"] = new Day19.Range(0001, 4000)
+                    }),
+                    ("d",
+                        new PartRange {
+                        ["x"] = new Day19.Range(0001, 2000),
+                        ["m"] = new Day19.Range(0001, 2000),
+                        ["a"] = new Day19.Range(0001, 2000),
+                        ["s"] = new Day19.Range(2001, 4000)
+                    }),
+                    ("e",
+                        new PartRange {
+                        ["x"] = new Day19.Range(0001, 2000),
+                        ["m"] = new Day19.Range(0001, 2000),
+                        ["a"] = new Day19.Range(0001, 2000),
+                        ["s"] = new Day19.Range(0001, 2000)
+                    })
+                };
                 yield return new object[]
                 {
                     new PartRange { ["x"] = new Day19.Range(100, 200) },
                     ParseState("in{x>2000:A,R}"),
                     ("R", new PartRange { ["x"] = new Day19.Range(100, 200) }),
+                };
+                yield return new object[]
+                {
+                    new PartRange { ["x"] = new Day19.Range(2100, 2200) },
+                    ParseState("in{x>2000:A,R}"),
+                    ("A", new PartRange { ["x"] = new Day19.Range(2100, 2200) }),
                 };
             }
         }
@@ -226,7 +232,7 @@ namespace AdventOfCode2023.Tests
 
         [Theory]
         [FileTestData("Day19/sample.in", 167409079868000L)]
-        //[FileTestData("Day19/input.in", 0L)]
+        [FileTestData("Day19/input.in", 121464316215623L)]
         public void Part2(string input, long expected)
         {
             // arrange 
