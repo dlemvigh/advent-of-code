@@ -12,7 +12,7 @@ namespace AdventOfCode2023.Day22
         void Add(Brick brick);
         IList<Brick> Get(int z);
         bool CanBeRemoved(Brick brick);
-        ISet<Brick> GetBricksAboveRec(Brick brick);
+        ISet<Brick> GetFallingCascade(Brick brick, ISet<Brick>? cascade = null);
     }
 
     public class ZCache : IZCache
@@ -86,26 +86,29 @@ namespace AdventOfCode2023.Day22
                 return true;
             }
 
-            return above.All(x => bricksBelow[x].Count >= 2);
+            return above.All(IsStable);
         }
 
-        public ISet<Brick> GetBricksAboveRec(Brick brick)
+        public bool IsStable(Brick brick)
         {
-            if (bricksAboveRec.TryGetValue(brick, out var value))
-            {
-                return value;
-            }
+            return bricksBelow[brick].Count >= 2;
+        }
 
-            var result = new HashSet<Brick>();
-            var above = bricksAbove[brick];
-            foreach (var other in above)
+        public ISet<Brick> GetFallingCascade(Brick brick, ISet<Brick>? cascade = null)
+        {
+            cascade ??= new HashSet<Brick>() { brick };
+            foreach (var above in bricksAbove[brick])
             {
-                result.Add(other);
-                result.UnionWith(GetBricksAboveRec(other));
-            }
+                var below = bricksBelow[above];
+                if (below.Any(x => !cascade.Contains(x)))
+                {
+                    continue;
+                }
 
-            bricksAboveRec[brick] = result;
-            return result;
+                cascade.Add(above);
+                GetFallingCascade(above, cascade);
+            }
+            return cascade;
         }
     }
 }

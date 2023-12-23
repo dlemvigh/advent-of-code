@@ -50,8 +50,8 @@ namespace AdventOfCode2023.Tests.Day22
 
         [Theory]
         [FileTestData("Day22/sample.in", 7)]
-        [FileTestData("Day22/input.in", 0L)] // 119411 too high
-        public void Part2(string input, long expected)
+        [FileTestData("Day22/input.in", 96356)] // 119411 too high, 21377 too low
+        public void Part2(string input, int expected)
         {
             // arrange 
             var sut = new AdventOfCode2023.Day22.Day22();

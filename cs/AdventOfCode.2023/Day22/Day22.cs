@@ -29,13 +29,13 @@ namespace AdventOfCode2023.Day22
             var count = removeable.Count();
             return count;
         }
-        public long Part2(string input)
+        public int Part2(string input)
         {
             var bricks = ParseInput(input);
             var droppedBricked = DropBricks(bricks);
             var unremoveable = droppedBricked.Where(brick => !zCache.CanBeRemoved(brick));
-            var above = unremoveable.Select(x => zCache.GetBricksAboveRec(x));
-            var sum = above.Sum(x => (long) x.Count);
+            var above = unremoveable.Select(x => zCache.GetFallingCascade(x));
+            var sum = above.Sum(x => x.Count - 1);
             return sum;
         }
 
