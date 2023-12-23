@@ -12,6 +12,7 @@ namespace AdventOfCode2023.Day22
         void Add(Brick brick);
         IList<Brick> Get(int z);
         bool CanBeRemoved(Brick brick);
+        ISet<Brick> GetBricksAboveRec(Brick brick);
     }
 
     public class ZCache : IZCache
@@ -19,6 +20,7 @@ namespace AdventOfCode2023.Day22
         public readonly Dictionary<int, IList<Brick>> cache = new();
         public readonly Dictionary<Brick, IList<Brick>> bricksBelow = new();
         public readonly Dictionary<Brick, IList<Brick>> bricksAbove = new();
+        public readonly Dictionary<Brick, ISet<Brick>> bricksAboveRec = new();
 
         public IList<Brick> Get(int z)
         {
@@ -85,6 +87,25 @@ namespace AdventOfCode2023.Day22
             }
 
             return above.All(x => bricksBelow[x].Count >= 2);
+        }
+
+        public ISet<Brick> GetBricksAboveRec(Brick brick)
+        {
+            if (bricksAboveRec.TryGetValue(brick, out var value))
+            {
+                return value;
+            }
+
+            var result = new HashSet<Brick>();
+            var above = bricksAbove[brick];
+            foreach (var other in above)
+            {
+                result.Add(other);
+                result.UnionWith(GetBricksAboveRec(other));
+            }
+
+            bricksAboveRec[brick] = result;
+            return result;
         }
     }
 }

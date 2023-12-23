@@ -29,6 +29,15 @@ namespace AdventOfCode2023.Day22
             var count = removeable.Count();
             return count;
         }
+        public long Part2(string input)
+        {
+            var bricks = ParseInput(input);
+            var droppedBricked = DropBricks(bricks);
+            var unremoveable = droppedBricked.Where(brick => !zCache.CanBeRemoved(brick));
+            var above = unremoveable.Select(x => zCache.GetBricksAboveRec(x));
+            var sum = above.Sum(x => (long) x.Count);
+            return sum;
+        }
 
         private IEnumerable<Brick> DropBricks(IEnumerable<Brick> bricks)
         {
@@ -50,11 +59,6 @@ namespace AdventOfCode2023.Day22
         {
             var droppedBrick = brick with { Z = maxHeight..(maxHeight + (brick.Z.End.Value - brick.Z.Start.Value)) };
             return droppedBrick;
-        }
-
-        public int Part2(string input)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<Brick> ParseInput(string input)

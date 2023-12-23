@@ -48,10 +48,10 @@ namespace AdventOfCode2023.Tests.Day22
             Assert.Equal(expected, actual);
         }
 
-        [Theory(Skip = "NYI")]
-        [FileTestData("Day22/sample.in", 4)]
-        [FileTestData("Day22/input.in", 41)]
-        public void Part2(string input, int expected)
+        [Theory]
+        [FileTestData("Day22/sample.in", 7)]
+        [FileTestData("Day22/input.in", 0L)] // 119411 too high
+        public void Part2(string input, long expected)
         {
             // arrange 
             var sut = new AdventOfCode2023.Day22.Day22();
