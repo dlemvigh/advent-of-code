@@ -38,10 +38,10 @@ namespace AdventOfCode2023.Tests
         public static IEnumerable<object[]> FlipFlopModule_Process_TestData
         {
             get {
-                yield return new object[] { "flipflop", Signal.High, false, new string[] { "a" }, new Pulse[] { } };
-                yield return new object[] { "flipflop", Signal.High, false, new string[] { "a", "b" }, new Pulse[] { } };
-                yield return new object[] { "flipflop", Signal.High, true, new string[] { "a" }, new Pulse[] { } };
-                yield return new object[] { "flipflop", Signal.High, true, new string[] { "a", "b" }, new Pulse[] { } };
+                yield return new object[] { "flipflop", Signal.High, false, new string[] { "a" }, Array.Empty<Pulse>() };
+                yield return new object[] { "flipflop", Signal.High, false, new string[] { "a", "b" }, Array.Empty<Pulse>() };
+                yield return new object[] { "flipflop", Signal.High, true, new string[] { "a" }, Array.Empty<Pulse>() };
+                yield return new object[] { "flipflop", Signal.High, true, new string[] { "a", "b" }, Array.Empty<Pulse>() };
                 yield return new object[] { "flipflop", Signal.Low, false, new string[] { "a" }, new Pulse[] { new Pulse("flipflop", Signal.High, "a") } };
                 yield return new object[] { "flipflop", Signal.Low, false, new string[] { "a", "b" }, new Pulse[] { new Pulse("flipflop", Signal.High, "a"), new Pulse("flipflop", Signal.High, "b") } };
                 yield return new object[] { "flipflop", Signal.Low, true, new string[] { "a" }, new Pulse[] { new Pulse("flipflop", Signal.Low, "a") } };
@@ -174,7 +174,6 @@ namespace AdventOfCode2023.Tests
             Pulse[] expected
         ) {
             // arrange 
-            var src = "button";
             var sut = new ConjuctionModule(name, outputs);
             foreach (var lowInput in initiallyLow)
             {

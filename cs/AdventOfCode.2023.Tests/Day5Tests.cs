@@ -5,8 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode.Tests;
-using AdventOfCode.Y2022;
-using AdventOfCode2023;
 
 namespace AdventOfCode2023.Tests
 {
