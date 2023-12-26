@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AdventOfCode.Shared;
 
-namespace AdventOfCode.Y2022
+namespace AdventOfCode.Y2023
 {
     [ProblemName("Trebuchet?!")]
     public class Day1

@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode.Tests;
-using AdventOfCode.Y2022;
-using AdventOfCode2023;
-using static AdventOfCode.Y2022.Day24;
+using AdventOfCode.Y2023;
+using static AdventOfCode.Y2023.Day24;
 
 namespace AdventOfCode2023.Tests
 {

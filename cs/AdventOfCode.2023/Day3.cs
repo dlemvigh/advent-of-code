@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode.Shared;
-using static AdventOfCode.Y2022.Day3;
+using static AdventOfCode.Y2023.Day3;
 
-namespace AdventOfCode.Y2022
+namespace AdventOfCode.Y2023
 {
     [ProblemName("Gear Ratios")]
     public class Day3
