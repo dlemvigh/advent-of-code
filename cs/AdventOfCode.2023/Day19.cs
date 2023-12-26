@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using AdventOfCode.Shared;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace AdventOfCode.Y2022
+namespace AdventOfCode.Y2023
 {
     [ProblemName("Aplenty")]
     public class Day19

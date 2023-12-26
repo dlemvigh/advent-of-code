@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AdventOfCode.Shared;
 
-namespace AdventOfCode.Y2022
+namespace AdventOfCode.Y2023
 {
     [ProblemName("Never Tell Me The Odds")]
     public class Day24
