@@ -9,7 +9,7 @@ using AdventOfCode2023;
 
 namespace AdventOfCode2023.Tests
 {
-    public class Day_Tests
+    public class Day25Tests
     {
 
         [Theory]
