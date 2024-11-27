@@ -108,7 +108,8 @@ mod day7 {
 
 		#[test]
 		fn part1() {
-			let content = std::fs::read_to_string("src/day7.txt").expect("Unable to read file");
+
+			let content = std::fs::read_to_string("src/y2021/day7.txt").expect("Unable to read file");
 			let values: Vec<i32> = content.split(',').map(|x| x.parse().unwrap()).collect();
 			let result = find_min_cost(&values, |x| x);
 			assert!(result.is_ok());
@@ -117,7 +118,7 @@ mod day7 {
 
 		#[test]
 		fn part2() {
-			let content = std::fs::read_to_string("src/day7.txt").expect("Unable to read file");
+			let content = std::fs::read_to_string("src/y2021/day7.txt").expect("Unable to read file");
 			let values: Vec<i32> = content.split(',').map(|x| x.parse().unwrap()).collect();
 			let result = find_min_cost(&values, binom);
 			assert!(result.is_ok());
