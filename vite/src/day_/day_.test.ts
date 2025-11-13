@@ -8,7 +8,7 @@ describe("Day _", () => {
       const input = readInput(__dirname, "sample.txt");
       input && expect(part1(input)).toBe(undefined);
     });
-    it("input", () => {
+    it.skip("input", () => {
       const input = readInput(__dirname, "input.txt");
       input && expect(part1(input)).toBe(undefined);
     });
@@ -18,7 +18,7 @@ describe("Day _", () => {
       const input = readInput(__dirname, "sample.txt");
       input && expect(part2(input)).toBe(undefined);
     });
-    it("input", () => {
+    it.skip("input", () => {
       const input = readInput(__dirname, "input.txt");
       input && expect(part2(input)).toBe(undefined);
     });
