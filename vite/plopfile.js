@@ -48,6 +48,7 @@ module.exports = function (plop) {
         type: 'input',
         name: 'day',
         message: 'Day number (1-25):',
+        default: new Date().getDate().toString(),
         validate: (input) => {
           const day = parseInt(input);
           if (isNaN(day) || day < 1 || day > 25) {
