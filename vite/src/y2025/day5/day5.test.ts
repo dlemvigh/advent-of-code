@@ -16,11 +16,11 @@ describe("Day 5", () => {
   describe("part 2", () => {
     it("sample", () => {
       const input = readInput(__dirname, "sample.txt");
-      input && expect(part2(input)).toBe(undefined);
+      input && expect(part2(input)).toBe(14);
     });
     it("input", () => {
       const input = readInput(__dirname, "input.txt");
-      input && expect(part2(input)).toBe(undefined);
+      input && expect(part2(input)).toBe(353716783056994);
     });
   });
 });
