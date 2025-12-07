@@ -8,7 +8,10 @@ export function part1(input: string) {
 }
 
 export function part2(input: string) {
-
+    const lines = splitIntoLines(input);
+    const numbers = lines.map(line => getBiggestNDigitNumberInString(line, 12))
+    const sum = numbers.reduce((a, b) => a + b, 0);
+    return sum;
 }
 
 
@@ -29,5 +32,18 @@ export function getBiggest2DigitNumberInString(s: string): number {
 }
 
 export function getBiggestNDigitNumberInString(s: string, n: number): number {
-    return 0
+    const digits = s.split('').map(Number);
+    const stack: number[] = []
+        
+    let toRemove = s.length - n
+
+    for (const digit of digits) {
+        while(stack.length > 0 && toRemove > 0 && stack[stack.length - 1] < digit) {
+            stack.pop()
+            toRemove--
+        }
+        stack.push(digit)
+    }
+    const result = stack.slice(0, n).join("")
+    return Number(result);
 }
