@@ -43,12 +43,22 @@ function* getColumnIterator<T>(table: T[][], colIndex: number): Generator<T> {
     }
 }
 
-function doMath(numbers: IteratorObject<number>, operator: Operator): bigint {
+function doMath(numbers: Iterable<number>, operator: Operator): bigint {
     switch (operator) {
-        case "*":
-            return numbers.reduce((acc, curr) => acc * BigInt(curr), 1n);
-        case "+":
-            return numbers.reduce((acc, curr) => acc + BigInt(curr), 0n);
+        case "*": {
+            let result = 1n;
+            for (const num of numbers) {
+                result *= BigInt(num);
+            }
+            return result;
+        }
+        case "+": {
+            let result = 0n;
+            for (const num of numbers) {
+                result += BigInt(num);
+            }
+            return result;
+        }
         default:
             throw new Error(`Unknown operator: ${operator}`);
     }
@@ -60,7 +70,7 @@ export function part2(input: string) {
     let sum = 0n
     for (let i = 0; i < operators.length; i++) {
         const operator = operators[i];
-        const value = doMath(numbers[i].values(), operator);
+        const value = doMath(numbers[i], operator);
         sum += value;
     }
     return sum;
