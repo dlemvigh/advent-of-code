@@ -1,10 +1,7 @@
-import { B } from "vitest/dist/chunks/benchmark.geERunq4";
 import { splitIntoLines } from "../../util";
 
 export function part1(input: string) {
     const { numbers, operators } = parseInput(input);
-    console.log("Numbers:", numbers);
-    console.log("Operators:", operators);
 
     let sum = 0n
     for (let i = 0; i < operators.length; i++) {
@@ -15,10 +12,6 @@ export function part1(input: string) {
     return sum;
 }
 
-export function part2(input: string) {
-
-}
-
 type Operator = "+" | "*";
 type NumberTable = number[][]
 const whiteSpaceRegex = /\s+/;
@@ -26,8 +19,8 @@ const whiteSpaceRegex = /\s+/;
 function parseInput(input: string): { numbers: NumberTable, operators: Operator[] } {
     const lines = splitIntoLines(input);
 
-    const numbers = parseInputNumberTable(lines.slice(0, lines.length - 2));
-    const operators = parseInputOperators(lines.slice(lines.length - 2)[0]);    
+    const numbers = parseInputNumberTable(lines.slice(0, lines.length - 1));
+    const operators = parseInputOperators(lines.slice(lines.length - 1)[0]);
 
     return { numbers, operators };
 }
@@ -50,7 +43,7 @@ function* getColumnIterator<T>(table: T[][], colIndex: number): Generator<T> {
     }
 }
 
-function doMath(numbers: Generator<number>, operator: Operator): BigInt {
+function doMath(numbers: IteratorObject<number>, operator: Operator): bigint {
     switch (operator) {
         case "*":
             return numbers.reduce((acc, curr) => acc * BigInt(curr), 1n);
@@ -59,4 +52,47 @@ function doMath(numbers: Generator<number>, operator: Operator): BigInt {
         default:
             throw new Error(`Unknown operator: ${operator}`);
     }
+}
+
+export function part2(input: string) {
+    const { numbers, operators } = parseInput2(input);
+
+    let sum = 0n
+    for (let i = 0; i < operators.length; i++) {
+        const operator = operators[i];
+        const value = doMath(numbers[i].values(), operator);
+        sum += value;
+    }
+    return sum;
+}
+
+function parseInput2(input: string) {
+    const lines = splitIntoLines(input, { trim: false });
+    const numbers = parseInputNumberTable2(lines);
+    const operators = parseInputOperators(lines.slice(lines.length - 1)[0]);
+    return { numbers, operators}
+}
+
+function parseInputNumberTable2(lines: string[]): NumberTable {
+    const signsLine = lines[lines.length - 1];
+    const signMatches = signsLine.matchAll(/([*+])(\s+(?=\s[+*])|(\s+$))/g);
+
+    const numbersTable: NumberTable = []
+    for (const match of signMatches) {        
+        const matchLength = match[0].length;
+        console.log("Length:", matchLength, "Match: '", match[0], "'");
+        const numbersColumn = []
+        for (let i = 0; i < matchLength; i++) {
+            const number = parseColumnNumber(lines, match.index + i);
+            numbersColumn.push(number);
+        }
+        numbersTable.push(numbersColumn);
+    }    
+    return numbersTable
+}
+
+function parseColumnNumber(lines: string[], colIndex: number): number {
+    const column = lines.slice(0, lines.length - 1).map(line => line[colIndex]).join("");
+    const number = Number(column.trim());
+    return number
 }
