@@ -17,7 +17,16 @@ export function part1(input: string, size: number) {
 }
 
 export function part2(input: string) {
+    const graph = parseInput(input)
+    addShortestEdgesTillFullyConnected(graph)
 
+    const components = connectedComponents(graph)
+    
+    const edges = Array.from(graph.edgeEntries())
+    const lastEdge = edges[edges.length - 1]
+
+    const result = lastEdge.sourceAttributes.x * lastEdge.targetAttributes.x
+    return result
 }
 
 interface Node {
@@ -46,10 +55,9 @@ function parseInput(input: string): Graph<Node, Edge> {
     return graph
 }
 
-function addShortestEdges(graph: Graph<Node, Edge>, maxEdges: number) {
-        const nodes = Array.from(graph.nodeEntries())
+function getAllPossibleEdges(graph: Graph<Node, Edge>) {
+    const nodes = Array.from(graph.nodeEntries())
 
-    // Calculate all possible edges with their weights
     const edges: Array<{ from: string, to: string, weight: number }> = []
     for (let i = 0; i < nodes.length; i++) {
         const from = nodes[i]
@@ -65,6 +73,14 @@ function addShortestEdges(graph: Graph<Node, Edge>, maxEdges: number) {
         }
     }
 
+    edges.sort((a, b) => a.weight - b.weight)
+    return edges
+}
+
+function addShortestEdges(graph: Graph<Node, Edge>, maxEdges: number) {
+    const edges = getAllPossibleEdges(graph)
+
+
     // Sort by weight and keep only the N shortest edges
     edges.sort((a, b) => a.weight - b.weight)
     const edgesToAdd = edges.slice(0, maxEdges)
@@ -73,6 +89,22 @@ function addShortestEdges(graph: Graph<Node, Edge>, maxEdges: number) {
     for (const edge of edgesToAdd) {
         graph.addEdge(edge.from, edge.to, { weight: edge.weight })
     }    
+}
+
+function addShortestEdgesTillFullyConnected(graph: Graph<Node, Edge>) {
+    const unconnectedNodes = new Set(graph.nodes())
+    const edges = getAllPossibleEdges(graph)
+
+    for (const edge of edges) {
+        graph.addEdge(edge.from, edge.to, { weight: edge.weight })
+
+        unconnectedNodes.delete(edge.from)
+        unconnectedNodes.delete(edge.to)
+
+        if (unconnectedNodes.size === 0) {
+            break
+        }
+    }
 }
 
 
