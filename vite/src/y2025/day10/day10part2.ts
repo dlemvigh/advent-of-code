@@ -56,7 +56,7 @@ function ilpSolve(vectors: number[][], target: number[]) {
         objective: "coeff",
         constraints,
         variables,
-        integers: vectors.map((_, i) => `v${i}`), // all variables must be integers
+        integers: true,
     };
 
     // Solve
