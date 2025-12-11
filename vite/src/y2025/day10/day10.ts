@@ -1,15 +1,16 @@
 import { DirectedGraph as Graph } from "graphology";
 import { dijkstra } from "graphology-shortest-path"
+const solver = require("javascript-lp-solver");
 import { splitIntoLines } from "../../util";
 
 export function part1(input: string) {
     const lines = splitIntoLines(input)
-    const subparts = lines.map(part1subpart1)
+    const subparts = lines.map(part1subpart)
     const sum = subparts.reduce((a, b) => a + b, 0);
     return sum
 }
 
-function part1subpart1(input: string) {
+function part1subpart(input: string) {
     const { lights, buttons } = parseInput(input);
     const graph = generateGraph(lights, buttons);
 
@@ -22,16 +23,42 @@ function part1subpart1(input: string) {
 }
 
 export function part2(input: string) {
+    const lines = splitIntoLines(input)
+    const subparts = lines.map(part2subpart)
+    const sum = subparts.reduce((a, b) => a + b, 0);
+    return sum
 
 }
+
+function part2subpart(input: string): number {
+    const { vectors, target } = parseInput2(input);
+    const dist = ilpSolve(vectors, target)
+    return dist
+}
+
 
 function parseInput(input: string) {
     const match = input.match(/\[(.*)\] (\(.*\)) \{(.*)\}/)
     if (!match) throw new Error("Invalid input format");
     const lights = parseLights(match[1]);
     const buttons = parseButtons(match[2]);
-    return { lights, buttons };
+    const target = parseTarget(match[3]);
+    return { lights, buttons, target };
 }
+
+function parseInput2(input: string) {
+    const match = input.match(/\[(.*)\] (\(.*\)) \{(.*)\}/)
+    if (!match) throw new Error("Invalid input format");
+
+    const buttons = parseButtons(match[2]);
+    const target = parseTarget(match[3]);
+
+    const origin = target.map(() => 0)
+    const vectors = buttons.map(button => target.map((_, index) => button.includes(index) ? 1 : 0));
+
+    return { origin, vectors, target };
+}
+
 
 function parseLights(input: string) {
     return input;
@@ -59,6 +86,10 @@ function parseButtons(input: string) {
 
 function parseButton(input: string) {
     return input.slice(1, -1).split(",").map(Number)
+}
+
+function parseTarget(input: string) {
+    return input.split(",").map(Number);
 }
 
 
@@ -103,4 +134,57 @@ function applyButton(lights: string, button: number[]): string {
     }
     const newLights = toLightString(lightArray);
     return newLights;
+}
+
+function ilpSolve(vectors: number[][], target: number[]) {
+
+    const model = buildModel(vectors, target);
+    const result = solver.Solve(model)
+
+    return result.result
+};
+
+function buildModel(vectors: number[][], target: number[]) {
+    const constraints = buildConstraints(target);
+    const variables = buildVariables(vectors, target.length);
+    const ints = buildIntegerConstraints(vectors.length);
+
+    return {
+        optimize: "coeff",
+        opType: "min",
+        constraints,
+        variables,
+        ints,
+    };
+}
+
+function buildConstraints(target: number[]) {
+    const constraints: Record<string, { equal: number }> = {};
+    
+    for (let i = 0; i < target.length; i++) {
+        constraints[`d${i}`] = { equal: target[i] };
+    }
+    
+    return constraints;
+}
+
+function buildVariables(vectors: number[][], dimensionCount: number) {
+    const variables: Record<string, Record<string, number>> = {};
+    
+    for (let vectorIndex = 0; vectorIndex < vectors.length; vectorIndex++) {
+        const vectorId = `v${vectorIndex}`;
+        variables[vectorId] = { coeff: 1 };
+        
+        for (let dimIndex = 0; dimIndex < dimensionCount; dimIndex++) {
+            variables[vectorId][`d${dimIndex}`] = vectors[vectorIndex][dimIndex];
+        }
+    }
+    
+    return variables;
+}
+
+function buildIntegerConstraints(vectorCount: number) {
+    return Object.fromEntries(
+        Array.from({ length: vectorCount }, (_, i) => [`v${i}`, 1])
+    );
 }
