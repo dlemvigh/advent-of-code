@@ -1,6 +1,6 @@
 import { DirectedGraph as Graph } from "graphology";
 import { dijkstra } from "graphology-shortest-path"
-const solver = require("javascript-lp-solver");
+import { solve, type Model, type Constraint } from "yalps";
 import { splitIntoLines } from "../../util";
 
 export function part1(input: string) {
@@ -35,7 +35,6 @@ function part2subpart(input: string): number {
     const dist = ilpSolve(vectors, target)
     return dist
 }
-
 
 function parseInput(input: string) {
     const match = input.match(/\[(.*)\] (\(.*\)) \{(.*)\}/)
@@ -137,54 +136,39 @@ function applyButton(lights: string, button: number[]): string {
 }
 
 function ilpSolve(vectors: number[][], target: number[]) {
-
-    const model = buildModel(vectors, target);
-    const result = solver.Solve(model)
-
-    return result.result
-};
-
-function buildModel(vectors: number[][], target: number[]) {
-    const constraints = buildConstraints(target);
-    const variables = buildVariables(vectors, target.length);
-    const ints = buildIntegerConstraints(vectors.length);
-
-    return {
-        optimize: "coeff",
-        opType: "min",
-        constraints,
-        variables,
-        ints,
-    };
-}
-
-function buildConstraints(target: number[]) {
-    const constraints: Record<string, { equal: number }> = {};
-    
-    for (let i = 0; i < target.length; i++) {
-        constraints[`d${i}`] = { equal: target[i] };
+    // Build constraints - each dimension must equal target value
+    const constraints: Record<string, Constraint> = {};
+    for (let dimIndex = 0; dimIndex < target.length; dimIndex++) {
+        constraints[`d${dimIndex}`] = { equal: target[dimIndex] };
     }
-    
-    return constraints;
-}
 
-function buildVariables(vectors: number[][], dimensionCount: number) {
+    // Build variables - each vector has a coefficient for each dimension
     const variables: Record<string, Record<string, number>> = {};
-    
-    for (let vectorIndex = 0; vectorIndex < vectors.length; vectorIndex++) {
-        const vectorId = `v${vectorIndex}`;
-        variables[vectorId] = { coeff: 1 };
+    for (let vecIndex = 0; vecIndex < vectors.length; vecIndex++) {
+        const varName = `v${vecIndex}`;
+        variables[varName] = { coeff: 1 }; // objective coefficient
         
-        for (let dimIndex = 0; dimIndex < dimensionCount; dimIndex++) {
-            variables[vectorId][`d${dimIndex}`] = vectors[vectorIndex][dimIndex];
+        // Add coefficients for each constraint/dimension
+        for (let dimIndex = 0; dimIndex < target.length; dimIndex++) {
+            variables[varName][`d${dimIndex}`] = vectors[vecIndex][dimIndex];
         }
     }
-    
-    return variables;
-}
 
-function buildIntegerConstraints(vectorCount: number) {
-    return Object.fromEntries(
-        Array.from({ length: vectorCount }, (_, i) => [`v${i}`, 1])
-    );
+    // Build model
+    const model: Model = {
+        direction: "minimize",
+        objective: "coeff",
+        constraints,
+        variables,
+        integers: vectors.map((_, i) => `v${i}`), // all variables must be integers
+    };
+
+    // Solve
+    const solution = solve(model);
+    
+    if (solution.status !== "optimal") {
+        throw new Error(`No solution found: ${solution.status}`);
+    }
+
+    return solution.result;
 }

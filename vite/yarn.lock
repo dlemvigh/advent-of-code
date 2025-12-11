@@ -1062,6 +1062,11 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
+heap@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.npmjs.org/heap/-/heap-0.2.7.tgz"
+  integrity sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==
+
 homedir-polyfill@^1.0.1:
   version "1.0.3"
   resolved "https://registry.npmjs.org/homedir-polyfill/-/homedir-polyfill-1.0.3.tgz"
@@ -1234,11 +1239,6 @@ istanbul-reports@^3.1.4:
   dependencies:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
-
-javascript-lp-solver@^0.4.24:
-  version "0.4.24"
-  resolved "https://registry.npmjs.org/javascript-lp-solver/-/javascript-lp-solver-0.4.24.tgz"
-  integrity sha512-5edoDKnMrt/u3M6GnZKDDIPxOyFOg+WrwDv8mjNiMC2DePhy2H9/FFQgf4ggywaXT1utvkxusJcjQUER72cZmA==
 
 liftoff@^5.0.1:
   version "5.0.1"
@@ -1990,6 +1990,13 @@ y18n@^5.0.5:
   version "5.0.8"
   resolved "https://registry.npmjs.org/y18n/-/y18n-5.0.8.tgz"
   integrity sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==
+
+yalps@^0.6.3:
+  version "0.6.3"
+  resolved "https://registry.npmjs.org/yalps/-/yalps-0.6.3.tgz"
+  integrity sha512-XS1Sb3uejyNMu/Bl+3ZdI4VZGJKT6JSoSDYcLFlapOUy0wJPN9h+XDXAY8xeFk0bQFdEMIOGNAN2/jht4XSJKA==
+  dependencies:
+    heap "^0.2.7"
 
 yargs-parser@^20.2.2, yargs-parser@^20.2.9:
   version "20.2.9"

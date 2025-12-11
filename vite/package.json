@@ -23,6 +23,6 @@
     "graphology-components": "^1.5.4",
     "graphology-dag": "^0.4.1",
     "graphology-shortest-path": "^2.1.0",
-    "javascript-lp-solver": "^0.4.24"
+    "yalps": "^0.6.3"
   }
 }
