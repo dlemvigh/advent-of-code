@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/dev/advent-of-code/vite/src/**)",
+      "Read(//c/dev/advent-of-code/vite/**)",
+      "Bash(cat:*)",
+      "Read(//c/dev/advent-of-code/**)",
+      "Bash(npx vitest:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
