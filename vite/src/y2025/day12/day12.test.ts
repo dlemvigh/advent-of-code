@@ -6,11 +6,11 @@ describe("Day 12", () => {
   describe("part 1", () => {
     it("sample", () => {
       const input = readInput(__dirname, "sample.txt");
-      input && expect(part1(input)).toBe(2);
+      input && expect(part1(input, 2)).toBe(2);
     });
     it("input", () => {
       const input = readInput(__dirname, "input.txt");
-      input && expect(part1(input)).toBe(undefined);
+      input && expect(part1(input, 1)).toBe(undefined);
     });
   });
   describe("part 2", () => {

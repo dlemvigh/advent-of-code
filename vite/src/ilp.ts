@@ -113,13 +113,12 @@ export function simpleILP2D() {
     ]
     const board = { width: 3, height: 4 }
 
+    const variables = createVariables(shapes, board)
     const constraints = {
         ...createCellConstraints(board),
         ...createShapeConstraints(shapes)
     }
     
-    const variables = createVariables(shapes, board)
-
     const model: Model<any, any> = {
         variables,
         constraints,
